@@ -11,7 +11,7 @@ let productImages = [];
 let currentSlideIndex = 0;
 let autoSlideInterval;
 
-// Fetch JSON based on which page we are on
+// Fetch JSON data
 fetch('data.json')
     .then(response => response.json())
     .then(data => {
@@ -21,7 +21,11 @@ fetch('data.json')
         if (document.getElementById("product-container")) {
             displayCategories(data.categories);
             displayProducts();
-            startBannerSlider();
+            
+            // JSON se Banners utha kar slider start karo
+            if(data.banners && data.banners.length > 0) {
+                startBannerSlider(data.banners);
+            }
         } 
         
         // Agar Product Details Page par hain
@@ -34,15 +38,21 @@ fetch('data.json')
 /* =========================================
    HOME PAGE LOGIC
 ========================================= */
-function startBannerSlider() {
-    const bannerImages = ["images/banner1.jpg", "images/banner2.jpg"];
+function startBannerSlider(bannerImages) {
     let bannerIndex = 0;
     const bannerElement = document.getElementById("bannerImage");
-    if(bannerElement){
-        setInterval(() => {
-            bannerIndex = (bannerIndex + 1) % bannerImages.length;
-            bannerElement.src = bannerImages[bannerIndex];
-        }, 3000);
+    
+    // Set first banner image immediately
+    if(bannerElement) {
+        bannerElement.src = bannerImages[bannerIndex];
+        
+        // Auto slider logic (Change every 3 seconds)
+        if(bannerImages.length > 1) {
+            setInterval(() => {
+                bannerIndex = (bannerIndex + 1) % bannerImages.length;
+                bannerElement.src = bannerImages[bannerIndex];
+            }, 3000);
+        }
     }
 }
 
@@ -76,10 +86,9 @@ function displayProducts() {
     productsToShow.forEach(prod => {
         let card = document.createElement("div");
         card.className = "product-card";
-        // Jab card pe click hoga tou product.html pe chala jayega uski ID ke sath
+        // Click karne pe product.html pe le jaye ga ID ke sath
         card.onclick = () => window.location.href = `product.html?id=${prod.id}`;
         
-        // Homepage par sirf array ki Pehli [0] picture show hogi
         card.innerHTML = `
             <img src="${prod.images[0]}" alt="${prod.name}">
             <h4>${prod.name}</h4>
@@ -101,11 +110,9 @@ function loadMore() {
    PRODUCT DETAILS PAGE LOGIC (With Slider)
 ========================================= */
 function loadProductDetails() {
-    // URL se product ki ID nikalna (e.g., product.html?id=2)
     const urlParams = new URLSearchParams(window.location.search);
     const productId = parseInt(urlParams.get('id'));
 
-    // ID ke zariye JSON se product dhoondna
     selectedProduct = allProducts.find(p => p.id === productId);
 
     if (selectedProduct) {
@@ -113,15 +120,12 @@ function loadProductDetails() {
         document.getElementById("prodPrice").innerText = "Rs. " + selectedProduct.price;
         document.getElementById("prodDesc").innerText = selectedProduct.description;
         
-        // Setup Images Slider
         productImages = selectedProduct.images;
         showSlide(0);
         
-        // Start Auto Slider (Har 5 second baad picture change)
         if(productImages.length > 1) {
-            autoSlideInterval = setInterval(() => changeSlide(1), 5000);
+            autoSlideInterval = setInterval(() => changeSlide(1), 5000); // 5 sec auto slide
         } else {
-            // Agar ek hi picture hai tou buttons hide kar do
             document.querySelector(".prev").style.display = "none";
             document.querySelector(".next").style.display = "none";
         }
@@ -130,17 +134,15 @@ function loadProductDetails() {
     }
 }
 
-// Next / Previous Button Logic
 function changeSlide(direction) {
     currentSlideIndex += direction;
     
-    // Agar last picture pe next dabaye tou wapis pehli pe aa jaye
     if (currentSlideIndex >= productImages.length) { currentSlideIndex = 0; }
     if (currentSlideIndex < 0) { currentSlideIndex = productImages.length - 1; }
     
     showSlide(currentSlideIndex);
 
-    // Jab user khud button dabaye tou auto-slider timer reset ho jaye (taake double skip na ho)
+    // Reset auto-slider timer on manual click
     clearInterval(autoSlideInterval);
     autoSlideInterval = setInterval(() => changeSlide(1), 5000);
 }
@@ -167,7 +169,7 @@ function submitOrder() {
     let address = document.getElementById("custAddress").value;
 
     if (!name || !phone || !address) {
-        alert("Please details mukammal fill karein!");
+        alert("Meharbani farma kar details mukammal fill karein!");
         return;
     }
 
@@ -183,5 +185,5 @@ function submitOrder() {
     window.open(whatsappURL, "_blank");
     
     closeModal();
-    alert("Shukriya! Aapka order WhatsApp par receive ho gaya hai.");
+    alert("Shukriya! Aapka order WhatsApp par chala gaya hai.");
 }
