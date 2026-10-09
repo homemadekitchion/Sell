@@ -1,9 +1,9 @@
 {
   "banners": [
-    "images/banner1.jpg",
-    "images/banner2.jpg",
-    "images/banner3.jpg",
-    "images/banner4.jpg"
+    "images/Screenshot_20261009-165847_1.jpg",
+    "images/Screenshot_20261009-165847_1.jpg",
+    "images/Screenshot_20261009-165847_1.jpg",
+    "images/Screenshot_20261009-165847_1.jpg"
   ],
   "categories": [
     "All",
@@ -23,9 +23,9 @@
       "mrp": 2690,
       "discount": "52% OFF",
       "images": [
-        "images/shoe1-1.jpg",
-        "images/shoe1-2.jpg",
-        "images/shoe1-3.jpg"
+        "images/Screenshot_20261009-165847_1.jpg",
+        "images/Screenshot_20261009-165847_1.jpg",
+        "images/Screenshot_20261009-165847_1.jpg"
       ],
       "colors": ["Beige", "Black", "Rose Gold"],
       "sizes": ["3", "4", "5", "6", "7", "8"],
@@ -44,8 +44,8 @@
       "mrp": 2490,
       "discount": "42% OFF",
       "images": [
-        "images/shoe2-1.jpg",
-        "images/shoe2-2.jpg"
+        "images/Screenshot_20261009-165847_1.jpg",
+        "images/shoe2-2.jpgScreenshot_20261009-165847_1.jpg"
       ],
       "colors": ["Rose Gold", "Silver", "Champagne"],
       "sizes": ["4", "5", "6", "7", "8"],
