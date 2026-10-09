@@ -1,73 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-PK">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
-        header { background: #2874f0; color: white; padding: 15px; text-align: center; position: relative;}
-        .back-btn { position: absolute; left: 15px; top: 15px; background: white; color: #2874f0; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-weight: bold;}
+        body { font-family: Arial, sans-serif; background-color: #fff; margin:0; padding-bottom: 80px; /* Space for sticky footer */ }
+        header { padding: 15px; border-bottom: 1px solid #eee; position: relative;}
+        .back-btn { text-decoration: none; color: #000; font-size: 20px; font-weight: bold;}
         
-        .detail-container { max-width: 800px; margin: 20px auto; background: white; padding: 20px; border-radius: 8px; }
+        .detail-container { max-width: 1000px; margin: auto; padding: 15px; }
         
-        /* Image Slider */
-        .slider { position: relative; width: 100%; height: 350px; text-align: center; background: #fff; display: flex; align-items: center; justify-content: center;}
-        .slider img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .prev, .next { cursor: pointer; position: absolute; top: 50%; transform: translateY(-50%); padding: 10px 15px; background: rgba(0,0,0,0.5); color: white; font-weight: bold; font-size: 18px; border: none; border-radius: 3px; }
-        .prev { left: 10px; }
-        .next { right: 10px; }
-        .prev:hover, .next:hover { background: rgba(0,0,0,0.8); }
+        /* PC Split View, Mobile Stack View */
+        .product-layout { display: flex; flex-wrap: wrap; gap: 20px; }
+        .image-section { flex: 1; min-width: 300px; position: relative; background: #f9f9f9; text-align: center; }
+        .image-section img { width: 100%; max-height: 400px; object-fit: contain; mix-blend-mode: multiply;}
+        .info-section { flex: 1; min-width: 300px; }
 
-        .details h2 { margin-top: 20px; }
-        .price { color: green; font-size: 24px; font-weight: bold; }
-        .desc { color: #555; line-height: 1.6; margin-bottom: 20px;}
-        .buy-btn { background: #ff9f00; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 5px; font-size: 18px; font-weight: bold; }
+        .discount-badge { position: absolute; top: 10px; left: 10px; background: #a41c23; color: white; padding: 4px 8px; font-size: 12px; font-weight: bold; }
+        
+        .sku { color: #777; font-size: 13px; margin-bottom: 10px; }
+        h1 { font-size: 22px; margin: 0 0 10px 0; color: #333; }
+        .price-row { font-size: 22px; font-weight: bold; margin-bottom: 20px;}
+        .mrp { text-decoration: line-through; color: #999; font-size: 16px; font-weight: normal; margin-left: 10px;}
+        .discount-text { color: #a41c23; font-size: 16px; margin-left: 10px;}
+        
+        /* Size & Color Selectors */
+        .selector-title { font-size: 14px; font-weight: bold; margin: 20px 0 10px 0; text-transform: uppercase;}
+        .options-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        .option-btn { border: 1px solid #ccc; background: white; padding: 10px 15px; cursor: pointer; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold;}
+        .option-btn.color-btn { width: auto; border-radius: 20px; padding: 8px 15px;}
+        .option-btn.active { border-color: #000; background: #000; color: white; }
+        
+        /* Accordion */
+        .accordion { border-top: 1px solid #eee; margin-top: 30px; }
+        .acc-item { border-bottom: 1px solid #eee; }
+        .acc-header { padding: 15px 0; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #333;}
+        .acc-icon { font-size: 20px; color: #a41c23; font-weight: bold;}
+        .acc-content { padding: 0 0 15px 0; display: none; color: #555; line-height: 1.6; font-size: 14px;}
+
+        /* Sticky Footer (Mobile & PC) */
+        .sticky-footer { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100; }
+        .btn-cart { flex: 1; background: white; color: #333; border: none; border-right: 1px solid #eee; padding: 15px; font-size: 14px; font-weight: bold; cursor: pointer;}
+        .btn-checkout { flex: 1; background: #004dd0; color: white; border: none; padding: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+        .btn-checkout span { font-size: 16px; font-weight: bold; }
+        .btn-checkout small { font-size: 11px; font-style: italic;}
 
         /* Order Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; }
         .modal-content { background: white; padding: 20px; width: 90%; max-width: 400px; margin: 10% auto; border-radius: 8px; }
-        .modal input, .modal textarea { width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; }
-        .confirm-btn { background: green; color: white; padding: 10px; width: 100%; border: none; cursor: pointer; font-size: 16px;}
-        .close-btn { background: red; color: white; padding: 5px 10px; border: none; cursor: pointer; float: right; }
+        .modal input, .modal textarea { width: 100%; margin: 10px 0; padding: 12px; box-sizing: border-box; border:1px solid #ccc; border-radius:4px;}
+        .confirm-btn { background: #28a745; color: white; padding: 15px; width: 100%; border: none; cursor: pointer; font-size: 16px; font-weight: bold; border-radius:4px;}
+        .close-btn { background: transparent; color: red; font-size: 20px; border: none; cursor: pointer; float: right; font-weight:bold;}
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="back-btn">&larr; Back</a>
-        <h2>Product Details</h2>
+        <a href="index.html" class="back-btn">&#8592;</a>
     </header>
 
     <div class="detail-container">
-        <!-- Slider -->
-        <div class="slider">
-            <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
-            <img id="mainProductImage" src="" alt="Product">
-            <button class="next" onclick="changeSlide(1)">&#10095;</button>
-        </div>
+        <div class="product-layout">
+            
+            <!-- Images -->
+            <div class="image-section">
+                <div class="discount-badge" id="prodDiscount" style="display:none;"></div>
+                <img id="mainProductImage" src="" alt="Product Image">
+            </div>
 
-        <!-- Details -->
-        <div class="details">
-            <h2 id="prodTitle">Loading...</h2>
-            <p class="price" id="prodPrice"></p>
-            <p class="desc" id="prodDesc"></p>
-            <button class="buy-btn" onclick="openModal()">Buy Now (Cash on Delivery)</button>
+            <!-- Details -->
+            <div class="info-section">
+                <h1 id="prodTitle">Loading...</h1>
+                <div class="sku" id="prodSku"></div>
+                
+                <div class="price-row">
+                    <span id="prodPrice"></span>
+                    <span class="mrp" id="prodMrp"></span>
+                    <span class="discount-text" id="prodDiscText"></span>
+                </div>
+
+                <!-- Sizes Section (Will hide if no sizes) -->
+                <div id="sizeSection" style="display:none;">
+                    <div class="selector-title">Select Size</div>
+                    <div class="options-container" id="sizeContainer"></div>
+                </div>
+
+                <!-- Colors Section (Will hide if no colors) -->
+                <div id="colorSection" style="display:none;">
+                    <div class="selector-title">Available Colors</div>
+                    <div class="options-container" id="colorContainer"></div>
+                </div>
+
+                <!-- Accordions -->
+                <div class="accordion">
+                    <div class="acc-item">
+                        <div class="acc-header" onclick="toggleAcc(this)">Product Details <span class="acc-icon">+</span></div>
+                        <div class="acc-content" id="accDetails"></div>
+                    </div>
+                    <div class="acc-item">
+                        <div class="acc-header" onclick="toggleAcc(this)">Care Instruction <span class="acc-icon">+</span></div>
+                        <div class="acc-content" id="accCare"></div>
+                    </div>
+                    <div class="acc-item">
+                        <div class="acc-header" onclick="toggleAcc(this)">Return and shipping policy <span class="acc-icon">+</span></div>
+                        <div class="acc-content" id="accReturn"></div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- Sticky Footer Bar -->
+    <div class="sticky-footer">
+        <button class="btn-cart" onclick="alert('Added to Cart!')">ADD TO CART</button>
+        <button class="btn-checkout" onclick="openModal()">
+            <span>QUICK CHECKOUT</span>
+            <small>Cash on Delivery Available</small>
+        </button>
     </div>
 
     <!-- Order Modal -->
     <div class="modal" id="orderModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()">X</button>
-            <h3>Order Details</h3>
-            <p id="orderItemName" style="font-weight:bold;"></p>
+            <h3 style="margin-top:0;">Complete Your Order</h3>
             
-            <input type="text" id="custName" placeholder="Aapka Mukammal Naam" required>
-            <input type="text" id="custPhone" placeholder="Mobile Number (03XXXXXXXXX)" required>
-            <textarea id="custAddress" placeholder="Mukammal Delivery Address" rows="3" required></textarea>
+            <div style="background:#f9f9f9; padding:10px; margin-bottom:15px; border-radius:5px; font-size:14px;">
+                <strong id="orderItemName"></strong><br>
+                <span id="orderItemSpecs" style="color:#a41c23; font-weight:bold;"></span><br>
+                Total: <strong id="orderItemPrice" style="color:green;"></strong>
+            </div>
             
-            <button class="confirm-btn" onclick="submitOrder()">Confirm Order via WhatsApp</button>
+            <input type="text" id="custName" placeholder="Full Name" required>
+            <input type="text" id="custPhone" placeholder="Mobile Number" required>
+            <textarea id="custAddress" placeholder="Complete Delivery Address" rows="3" required></textarea>
+            
+            <button class="confirm-btn" onclick="submitOrder()">Confirm Order</button>
         </div>
     </div>
 
