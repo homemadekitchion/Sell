@@ -1,90 +1,42 @@
+
 {
   "banners": [
-    "images/banner1.jpg",
-    "images/banner2.jpg",
-    "images/banner3.jpg"
+    "images/banner1.jpg"
   ],
-  "categories": ["All", "Mobiles", "Laptops", "Fashion", "Watches"],
+  "categories": ["All", "Shoes", "Mobiles"],
   "products": [
     {
       "id": 1,
-      "name": "Samsung Galaxy S23 Ultra",
-      "price": 320000,
-      "category": "Mobiles",
-      "images": ["images/s23-1.jpg", "images/s23-2.jpg", "images/s23-3.jpg"],
-      "description": "Samsung ka latest flagship smartphone 200MP main camera aur 5000mAh battery ke sath. S-Pen support aur zabardast gaming performance."
+      "name": "Women Beige Casual Sandals",
+      "category": "Shoes",
+      "sku": "33-1202-20-36",
+      "price": 1291,
+      "mrp": 2690,
+      "discount": "52% OFF",
+      "images": ["images/shoe1.jpg", "images/shoe2.jpg"],
+      "colors": ["Beige", "Black", "Rose Gold"],
+      "sizes": ["3", "4", "5", "6", "7", "8"],
+      "details": {
+        "productDetails": "Premium casual sandals perfect for daily wear. Comfortable sole and elegant design.",
+        "careInstruction": "Keep your product dry avoid getting it wet or damp. To clean it, simply wipe with a dry cloth.",
+        "returnPolicy": "Only unused merchandise is eligible for return within 15 days from the date of delivery. Seal tag must be attached."
+      }
     },
     {
       "id": 2,
-      "name": "Apple iPhone 14 Pro Max",
-      "price": 380000,
+      "name": "Samsung Galaxy S23 Ultra",
       "category": "Mobiles",
-      "images": ["images/ip14-1.jpg", "images/ip14-2.jpg"],
-      "description": "Apple iPhone 14 Pro Max (PTA Approved). Dynamic island display, A16 Bionic chip, aur premium design. Best for videography."
-    },
-    {
-      "id": 3,
-      "name": "Dell Latitude Core i7",
-      "price": 85000,
-      "category": "Laptops",
-      "images": ["images/dell-1.jpg", "images/dell-2.jpg", "images/dell-3.jpg"],
-      "description": "Dell Latitude 7490. Intel Core i7 8th Gen, 16GB RAM, aur 512GB SSD. Office work aur freelancing ke liye best slim laptop."
-    },
-    {
-      "id": 4,
-      "name": "HP EliteBook 840 G5",
-      "price": 75000,
-      "category": "Laptops",
-      "images": ["images/hp-1.jpg", "images/hp-2.jpg"],
-      "description": "HP EliteBook series. Core i5 8th Gen, 8GB RAM, 256GB SSD. Keyboard backlight aur fingerprint sensor ke sath."
-    },
-    {
-      "id": 5,
-      "name": "Men's Winter Jacket",
-      "price": 4500,
-      "category": "Fashion",
-      "images": ["images/jacket-1.jpg", "images/jacket-2.jpg", "images/jacket-3.jpg"],
-      "description": "Premium quality parachute winter jacket. Waterproof aur andar se garam fleece material. Medium, Large, XL sizes available hain."
-    },
-    {
-      "id": 6,
-      "name": "Denim Jeans (Blue)",
-      "price": 1800,
-      "category": "Fashion",
-      "images": ["images/jeans-1.jpg", "images/jeans-2.jpg"],
-      "description": "High-quality stretchable denim jeans. Comfortable fitting aur long-lasting fabric. Sizes 30 se 38 tak available."
-    },
-    {
-      "id": 7,
-      "name": "Rolex Submariner Copy",
-      "price": 8500,
-      "category": "Watches",
-      "images": ["images/watch-1.jpg", "images/watch-2.jpg", "images/watch-3.jpg"],
-      "description": "Master copy of Rolex Submariner. Automatic movement, stainless steel chain, aur water-resistant design. Box ke sath."
-    },
-    {
-      "id": 8,
-      "name": "Casio Edifice",
-      "price": 6000,
-      "category": "Watches",
-      "images": ["images/casio-1.jpg", "images/casio-2.jpg"],
-      "description": "Casio Edifice chronograph watch. Original look, leather strap, aur date feature ke sath. Casual aur formal wear dono ke liye best."
-    },
-    {
-      "id": 9,
-      "name": "Infinix Note 30 Pro",
-      "price": 65000,
-      "category": "Mobiles",
-      "images": ["images/inf-1.jpg", "images/inf-2.jpg", "images/inf-3.jpg"],
-      "description": "Infinix Note 30 Pro. 8GB RAM, 256GB Storage. 68W fast charging aur wireless charging support. Budget gaming phone."
-    },
-    {
-      "id": 10,
-      "name": "MacBook Air M1",
-      "price": 220000,
-      "category": "Laptops",
-      "images": ["images/mac-1.jpg", "images/mac-2.jpg"],
-      "description": "Apple MacBook Air M1 Chip. 8GB RAM, 256GB SSD. 15+ hours battery life. Video editing aur coding ke liye perfect."
+      "sku": "MOB-S23-ULT",
+      "price": 320000,
+      "mrp": 350000,
+      "discount": "8% OFF",
+      "images": ["images/s23.jpg"],
+      "colors": ["Phantom Black", "Cream"],
+      "details": {
+        "productDetails": "Latest flagship smartphone with 200MP camera and 5000mAh battery.",
+        "careInstruction": "Use a certified screen protector and case.",
+        "returnPolicy": "7 days replacement warranty in case of manufacturing defect only."
+      }
     }
   ]
 }
