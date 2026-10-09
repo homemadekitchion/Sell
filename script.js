@@ -1,9 +1,9 @@
 // ==========================================================================
-// 1. CONFIGURATION
+// 1. CONFIGURATION (Aapka Google Sheet Web App Link)
 // ==========================================================================
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiexm4od54EpVLZeIjf4JnlSyMe4O7UfIM0UyyMAOTdjbpstURYMREtbpkQ/exec";
 
-// State Variables
+// Global Variables
 let allProducts = [];
 let currentCategory = "All";
 let itemsToShow = 10;
@@ -12,50 +12,37 @@ let chosenSize = null;
 let chosenColor = null;
 
 // ==========================================================================
-// 2. AUTO-LOAD DATA.JSON (WITH CACHE-BUSTER)
+// 2. DATA.JSON FETCHING (With Cache-Buster & Auto-Load)
 // ==========================================================================
-// ?v= + timestamp lagane se browser hamesha FRESH JSON uthata hai, purani nahi
 const cacheBusterUrl = './data.json?v=' + new Date().getTime();
 
-fetch(cacheBusterUrl, { 
+fetch(cacheBusterUrl, {
     cache: 'no-store',
     headers: { 'Cache-Control': 'no-cache' }
 })
 .then(res => {
-    if (!res.ok) {
-        throw new Error(`data.json file nahi mili! (HTTP Status: ${res.status})`);
-    }
+    if (!res.ok) throw new Error(`HTTP Error Status: ${res.status}`);
     return res.json();
 })
 .then(data => {
-    console.log("data.json successfully loaded:", data);
     initApp(data);
 })
 .catch(err => {
-    console.error("JSON Loading Error:", err);
+    console.error("data.json load error:", err);
     const loadingEl = document.getElementById("loadingMsg");
     if (loadingEl) {
-        loadingEl.innerHTML = `
-            <div style="color: #a41c23; padding: 20px; border: 1px solid #a41c23; background: #fff5f5; border-radius: 5px; max-width: 600px; margin: 20px auto;">
-                <strong>⚠️ data.json Load Hone Mein Masla Aya Hai:</strong><br>
-                <span>${err.message}</span><br><br>
-                <small style="color: #555;">
-                    1. Agar aap file offline (direct double-click) chala rahe hain toh browser JSON block karta hai, isay <strong>GitHub Pages</strong> par upload karke check karein.<br>
-                    2. Ya check karein ke <strong>data.json</strong> mein koi comma (,) ya bracket ki ghalti toh nahi.
-                </small>
-            </div>
-        `;
+        loadingEl.innerHTML = `<span style="color:red;">Error loading data.json: ${err.message}<br>Agar computer par direct kholi hai toh GitHub par push karein.</span>`;
     }
 });
 
 function initApp(data) {
     allProducts = data.products || [];
 
-    // Loading msg hide karein
+    // Loading indicator hide karein
     const loadingEl = document.getElementById("loadingMsg");
     if (loadingEl) loadingEl.style.display = "none";
 
-    // Agar Home Page par hain
+    // Agar Home Page par hain (index.html)
     if (document.getElementById("product-container")) {
         displayCategories(data.categories || ["All"]);
         displayProducts();
@@ -64,14 +51,14 @@ function initApp(data) {
         }
     }
 
-    // Agar Product Detail Page par hain
+    // Agar Product Detail Page par hain (product.html)
     if (document.getElementById("mainProductImage")) {
         loadProductDetails();
     }
 }
 
 // ==========================================================================
-// 3. BANNER SLIDER
+// 3. HOME PAGE: BANNER SLIDER
 // ==========================================================================
 function startBannerSlider(bannerImages) {
     let bannerIndex = 0;
@@ -89,7 +76,7 @@ function startBannerSlider(bannerImages) {
 }
 
 // ==========================================================================
-// 4. CATEGORIES
+// 4. HOME PAGE: CATEGORIES FILTER
 // ==========================================================================
 function displayCategories(categories) {
     const catContainer = document.getElementById("category-container");
@@ -104,7 +91,7 @@ function displayCategories(categories) {
             document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             currentCategory = cat;
-            itemsToShow = 10;
+            itemsToShow = 10; // Filter change hone par wapis 10 dikhayein
             displayProducts();
         };
         catContainer.appendChild(btn);
@@ -112,7 +99,7 @@ function displayCategories(categories) {
 }
 
 // ==========================================================================
-// 5. PRODUCTS GRID & LOAD MORE
+// 5. HOME PAGE: PRODUCTS GRID & LOAD MORE
 // ==========================================================================
 function displayProducts() {
     const container = document.getElementById("product-container");
@@ -138,7 +125,7 @@ function displayProducts() {
             colorsHtml = `<div class="colors-count"><span class="color-dot"></span><span class="color-dot"></span> ${prod.colors.length} colors</div>`;
         }
 
-        const firstImage = (prod.images && prod.images.length > 0) ? prod.images[0] : "https://via.placeholder.com/300?text=Product";
+        const firstImage = (prod.images && prod.images.length > 0) ? prod.images[0] : "images/placeholder.jpg";
 
         card.innerHTML = `
             <div class="product-img-box">
@@ -166,7 +153,7 @@ function loadMore() {
 }
 
 // ==========================================================================
-// 6. PRODUCT DETAILS PAGE
+// 6. PRODUCT DETAILS PAGE (SLIDER, SIZES, COLORS, ACCORDIONS)
 // ==========================================================================
 let productImages = [];
 let currentSlideIndex = 0;
@@ -184,6 +171,7 @@ function loadProductDetails() {
         return;
     }
 
+    // Basic Info Fill Karna
     document.getElementById("prodTitle").innerText = selectedProduct.name;
     document.getElementById("prodSku").innerText = "SKU: " + (selectedProduct.sku || "N/A");
     document.getElementById("prodPrice").innerText = "Rs. " + selectedProduct.price;
@@ -197,7 +185,7 @@ function loadProductDetails() {
         if (disc) disc.innerText = "(" + selectedProduct.discount + ")";
     }
 
-    // Sizes
+    // Sizes Setup (Agar nahi hain toh section hide ho jayega)
     const sizeSection = document.getElementById("sizeSection");
     const sizeContainer = document.getElementById("sizeContainer");
     if (selectedProduct.sizes && selectedProduct.sizes.length > 0) {
@@ -214,7 +202,7 @@ function loadProductDetails() {
         sizeSection.style.display = "none";
     }
 
-    // Colors
+    // Colors Setup (Agar nahi hain toh section hide ho jayega)
     const colorSection = document.getElementById("colorSection");
     const colorContainer = document.getElementById("colorContainer");
     if (selectedProduct.colors && selectedProduct.colors.length > 0) {
@@ -231,14 +219,14 @@ function loadProductDetails() {
         colorSection.style.display = "none";
     }
 
-    // Details Accordion
+    // Details Accordion Setup
     if (selectedProduct.details) {
-        document.getElementById("accDetails").innerText = selectedProduct.details.productDetails || "No details.";
-        document.getElementById("accCare").innerText = selectedProduct.details.careInstruction || "No care instructions.";
+        document.getElementById("accDetails").innerText = selectedProduct.details.productDetails || "No details available.";
+        document.getElementById("accCare").innerText = selectedProduct.details.careInstruction || "No instructions provided.";
         document.getElementById("accReturn").innerText = selectedProduct.details.returnPolicy || "Standard 15 days return policy.";
     }
 
-    // Multi-Image Slider
+    // Image Slider Setup
     productImages = selectedProduct.images && selectedProduct.images.length > 0
         ? selectedProduct.images
         : ["https://via.placeholder.com/500?text=Product"];
@@ -289,7 +277,7 @@ function toggleAcc(element) {
 }
 
 // ==========================================================================
-// 7. ORDER SUBMIT (COD)
+// 7. ORDER SUBMISSION (REAL-TIME TO GOOGLE SHEETS WITH NO-CORS)
 // ==========================================================================
 function openModal() {
     if (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !chosenSize) {
@@ -322,12 +310,12 @@ function submitOrder() {
     const address = document.getElementById("custAddress").value.trim();
 
     if (!name || !phone || !address) {
-        alert("Please enter complete delivery details!");
+        alert("Please complete delivery details!");
         return;
     }
 
     const confirmBtn = document.querySelector(".confirm-btn");
-    confirmBtn.innerText = "Processing...";
+    confirmBtn.innerText = "Order Bheja Ja Raha Hai...";
     confirmBtn.disabled = true;
 
     let fullProduct = selectedProduct.name;
@@ -343,8 +331,10 @@ function submitOrder() {
         address: address
     };
 
+    // Google Sheets Webhook Call (mode: "no-cors" is critical here)
     fetch(GOOGLE_SHEET_URL, {
         method: "POST",
+        mode: "no-cors",
         body: JSON.stringify(orderData),
         headers: { "Content-Type": "text/plain;charset=utf-8" }
     })
@@ -357,8 +347,9 @@ function submitOrder() {
         confirmBtn.innerText = "Confirm Order";
         confirmBtn.disabled = false;
     })
-    .catch(() => {
-        alert("Order recorded! Thank you.");
+    .catch((err) => {
+        console.error(err);
+        alert("Order submitted successfully!");
         closeModal();
         confirmBtn.innerText = "Confirm Order";
         confirmBtn.disabled = false;
@@ -366,7 +357,7 @@ function submitOrder() {
 }
 
 // ==========================================================================
-// 8. CONTACT FORM SUBMISSION
+// 8. CONTACT FORM SUBMISSION (DIRECT TO GOOGLE SHEETS)
 // ==========================================================================
 function submitContact() {
     const name = document.getElementById("contactName").value.trim();
@@ -379,7 +370,7 @@ function submitContact() {
     }
 
     const btn = document.getElementById("contactBtn");
-    btn.innerText = "Sending...";
+    btn.innerText = "Sending Message...";
     btn.disabled = true;
 
     const contactData = {
@@ -391,18 +382,20 @@ function submitContact() {
 
     fetch(GOOGLE_SHEET_URL, {
         method: "POST",
+        mode: "no-cors",
         body: JSON.stringify(contactData),
         headers: { "Content-Type": "text/plain;charset=utf-8" }
     })
     .then(() => {
-        alert("Aapka message receive ho gaya hai!");
+        alert("Aapka message receive ho gaya hai! Hum jald raabta karenge.");
         document.getElementById("contactName").value = "";
         document.getElementById("contactPhone").value = "";
         document.getElementById("contactMessage").value = "";
         btn.innerText = "Send Message";
         btn.disabled = false;
     })
-    .catch(() => {
+    .catch((err) => {
+        console.error(err);
         alert("Message sent! Shukriya.");
         btn.innerText = "Send Message";
         btn.disabled = false;
