@@ -3,43 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ========================================== -->
-    <!-- 1. TECHNICAL SEO & META TAGS               -->
-    <!-- ========================================== -->
-    <title>Pak COD Store - Buy Premium Shoes, Mobiles & Fashion Online</title>
-    <meta name="description" content="Pakistan's trusted online store. Buy premium Shoes, Mobiles, Laptops, and Fashion accessories with Cash on Delivery (COD) nationwide.">
-    <meta name="keywords" content="Online shopping Pakistan, buy shoes online, mobile COD, premium sandals, Pak COD Store">
-    
-    <!-- Open Graph for Social Media (WhatsApp, Facebook) -->
-    <meta property="og:title" content="Pak COD Store - Premium Online Shopping">
-    <meta property="og:description" content="Order online with Cash on Delivery. Best prices on tech and fashion.">
-    <meta property="og:image" content="images/banner1.jpg">
-    <meta property="og:type" content="website">
-
-    <!-- Canonical URL (To avoid duplicate content issues) -->
+    <title>Pak COD Store - Premium Online Shopping in Pakistan</title>
+    <meta name="description" content="Pakistan's trusted online store. Buy premium Shoes, Mobiles, Laptops, Fashion and Watches with Cash on Delivery nationwide.">
     <link rel="canonical" href="https://aapki-website.github.io/index.html">
 
-    <!-- ========================================== -->
-    <!-- 2. STRUCTURED DATA (SCHEMA MARKUP)         -->
-    <!-- ========================================== -->
-    
     <!-- WebSite & Search Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Pak COD Store",
-      "url": "https://aapki-website.github.io/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://aapki-website.github.io/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "url": "https://aapki-website.github.io/"
     }
     </script>
 
-    <!-- FAQ Schema (For AEO / GEO / Google Rich Snippets) -->
+    <!-- FAQ Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -50,152 +28,157 @@
           "name": "Kya aap pure Pakistan mein deliver karte hain?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Ji haan, hum pure Pakistan mein Cash on Delivery (COD) service faraham karte hain."
+            "text": "Ji haan, hum pure Pakistan mein Cash on Delivery (COD) service provide karte hain."
           }
         },
         {
           "@type": "Question",
-          "name": "Return ya Exchange ki kya policy hai?",
+          "name": "Delivery time kitna hota hai?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Agar product kharab ya galat aaye toh 15 din ke andar aap return ya exchange karwa sakte hain, shart yeh hai ke seal tag attach ho."
+            "text": "Aam tor par 3 se 5 working days mein parcel pohanch jata hai."
           }
         }
       ]
     }
     </script>
 
-    <!-- ========================================== -->
-    <!-- 3. CSS (METRO SHOES DESIGN + SEO CONTENT)  -->
-    <!-- ========================================== -->
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333;}
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 0; background-color: #f7f7f7; color: #222; }
         
-        /* Header */
-        header { background: #fff; color: #000; padding: 15px; text-align: center; border-bottom: 1px solid #eee; }
-        h1 { margin: 0; font-size: 24px; letter-spacing: 2px; text-transform: uppercase;}
-        
-        /* Banner */
-        .banner { width: 100%; height: 300px; overflow: hidden; position: relative; }
-        .banner img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Categories */
-        .categories { text-align: center; padding: 15px; background: white; margin-bottom: 15px; }
-        .cat-btn { padding: 8px 20px; margin: 5px; border: 1px solid #ccc; background: white; cursor: pointer; border-radius: 20px; font-weight: bold;}
-        .cat-btn.active { background: #000; color: white; border-color: #000;}
-        
-        /* Premium Product Card (Metro Style) */
-        .product-container { display: grid; gap: 15px; padding: 15px; max-width: 1200px; margin: auto; }
-        .product-card { background: white; padding: 0; border-radius: 0; text-align: left; cursor: pointer; position: relative; border: 1px solid #eee;}
-        .product-img-box { position: relative; background: #f9f9f9; text-align: center; padding: 20px 0;}
-        .product-card img { width: 100%; height: 200px; object-fit: contain; mix-blend-mode: multiply;}
-        
-        /* Discount Badge */
-        .badge { position: absolute; top: 0; left: 0; background: #a41c23; color: white; padding: 4px 8px; font-size: 12px; font-weight: bold; z-index: 10; }
-        
-        /* Product Info */
-        .product-info { padding: 15px; }
-        .product-info h4 { margin: 0 0 10px 0; font-size: 14px; font-weight: normal; color: #444; }
-        .price-box { font-size: 16px; font-weight: bold; margin-bottom: 5px;}
-        .mrp { text-decoration: line-through; color: #999; font-size: 13px; font-weight: normal; margin-left: 5px;}
-        .discount-text { color: #a41c23; font-size: 13px; font-weight: normal; margin-left: 5px;}
-        .colors-count { font-size: 12px; color: #777; margin-top: 10px; display: flex; align-items: center; gap: 5px;}
-        .color-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #ccc; background: #eee;}
+        /* Top Header */
+        header { background: #fff; color: #000; padding: 15px 20px; text-align: center; border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; z-index: 50; }
+        header h1 { margin: 0; font-size: 20px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
 
-        /* Responsive Grid */
-        @media (min-width: 1024px) { .product-container { grid-template-columns: repeat(4, 1fr); } }
-        @media (min-width: 601px) and (max-width: 1023px) { .product-container { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 600px) { .product-container { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px;} .product-card img { height: 150px; } }
-        
-        /* Load More */
-        .load-more-container { text-align: center; margin: 20px 0; }
-        .load-more-btn { background: #000; color: white; padding: 12px 25px; border: none; cursor: pointer; border-radius: 20px; display: none; font-weight: bold; text-transform: uppercase;}
+        /* Banner Slider */
+        .banner { width: 100%; height: 260px; overflow: hidden; position: relative; background: #eaeaea; }
+        .banner img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease; }
+        @media (min-width: 768px) { .banner { height: 380px; } }
 
-        /* SEO & FAQ Section Styling */
-        .seo-content, .contact-section { max-width: 1200px; margin: 30px auto; padding: 20px; background: white; border-top: 2px solid #000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .seo-content h2 { color: #000; border-bottom: 1px solid #eee; padding-bottom: 10px; font-size: 22px;}
-        .seo-content h3 { color: #333; margin-top: 20px; font-size: 18px;}
-        .seo-content p { line-height: 1.8; color: #555; text-align: justify; font-size: 15px;}
+        /* Category Filter Pills */
+        .categories-wrapper { background: #fff; padding: 12px 10px; border-bottom: 1px solid #eee; overflow-x: auto; white-space: nowrap; text-align: center; }
+        .cat-btn { display: inline-block; padding: 8px 18px; margin: 3px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 20px; font-size: 13px; font-weight: 600; color: #333; transition: all 0.2s; }
+        .cat-btn.active { background: #000; color: #fff; border-color: #000; }
+
+        /* Product Grid (Metro Shoes Style) */
+        .product-container { display: grid; gap: 12px; padding: 12px; max-width: 1240px; margin: auto; }
         
-        .faq-item { border-bottom: 1px dashed #eee; padding: 12px 0; }
-        .faq-item strong { display: block; color: #000; margin-bottom: 5px; font-size: 15px;}
-        .faq-item p { margin: 0; color: #555; font-size: 14px;}
+        /* PC: 4 columns, Tablet: 3 columns, Mobile: 2 columns */
+        @media (min-width: 1024px) { .product-container { grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 20px; } }
+        @media (min-width: 601px) and (max-width: 1023px) { .product-container { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
+        @media (max-width: 600px) { .product-container { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; } }
+
+        .product-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s, box-shadow 0.15s; }
+        .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+        .product-img-box { position: relative; background: #fdfdfd; padding: 15px; text-align: center; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; }
+        .product-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+        
+        /* Metro Red Discount Tag */
+        .badge { position: absolute; top: 0; left: 0; background: #a41c23; color: #fff; padding: 3px 7px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; border-bottom-right-radius: 4px; }
+
+        .product-info { padding: 12px; }
+        .product-info h4 { margin: 0 0 6px 0; font-size: 13px; font-weight: 500; color: #333; line-height: 1.35; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .price-box { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 4px; }
+        .mrp { text-decoration: line-through; color: #888; font-size: 12px; font-weight: 400; margin-left: 6px; }
+        .discount-text { color: #a41c23; font-size: 12px; font-weight: 600; margin-left: 4px; }
+        .colors-count { font-size: 11px; color: #666; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+        .color-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #bbb; background: #e0e0e0; display: inline-block; }
+
+        /* Load More Button */
+        .load-more-container { text-align: center; margin: 25px 0 40px 0; }
+        .load-more-btn { background: #000; color: #fff; padding: 12px 30px; border: none; cursor: pointer; border-radius: 25px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; transition: opacity 0.2s; }
+        .load-more-btn:hover { opacity: 0.85; }
+
+        /* SEO & FAQ Section */
+        .seo-content, .contact-section { max-width: 1200px; margin: 30px auto; padding: 25px; background: #fff; border-radius: 6px; border: 1px solid #e8e8e8; }
+        .seo-content h2, .contact-section h2 { color: #111; border-bottom: 2px solid #000; padding-bottom: 8px; font-size: 20px; margin-top: 0; }
+        .seo-content h3 { font-size: 16px; margin-top: 18px; color: #333; }
+        .seo-content p { line-height: 1.7; color: #555; font-size: 14px; text-align: justify; }
+
+        .faq-item { border-bottom: 1px dashed #ddd; padding: 12px 0; }
+        .faq-item strong { display: block; color: #000; margin-bottom: 4px; font-size: 14px; }
+        .faq-item p { margin: 0; color: #555; font-size: 13px; line-height: 1.5; }
 
         /* Contact Form */
-        .contact-form input, .contact-form textarea { width: 100%; margin: 10px 0; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;}
-        .contact-form button { background: #000; color: white; padding: 12px; width: 100%; border: none; cursor: pointer; font-size: 16px; font-weight: bold; border-radius: 4px; text-transform: uppercase;}
+        .contact-form input, .contact-form textarea { width: 100%; margin: 8px 0; padding: 11px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
+        .contact-form button { background: #000; color: #fff; padding: 12px; width: 100%; border: none; cursor: pointer; font-size: 14px; font-weight: 700; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Loading Spinner */
+        #loadingMsg { text-align: center; padding: 40px; font-size: 16px; color: #777; font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <!-- Main H1 Heading for SEO -->
     <header>
-        <h1>Pak COD Store</h1>
+        <h1>PAK COD STORE</h1>
     </header>
 
-    <div class="banner"><img id="bannerImage" src="" alt="Premium Shopping Banner"></div>
-
-    <!-- Hidden H2 for Page Structure -->
-    <h2 style="display: none;">Shop by Categories</h2>
-    <div class="categories" id="category-container"></div>
-    
-    <div class="product-container" id="product-container"></div>
-
-    <div class="load-more-container">
-        <button id="loadMoreBtn" class="load-more-btn" onclick="loadMore()">Load More</button>
+    <!-- Banner -->
+    <div class="banner">
+        <img id="bannerImage" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80" alt="Special Sale Banner">
     </div>
 
-    <!-- ============================================== -->
-    <!-- 4. SEO CONTENT & 20 FAQs SECTION (H2, H3 Used) -->
-    <!-- ============================================== -->
+    <!-- Category Filters -->
+    <div class="categories-wrapper" id="category-container"></div>
+
+    <!-- Loading message (will disappear once items load) -->
+    <div id="loadingMsg">Loading Products...</div>
+
+    <!-- Products Grid -->
+    <div class="product-container" id="product-container"></div>
+
+    <!-- Load More -->
+    <div class="load-more-container">
+        <button id="loadMoreBtn" class="load-more-btn" style="display: none;" onclick="loadMore()">Load More</button>
+    </div>
+
+    <!-- SEO & 20 FAQs Section -->
     <main>
         <section class="seo-content">
-            <h2>Premium Online Shopping in Pakistan</h2>
-            <p>Welcome to <strong>Pak COD Store</strong>, your ultimate destination for premium online shopping in Pakistan. Whether you are looking for the latest <em>Samsung or Apple smartphones</em>, high-performance <em>laptops</em>, or elegant <em>women's sandals and fashion accessories</em>, we bring the best products right to your doorstep. Experience seamless shopping with our trusted <strong>Cash on Delivery (COD)</strong> service.</p>
+            <h2>Online Shopping in Pakistan - Cash on Delivery Store</h2>
+            <p>Welcome to <strong>Pak COD Store</strong>, Pakistan's dedicated online marketplace offering premium shoes, mobiles, laptops, fashion wear, and watches. We provide trusted Cash on Delivery (COD) services across Karachi, Lahore, Islamabad, Rawalpindi, Faisalabad, Multan, Peshawar, Quetta, and all other cities and rural areas.</p>
             
-            <h3>Why Choose Cash on Delivery?</h3>
-            <p>We understand that trust is crucial. With our COD service, you can inspect your parcel from our trusted courier partners and pay only when the product is in your hands. This ensures 100% peace of mind.</p>
+            <h3>Why Shop With Pak COD Store?</h3>
+            <p>We believe in safe and transparent shopping. Every order is verified before dispatch, packaged securely, and delivered straight to your door. You only pay when you receive your parcel.</p>
 
             <h2>Frequently Asked Questions (FAQs)</h2>
-            
-            <div class="faq-item"><strong>1. Kya aap pure Pakistan mein deliver karte hain?</strong><p>Ji haan, hum Pakistan ke tamam shehron mein Cash on Delivery (COD) service provide karte hain.</p></div>
-            <div class="faq-item"><strong>2. Delivery charges kitne hain?</strong><p>Delivery charges weight aur location ke hisaab se hote hain, aam tor par 200 PKR se 350 PKR ke darmiyan.</p></div>
-            <div class="faq-item"><strong>3. Order deliver hone mein kitne din lagte hain?</strong><p>Aam tor par 3 se 5 working days mein parcel pohnch jata hai.</p></div>
-            <div class="faq-item"><strong>4. Kya main parcel open kar ke check kar sakta hoon?</strong><p>Courier rules ke mutabiq aap payment karne ke baad hi parcel open kar sakte hain.</p></div>
-            <div class="faq-item"><strong>5. Return ya Exchange ki kya policy hai?</strong><p>Agar product kharab ya galat aaye toh 15 din ke andar aap return ya exchange karwa sakte hain. Seal tag lazmi attach hona chahiye.</p></div>
-            <div class="faq-item"><strong>6. Payment ke kon kon se tareeqay hain?</strong><p>COD ke ilawa JazzCash, EasyPaisa aur Bank Transfer bhi available hai.</p></div>
-            <div class="faq-item"><strong>7. Kya products original hoti hain?</strong><p>Ji haan, hamari tamam electronics aur branded products 100% original hoti hain.</p></div>
-            <div class="faq-item"><strong>8. Order track kaise kiya ja sakta hai?</strong><p>Order ship hone par hum aapko WhatsApp par tracking number bhej denge.</p></div>
-            <div class="faq-item"><strong>9. Kya bulk/wholesale orders place kiye ja sakte hain?</strong><p>Ji haan, wholesale orders ke liye aap hamare contact form se raabta kar sakte hain.</p></div>
-            <div class="faq-item"><strong>10. Order place hone ke baad tabdeel kiya ja sakta hai?</strong><p>Agar order "Pending" status mein hai toh tabdeel ho sakta hai.</p></div>
-            <div class="faq-item"><strong>11. Kya aapke paas PTA approved mobiles hain?</strong><p>Ji bilkul, tamam mobile phones 100% PTA approved hain.</p></div>
-            <div class="faq-item"><strong>12. Laptop ke sath kya accessories milti hain?</strong><p>Laptops ke sath original charger zaroor faraham kiya jata hai.</p></div>
-            <div class="faq-item"><strong>13. Kya jooton aur kapron ke sizes standard hote hain?</strong><p>Ji haan, hum standard UK/Asian sizes follow karte hain.</p></div>
-            <div class="faq-item"><strong>14. Refund kitne din mein milta hai?</strong><p>Return parcel receive hone ke baad 3 se 5 din mein refund mil jata hai.</p></div>
-            <div class="faq-item"><strong>15. Kya installment ki saholat mojood hai?</strong><p>Filhaal hum installment par kaam nahi kar rahe.</p></div>
-            <div class="faq-item"><strong>16. Out of stock products kab aati hain?</strong><p>Aam tor par 1 se 2 haftay ke andar inventory update ho jati hai.</p></div>
-            <div class="faq-item"><strong>17. Kya hidden charges hote hain?</strong><p>Bilkul nahi, jo amount batayi jati hai sirf wohi pay karni hoti hai.</p></div>
-            <div class="faq-item"><strong>18. Agar wrong item receive ho jaye toh?</strong><p>Fauri tor par WhatsApp par tasveer bhejein, hum free replacement bhejenge.</p></div>
-            <div class="faq-item"><strong>19. Customer support ka time kya hai?</strong><p>Hamari support subah 10 baje se raat 10 baje tak available hai.</p></div>
-            <div class="faq-item"><strong>20. Contact kaise karein?</strong><p>Neeche diye gaye contact form ke zariye humse raabta karein.</p></div>
+            <div class="faq-item"><strong>1. Kya aap pure Pakistan mein deliver karte hain?</strong><p>Ji haan, hum tamam shehron aur gaon mein Cash on Delivery (COD) service provide karte hain.</p></div>
+            <div class="faq-item"><strong>2. Delivery charges kitne hain?</strong><p>Standard delivery charges 200 PKR se 300 PKR ke darmiyan hote hain.</p></div>
+            <div class="faq-item"><strong>3. Order deliver hone mein kitna waqt lagta hai?</strong><p>Aam tor par 3 se 5 working days mein parcel pohanch jata hai.</p></div>
+            <div class="faq-item"><strong>4. Kya parcel open kar ke check kar sakte hain?</strong><p>Courier company rules ke mutabiq pehle payment karni hoti hai, uske baad parcel open hota hai. Agar koi masla ho toh hamari 15-day return policy available hai.</p></div>
+            <div class="faq-item"><strong>5. Return ya Exchange ki kya policy hai?</strong><p>Agar size ya product mein issue ho toh aap 15 din ke andar return/exchange karwa sakte hain ba-shart ke item unused ho aur tag laga ho.</p></div>
+            <div class="faq-item"><strong>6. Payment ke kon se methods available hain?</strong><p>Cash on Delivery (COD), JazzCash, EasyPaisa, aur Direct Bank Transfer.</p></div>
+            <div class="faq-item"><strong>7. Kya products 100% original hain?</strong><p>Ji bilkul, hamare tamam electronics aur branded items genuine aur warranty ke sath aate hain.</p></div>
+            <div class="faq-item"><strong>8. Order tracking kaise hogi?</strong><p>Dispatch hone ke baad tracking ID aapke diye gaye mobile number / WhatsApp par bhej di jati hai.</p></div>
+            <div class="faq-item"><strong>9. Kya bulk ya wholesale order de sakte hain?</strong><p>Ji haan, wholesale rates ke liye hamare contact form ke zariye raabta karein.</p></div>
+            <div class="faq-item"><strong>10. Order place hone ke baad address badal sakta hai?</strong><p>Jab tak order "Pending" status mein hai tab tak WhatsApp par address change karwaya ja sakta hai.</p></div>
+            <div class="faq-item"><strong>11. Kya mobiles PTA approved hain?</strong><p>Ji haan, hamare tamam phones 100% PTA approved hain.</p></div>
+            <div class="faq-item"><strong>12. Laptop ke sath kya accessories milti hain?</strong><p>Original charger aur power cable har laptop ke sath di jati hai.</p></div>
+            <div class="faq-item"><strong>13. Shoes aur Garments ke sizes standard hain?</strong><p>Ji haan, hum standard Pakistani/UK size chart follow karte hain.</p></div>
+            <div class="faq-item"><strong>14. Refund kitne din mein milta hai?</strong><p>Return parcel receive hone ke 3 se 5 din ke andar JazzCash/EasyPaisa ya Bank account mein refund transfer ho jata hai.</p></div>
+            <div class="faq-item"><strong>15. Kya installment (qist) ki sahulat hai?</strong><p>Filhal hum sirf full payment cash on delivery par deliver karte hain.</p></div>
+            <div class="faq-item"><strong>16. Out of stock products dobara kab aati hain?</strong><p>Aam tor par 1 se 2 hafton ke andar inventory restock ho jati hai.</p></div>
+            <div class="faq-item"><strong>17. Kya koi hidden charges hain?</strong><p>Bilkul nahi, checkout ke waqt jo total price show hogi wahi final hogi.</p></div>
+            <div class="faq-item"><strong>18. Agar wrong product receive ho jaye toh?</strong><p>Aap fauri tor par humein tasveer WhatsApp karein, hum free replacement deliver karenge.</p></div>
+            <div class="faq-item"><strong>19. Customer support timing kya hai?</strong><p>Subah 10:00 AM se Raat 10:00 PM tak support team available hoti hai.</p></div>
+            <div class="faq-item"><strong>20. Raabta kaise karein?</strong><p>Neeche diye gaye Contact Form ya WhatsApp number ke zariye.</p></div>
         </section>
 
-        <!-- ============================================== -->
-        <!-- 5. CONTACT FORM (GOOGLE SHEETS INTEGRATION)    -->
-        <!-- ============================================== -->
+        <!-- Contact Form -->
         <section class="contact-section">
             <h2>Contact Us (Direct Message)</h2>
-            <p>Agar aapka koi sawal hai, order status janna hai, ya bulk order chahiye, toh yahan message karein:</p>
+            <p>Kisi bhi sawal ya rehnumai ke liye apna message send karein:</p>
             <div class="contact-form">
                 <input type="text" id="contactName" placeholder="Aapka Mukammal Naam" required>
-                <input type="text" id="contactPhone" placeholder="Mobile Number" required>
+                <input type="text" id="contactPhone" placeholder="Mobile Number (03XXXXXXXXX)" required>
                 <textarea id="contactMessage" rows="4" placeholder="Aapka Message..." required></textarea>
                 <button id="contactBtn" onclick="submitContact()">Send Message</button>
             </div>
         </section>
     </main>
 
-    <!-- External Script -->
     <script src="script.js"></script>
 </body>
 </html>
