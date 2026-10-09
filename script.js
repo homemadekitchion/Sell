@@ -1,7 +1,7 @@
 // ==========================================================================
 // 1. CONFIGURATION
 // ==========================================================================
-const GOOGLE_SHEET_URL = "YAHAN_APNA_WEB_APP_URL_PASTE_KAREIN";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzmHF-UuF0st6es7QLTha9vZwluyYlFaVYi0JOdz4BH/dev";
 
 // State Variables
 let allProducts = [];
