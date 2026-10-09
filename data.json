@@ -1,29 +1,90 @@
 {
-  "categories": ["All", "Mobiles", "Laptops"],
+  "banners": [
+    "images/banner1.jpg",
+    "images/banner2.jpg",
+    "images/banner3.jpg"
+  ],
+  "categories": ["All", "Mobiles", "Laptops", "Fashion", "Watches"],
   "products": [
     {
-      "id": 1, 
-      "name": "Samsung S23 Ultra", 
-      "price": 150000, 
-      "category": "Mobiles", 
-      "images": ["images/s1.jpg", "images/s2.jpg", "images/s3.jpg"],
-      "description": "Yeh Samsung ka latest flagship phone hai. Isme 8GB RAM aur 256GB storage hai. 200MP ka main camera aur 5000mAh battery ke sath aata hai. Gaming aur photography ke liye best hai."
+      "id": 1,
+      "name": "Samsung Galaxy S23 Ultra",
+      "price": 320000,
+      "category": "Mobiles",
+      "images": ["images/s23-1.jpg", "images/s23-2.jpg", "images/s23-3.jpg"],
+      "description": "Samsung ka latest flagship smartphone 200MP main camera aur 5000mAh battery ke sath. S-Pen support aur zabardast gaming performance."
     },
     {
-      "id": 2, 
-      "name": "Dell Core i7", 
-      "price": 85000, 
-      "category": "Laptops", 
-      "images": ["images/d1.jpg", "images/d2.jpg"],
-      "description": "Dell Latitude series ka best laptop. Intel Core i7 8th Gen, 16GB RAM, aur 512GB SSD. Office work aur freelancing ke liye zabardast machine hai."
+      "id": 2,
+      "name": "Apple iPhone 14 Pro Max",
+      "price": 380000,
+      "category": "Mobiles",
+      "images": ["images/ip14-1.jpg", "images/ip14-2.jpg"],
+      "description": "Apple iPhone 14 Pro Max (PTA Approved). Dynamic island display, A16 Bionic chip, aur premium design. Best for videography."
     },
     {
-      "id": 3, 
-      "name": "iPhone 14 Pro", 
-      "price": 300000, 
-      "category": "Mobiles", 
-      "images": ["images/i1.jpg"],
-      "description": "Apple iPhone 14 Pro PTA Approved. Dynamic island display aur A16 Bionic chip ke sath. 1 saal ki warranty."
+      "id": 3,
+      "name": "Dell Latitude Core i7",
+      "price": 85000,
+      "category": "Laptops",
+      "images": ["images/dell-1.jpg", "images/dell-2.jpg", "images/dell-3.jpg"],
+      "description": "Dell Latitude 7490. Intel Core i7 8th Gen, 16GB RAM, aur 512GB SSD. Office work aur freelancing ke liye best slim laptop."
+    },
+    {
+      "id": 4,
+      "name": "HP EliteBook 840 G5",
+      "price": 75000,
+      "category": "Laptops",
+      "images": ["images/hp-1.jpg", "images/hp-2.jpg"],
+      "description": "HP EliteBook series. Core i5 8th Gen, 8GB RAM, 256GB SSD. Keyboard backlight aur fingerprint sensor ke sath."
+    },
+    {
+      "id": 5,
+      "name": "Men's Winter Jacket",
+      "price": 4500,
+      "category": "Fashion",
+      "images": ["images/jacket-1.jpg", "images/jacket-2.jpg", "images/jacket-3.jpg"],
+      "description": "Premium quality parachute winter jacket. Waterproof aur andar se garam fleece material. Medium, Large, XL sizes available hain."
+    },
+    {
+      "id": 6,
+      "name": "Denim Jeans (Blue)",
+      "price": 1800,
+      "category": "Fashion",
+      "images": ["images/jeans-1.jpg", "images/jeans-2.jpg"],
+      "description": "High-quality stretchable denim jeans. Comfortable fitting aur long-lasting fabric. Sizes 30 se 38 tak available."
+    },
+    {
+      "id": 7,
+      "name": "Rolex Submariner Copy",
+      "price": 8500,
+      "category": "Watches",
+      "images": ["images/watch-1.jpg", "images/watch-2.jpg", "images/watch-3.jpg"],
+      "description": "Master copy of Rolex Submariner. Automatic movement, stainless steel chain, aur water-resistant design. Box ke sath."
+    },
+    {
+      "id": 8,
+      "name": "Casio Edifice",
+      "price": 6000,
+      "category": "Watches",
+      "images": ["images/casio-1.jpg", "images/casio-2.jpg"],
+      "description": "Casio Edifice chronograph watch. Original look, leather strap, aur date feature ke sath. Casual aur formal wear dono ke liye best."
+    },
+    {
+      "id": 9,
+      "name": "Infinix Note 30 Pro",
+      "price": 65000,
+      "category": "Mobiles",
+      "images": ["images/inf-1.jpg", "images/inf-2.jpg", "images/inf-3.jpg"],
+      "description": "Infinix Note 30 Pro. 8GB RAM, 256GB Storage. 68W fast charging aur wireless charging support. Budget gaming phone."
+    },
+    {
+      "id": 10,
+      "name": "MacBook Air M1",
+      "price": 220000,
+      "category": "Laptops",
+      "images": ["images/mac-1.jpg", "images/mac-2.jpg"],
+      "description": "Apple MacBook Air M1 Chip. 8GB RAM, 256GB SSD. 15+ hours battery life. Video editing aur coding ke liye perfect."
     }
   ]
 }
