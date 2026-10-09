@@ -3,21 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pak COD Store - Premium Online Shopping in Pakistan</title>
-    <meta name="description" content="Pakistan's trusted online store. Buy premium Shoes, Mobiles, Laptops, Fashion and Watches with Cash on Delivery nationwide.">
+    
+    <!-- Technical & On-Page SEO -->
+    <title>Pak COD Store - Buy Shoes, Mobiles & Fashion Online in Pakistan</title>
+    <meta name="description" content="Pakistan's trusted online store. Buy premium Shoes, Mobiles, Laptops, Fashion and Watches with Cash on Delivery (COD) nationwide. Fast shipping across Pakistan.">
+    <meta name="keywords" content="Online shopping Pakistan, buy shoes online, mobile COD, fashion store Pakistan, Pak COD Store">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://aapki-website.github.io/index.html">
 
-    <!-- WebSite & Search Schema -->
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:locale" content="en_PK">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Pak COD Store - Premium Online Shopping in Pakistan">
+    <meta property="og:description" content="Order online with Cash on Delivery nationwide. Best prices on footwear, mobiles and tech.">
+    <meta property="og:url" content="https://aapki-website.github.io/index.html">
+    <meta property="og:site_name" content="Pak COD Store">
+    <meta property="og:image" content="images/banner1.jpg">
+
+    <!-- Structured Data: WebSite & Organization Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Pak COD Store",
-      "url": "https://aapki-website.github.io/"
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Pak COD Store",
+          "url": "https://aapki-website.github.io/",
+          "logo": "images/banner1.jpg",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "areaServed": "PK",
+            "availableLanguage": ["Urdu", "English"]
+          }
+        },
+        {
+          "@type": "WebSite",
+          "name": "Pak COD Store",
+          "url": "https://aapki-website.github.io/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://aapki-website.github.io/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
     }
     </script>
 
-    <!-- FAQ Schema -->
+    <!-- Structured Data: FAQPage Schema (For AEO / GEO / Google Rich Results) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -28,7 +62,7 @@
           "name": "Kya aap pure Pakistan mein deliver karte hain?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Ji haan, hum pure Pakistan mein Cash on Delivery (COD) service provide karte hain."
+            "text": "Ji haan, hum pure Pakistan ke tamam shehron aur gaon mein Cash on Delivery (COD) service provide karte hain."
           }
         },
         {
@@ -37,6 +71,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Aam tor par 3 se 5 working days mein parcel pohanch jata hai."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Return ya Exchange ki kya policy hai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Agar product mein koi masla ho toh 15 din ke andar return ya exchange karwa sakte hain ba-shart ke item unused ho aur tag laga ho."
           }
         }
       ]
@@ -47,51 +89,103 @@
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 0; background-color: #f7f7f7; color: #222; }
         
-        /* Top Header */
-        header { background: #fff; color: #000; padding: 15px 20px; text-align: center; border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; z-index: 50; }
-        header h1 { margin: 0; font-size: 20px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
+        /* Modern Header: Left Search, Center Title, Right Cart */
+        header { 
+            background: #fff; 
+            padding: 12px 18px; 
+            border-bottom: 1px solid #e5e5e5; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .header-left { flex: 1; max-width: 300px; position: relative; }
+        .search-box {
+            width: 100%;
+            padding: 9px 12px 9px 34px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 13px;
+            outline: none;
+            background: #fbfbfb;
+            transition: all 0.2s;
+        }
+        .search-box:focus { border-color: #000; background: #fff; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #888; pointer-events: none; }
 
-        /* Banner Slider */
+        .header-center { flex: 1; text-align: center; }
+        .header-center h1 { margin: 0; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
+        .header-center a { color: #000; text-decoration: none; }
+
+        .header-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
+        .cart-link-btn {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: opacity 0.2s;
+        }
+        .cart-link-btn:hover { opacity: 0.85; }
+        .cart-badge { background: #a41c23; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 11px; font-weight: bold; }
+
+        @media (max-width: 600px) {
+            header { padding: 10px; }
+            .header-center h1 { font-size: 15px; letter-spacing: 1px; }
+            .search-box { padding: 7px 10px 7px 28px; font-size: 12px; }
+            .cart-link-btn { padding: 6px 10px; font-size: 12px; }
+        }
+
+        /* Banner */
         .banner { width: 100%; height: 260px; overflow: hidden; position: relative; background: #eaeaea; }
-        .banner img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease; }
+        .banner img { width: 100%; height: 100%; object-fit: cover; }
         @media (min-width: 768px) { .banner { height: 380px; } }
 
-        /* Category Filter Pills */
+        /* Categories */
         .categories-wrapper { background: #fff; padding: 12px 10px; border-bottom: 1px solid #eee; overflow-x: auto; white-space: nowrap; text-align: center; }
-        .cat-btn { display: inline-block; padding: 8px 18px; margin: 3px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 20px; font-size: 13px; font-weight: 600; color: #333; transition: all 0.2s; }
+        .cat-btn { display: inline-block; padding: 8px 18px; margin: 3px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 20px; font-size: 13px; font-weight: 600; color: #333; }
         .cat-btn.active { background: #000; color: #fff; border-color: #000; }
 
-        /* Product Grid (Metro Shoes Style) */
+        /* Product Grid (Responsive: PC 4, Tablet 3, Mobile 2) */
         .product-container { display: grid; gap: 12px; padding: 12px; max-width: 1240px; margin: auto; }
-        
-        /* PC: 4 columns, Tablet: 3 columns, Mobile: 2 columns */
         @media (min-width: 1024px) { .product-container { grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 20px; } }
         @media (min-width: 601px) and (max-width: 1023px) { .product-container { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
         @media (max-width: 600px) { .product-container { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; } }
 
-        .product-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s, box-shadow 0.15s; }
-        .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-
+        .product-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s; }
+        .product-card:hover { transform: translateY(-2px); }
         .product-img-box { position: relative; background: #fdfdfd; padding: 15px; text-align: center; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; }
         .product-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-        
-        /* Metro Red Discount Tag */
-        .badge { position: absolute; top: 0; left: 0; background: #a41c23; color: #fff; padding: 3px 7px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; border-bottom-right-radius: 4px; }
+        .badge { position: absolute; top: 0; left: 0; background: #a41c23; color: #fff; padding: 3px 7px; font-size: 11px; font-weight: 700; border-bottom-right-radius: 4px; }
 
         .product-info { padding: 12px; }
-        .product-info h4 { margin: 0 0 6px 0; font-size: 13px; font-weight: 500; color: #333; line-height: 1.35; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .price-box { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 4px; }
+        .product-info h3 { margin: 0 0 6px 0; font-size: 13px; font-weight: 500; color: #333; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .price-box { font-size: 15px; font-weight: 700; color: #111; }
         .mrp { text-decoration: line-through; color: #888; font-size: 12px; font-weight: 400; margin-left: 6px; }
         .discount-text { color: #a41c23; font-size: 12px; font-weight: 600; margin-left: 4px; }
         .colors-count { font-size: 11px; color: #666; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
         .color-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #bbb; background: #e0e0e0; display: inline-block; }
 
-        /* Load More Button */
+        /* Load More */
         .load-more-container { text-align: center; margin: 25px 0 40px 0; }
-        .load-more-btn { background: #000; color: #fff; padding: 12px 30px; border: none; cursor: pointer; border-radius: 25px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; transition: opacity 0.2s; }
-        .load-more-btn:hover { opacity: 0.85; }
+        .load-more-btn { background: #000; color: #fff; padding: 12px 30px; border: none; cursor: pointer; border-radius: 25px; font-size: 13px; font-weight: 700; text-transform: uppercase; }
 
-        /* SEO & FAQ Section */
+        /* No Result Search Box */
+        .no-results-box { grid-column: 1 / -1; text-align: center; background: #fff; padding: 40px 20px; border-radius: 8px; border: 1px dashed #ccc; margin: 20px auto; max-width: 500px; }
+        .no-results-box span { font-size: 45px; display: block; margin-bottom: 10px; }
+        .no-results-box h3 { margin: 0 0 8px 0; color: #a41c23; font-size: 18px; }
+        .no-results-box p { color: #666; font-size: 14px; margin-bottom: 18px; }
+        .no-results-box button { background: #000; color: #fff; padding: 10px 20px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
+
+        /* SEO & 20 FAQs Section */
         .seo-content, .contact-section { max-width: 1200px; margin: 30px auto; padding: 25px; background: #fff; border-radius: 6px; border: 1px solid #e8e8e8; }
         .seo-content h2, .contact-section h2 { color: #111; border-bottom: 2px solid #000; padding-bottom: 8px; font-size: 20px; margin-top: 0; }
         .seo-content h3 { font-size: 16px; margin-top: 18px; color: #333; }
@@ -103,55 +197,67 @@
 
         /* Contact Form */
         .contact-form input, .contact-form textarea { width: 100%; margin: 8px 0; padding: 11px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
-        .contact-form button { background: #000; color: #fff; padding: 12px; width: 100%; border: none; cursor: pointer; font-size: 14px; font-weight: 700; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .contact-form button { background: #000; color: #fff; padding: 12px; width: 100%; border: none; cursor: pointer; font-size: 14px; font-weight: 700; border-radius: 4px; text-transform: uppercase; }
 
-        /* Loading Spinner */
-        #loadingMsg { text-align: center; padding: 40px; font-size: 16px; color: #777; font-weight: 600; }
+        /* Footer */
+        footer { background: #111; color: #aaa; text-align: center; padding: 25px 15px; font-size: 13px; margin-top: 40px; }
+        footer a { color: #fff; text-decoration: none; margin: 0 8px; }
+        #loadingMsg { text-align: center; padding: 40px; font-size: 15px; color: #666; font-weight: bold; }
     </style>
 </head>
 <body>
 
+    <!-- Header: Left Search, Center Brand, Right Cart Link -->
     <header>
-        <h1>PAK COD STORE</h1>
+        <div class="header-left">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-box" placeholder="Search products..." oninput="handleSearch()">
+        </div>
+
+        <div class="header-center">
+            <h1><a href="index.html">PAK COD STORE</a></h1>
+        </div>
+
+        <div class="header-right">
+            <!-- Separate Page Cart Link (No Popup) -->
+            <a href="cart.html" class="cart-link-btn">
+                🛒 Cart <span id="cartCount" class="cart-badge">0</span>
+            </a>
+        </div>
     </header>
 
-    <!-- Banner -->
     <div class="banner">
-        <img id="bannerImage" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80" alt="Special Sale Banner">
+        <img id="bannerImage" src="" alt="Pak COD Store Sale Banner">
     </div>
 
-    <!-- Category Filters -->
-    <div class="categories-wrapper" id="category-container"></div>
+    <nav class="categories-wrapper" id="category-container" aria-label="Product Categories"></nav>
 
-    <!-- Loading message (will disappear once items load) -->
     <div id="loadingMsg">Loading Products...</div>
 
-    <!-- Products Grid -->
-    <div class="product-container" id="product-container"></div>
-
-    <!-- Load More -->
-    <div class="load-more-container">
-        <button id="loadMoreBtn" class="load-more-btn" style="display: none;" onclick="loadMore()">Load More</button>
-    </div>
-
-    <!-- SEO & 20 FAQs Section -->
     <main>
+        <section class="product-container" id="product-container" aria-label="Featured Products"></section>
+
+        <div class="load-more-container">
+            <button id="loadMoreBtn" class="load-more-btn" style="display: none;" onclick="loadMore()">Load More Products</button>
+        </div>
+
+        <!-- 2000 Words SEO Block & 20 FAQs -->
         <section class="seo-content">
             <h2>Online Shopping in Pakistan - Cash on Delivery Store</h2>
-            <p>Welcome to <strong>Pak COD Store</strong>, Pakistan's dedicated online marketplace offering premium shoes, mobiles, laptops, fashion wear, and watches. We provide trusted Cash on Delivery (COD) services across Karachi, Lahore, Islamabad, Rawalpindi, Faisalabad, Multan, Peshawar, Quetta, and all other cities and rural areas.</p>
+            <p>Welcome to <strong>Pak COD Store</strong>, Pakistan's trusted online marketplace offering genuine Shoes, Mobiles, Laptops, Fashion Apparel, and Luxury Watches. Whether you are in Karachi, Lahore, Islamabad, Rawalpindi, Faisalabad, Multan, Peshawar, or Quetta, our reliable Cash on Delivery (COD) network ensures swift and safe home delivery.</p>
             
-            <h3>Why Shop With Pak COD Store?</h3>
-            <p>We believe in safe and transparent shopping. Every order is verified before dispatch, packaged securely, and delivered straight to your door. You only pay when you receive your parcel.</p>
+            <h3>Why Choose Cash on Delivery (COD)?</h3>
+            <p>Trust and customer convenience are our top priorities. With Cash on Delivery, you inspect your parcel upon arrival and only pay when the order is physically in your hands. This eliminates all prepayment risks and makes online shopping 100% stress-free.</p>
 
             <h2>Frequently Asked Questions (FAQs)</h2>
             <div class="faq-item"><strong>1. Kya aap pure Pakistan mein deliver karte hain?</strong><p>Ji haan, hum tamam shehron aur gaon mein Cash on Delivery (COD) service provide karte hain.</p></div>
             <div class="faq-item"><strong>2. Delivery charges kitne hain?</strong><p>Standard delivery charges 200 PKR se 300 PKR ke darmiyan hote hain.</p></div>
             <div class="faq-item"><strong>3. Order deliver hone mein kitna waqt lagta hai?</strong><p>Aam tor par 3 se 5 working days mein parcel pohanch jata hai.</p></div>
-            <div class="faq-item"><strong>4. Kya parcel open kar ke check kar sakte hain?</strong><p>Courier company rules ke mutabiq pehle payment karni hoti hai, uske baad parcel open hota hai. Agar koi masla ho toh hamari 15-day return policy available hai.</p></div>
-            <div class="faq-item"><strong>5. Return ya Exchange ki kya policy hai?</strong><p>Agar size ya product mein issue ho toh aap 15 din ke andar return/exchange karwa sakte hain ba-shart ke item unused ho aur tag laga ho.</p></div>
-            <div class="faq-item"><strong>6. Payment ke kon se methods available hain?</strong><p>Cash on Delivery (COD), JazzCash, EasyPaisa, aur Direct Bank Transfer.</p></div>
-            <div class="faq-item"><strong>7. Kya products 100% original hain?</strong><p>Ji bilkul, hamare tamam electronics aur branded items genuine aur warranty ke sath aate hain.</p></div>
-            <div class="faq-item"><strong>8. Order tracking kaise hogi?</strong><p>Dispatch hone ke baad tracking ID aapke diye gaye mobile number / WhatsApp par bhej di jati hai.</p></div>
+            <div class="faq-item"><strong>4. Kya parcel open kar ke check kar sakte hain?</strong><p>Courier policy ke mutabiq pehle payment karni hoti hai, uske baad parcel open hota hai. Agar koi masla ho toh hamari 15-day return policy available hai.</p></div>
+            <div class="faq-item"><strong>5. Return ya Exchange ki kya policy hai?</strong><p>Agar size ya product mein issue ho toh 15 din ke andar return/exchange karwa sakte hain ba-shart ke item unused ho aur tag laga ho.</p></div>
+            <div class="faq-item"><strong>6. Payment ke kon se methods available hain?</strong><p>Cash on Delivery (COD), JazzCash, EasyPaisa, aur Bank Transfer.</p></div>
+            <div class="faq-item"><strong>7. Kya products 100% original hain?</strong><p>Ji bilkul, hamari tamam electronics aur branded items genuine aur warranty ke sath aate hain.</p></div>
+            <div class="faq-item"><strong>8. Order tracking kaise hogi?</strong><p>Dispatch hone ke baad tracking ID aapke WhatsApp number par bhej di jati hai.</p></div>
             <div class="faq-item"><strong>9. Kya bulk ya wholesale order de sakte hain?</strong><p>Ji haan, wholesale rates ke liye hamare contact form ke zariye raabta karein.</p></div>
             <div class="faq-item"><strong>10. Order place hone ke baad address badal sakta hai?</strong><p>Jab tak order "Pending" status mein hai tab tak WhatsApp par address change karwaya ja sakta hai.</p></div>
             <div class="faq-item"><strong>11. Kya mobiles PTA approved hain?</strong><p>Ji haan, hamare tamam phones 100% PTA approved hain.</p></div>
@@ -166,10 +272,10 @@
             <div class="faq-item"><strong>20. Raabta kaise karein?</strong><p>Neeche diye gaye Contact Form ya WhatsApp number ke zariye.</p></div>
         </section>
 
-        <!-- Contact Form -->
+        <!-- Contact Section -->
         <section class="contact-section">
             <h2>Contact Us (Direct Message)</h2>
-            <p>Kisi bhi sawal ya rehnumai ke liye apna message send karein:</p>
+            <p>Kisi bhi sawal ya order rehnumai ke liye apna message send karein:</p>
             <div class="contact-form">
                 <input type="text" id="contactName" placeholder="Aapka Mukammal Naam" required>
                 <input type="text" id="contactPhone" placeholder="Mobile Number (03XXXXXXXXX)" required>
@@ -178,6 +284,10 @@
             </div>
         </section>
     </main>
+
+    <footer>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="cart.html">Cart</a></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
