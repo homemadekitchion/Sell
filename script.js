@@ -1,5 +1,5 @@
 // ==========================================================================
-// 1. CONFIGURATION (Aapka Google Sheet Web App Link)
+// 1. CONFIGURATION (Aapka Google Sheet Webhook URL)
 // ==========================================================================
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiexm4od54EpVLZeIjf4JnlSyMe4O7UfIM0UyyMAOTdjbpstURYMREtbpkQ/exec";
 
@@ -7,12 +7,16 @@ const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiex
 let allProducts = [];
 let currentCategory = "All";
 let itemsToShow = 10;
+let searchQuery = "";
 let selectedProduct = null;
 let chosenSize = null;
 let chosenColor = null;
 
+// Cart System (localStorage)
+let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
+
 // ==========================================================================
-// 2. DATA.JSON FETCHING (With Cache-Buster & Auto-Load)
+// 2. DATA.JSON FETCH (Cache-Buster Enabled)
 // ==========================================================================
 const cacheBusterUrl = './data.json?v=' + new Date().getTime();
 
@@ -28,21 +32,20 @@ fetch(cacheBusterUrl, {
     initApp(data);
 })
 .catch(err => {
-    console.error("data.json load error:", err);
+    console.error("data.json error:", err);
     const loadingEl = document.getElementById("loadingMsg");
-    if (loadingEl) {
-        loadingEl.innerHTML = `<span style="color:red;">Error loading data.json: ${err.message}<br>Agar computer par direct kholi hai toh GitHub par push karein.</span>`;
-    }
+    if (loadingEl) loadingEl.innerText = "Error loading products from data.json";
 });
 
 function initApp(data) {
     allProducts = data.products || [];
 
-    // Loading indicator hide karein
     const loadingEl = document.getElementById("loadingMsg");
     if (loadingEl) loadingEl.style.display = "none";
 
-    // Agar Home Page par hain (index.html)
+    updateCartBadge();
+
+    // 1. Agar Home Page (index.html) par hain
     if (document.getElementById("product-container")) {
         displayCategories(data.categories || ["All"]);
         displayProducts();
@@ -51,22 +54,53 @@ function initApp(data) {
         }
     }
 
-    // Agar Product Detail Page par hain (product.html)
+    // 2. Agar Product Details Page (product.html) par hain
     if (document.getElementById("mainProductImage")) {
         loadProductDetails();
+    }
+
+    // 3. Agar Dedicated Cart Page (cart.html) par hain
+    if (document.getElementById("cartViewContainer")) {
+        renderCartPage();
+    }
+}
+
+// Cart Badge Update
+function updateCartBadge() {
+    const badge = document.getElementById("cartCount");
+    if (badge) {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        badge.innerText = totalItems;
     }
 }
 
 // ==========================================================================
-// 3. HOME PAGE: BANNER SLIDER
+// 3. HOME PAGE: SEARCH & PRODUCTS
 // ==========================================================================
+function handleSearch() {
+    const input = document.getElementById("searchInput");
+    searchQuery = input.value.trim().toLowerCase();
+    itemsToShow = 10;
+    displayProducts();
+}
+
+function clearSearch() {
+    const input = document.getElementById("searchInput");
+    if (input) input.value = "";
+    searchQuery = "";
+    currentCategory = "All";
+    document.querySelectorAll(".cat-btn").forEach(b => {
+        b.classList.toggle("active", b.innerText === "All");
+    });
+    displayProducts();
+}
+
 function startBannerSlider(bannerImages) {
     let bannerIndex = 0;
     const bannerImg = document.getElementById("bannerImage");
     if (!bannerImg || bannerImages.length === 0) return;
 
     bannerImg.src = bannerImages[0];
-
     if (bannerImages.length > 1) {
         setInterval(() => {
             bannerIndex = (bannerIndex + 1) % bannerImages.length;
@@ -75,9 +109,6 @@ function startBannerSlider(bannerImages) {
     }
 }
 
-// ==========================================================================
-// 4. HOME PAGE: CATEGORIES FILTER
-// ==========================================================================
 function displayCategories(categories) {
     const catContainer = document.getElementById("category-container");
     if (!catContainer) return;
@@ -91,24 +122,45 @@ function displayCategories(categories) {
             document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             currentCategory = cat;
-            itemsToShow = 10; // Filter change hone par wapis 10 dikhayein
+            searchQuery = "";
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.value = "";
+            itemsToShow = 10;
             displayProducts();
         };
         catContainer.appendChild(btn);
     });
 }
 
-// ==========================================================================
-// 5. HOME PAGE: PRODUCTS GRID & LOAD MORE
-// ==========================================================================
 function displayProducts() {
     const container = document.getElementById("product-container");
     if (!container) return;
     container.innerHTML = "";
 
-    const filtered = currentCategory !== "All"
+    let filtered = currentCategory !== "All"
         ? allProducts.filter(p => p.category === currentCategory)
         : allProducts;
+
+    if (searchQuery !== "") {
+        filtered = filtered.filter(p => 
+            p.name.toLowerCase().includes(searchQuery) ||
+            p.category.toLowerCase().includes(searchQuery)
+        );
+    }
+
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="no-results-box">
+                <span>🔍</span>
+                <h3>Koi Product Nahi Mila!</h3>
+                <p>Aapne "<strong>${searchQuery}</strong>" search kiya jo hamare paas mojood nahi hai.</p>
+                <button onclick="clearSearch()">Tamam Products Dekhein</button>
+            </div>
+        `;
+        const loadMoreBtn = document.getElementById("loadMoreBtn");
+        if (loadMoreBtn) loadMoreBtn.style.display = "none";
+        return;
+    }
 
     const visible = filtered.slice(0, itemsToShow);
 
@@ -133,7 +185,7 @@ function displayProducts() {
                 <img src="${firstImage}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=Product';">
             </div>
             <div class="product-info">
-                <h4>${prod.name}</h4>
+                <h3>${prod.name}</h3>
                 <div class="price-box">Rs. ${prod.price} ${mrpHtml}</div>
                 ${colorsHtml}
             </div>
@@ -153,7 +205,168 @@ function loadMore() {
 }
 
 // ==========================================================================
-// 6. PRODUCT DETAILS PAGE (SLIDER, SIZES, COLORS, ACCORDIONS)
+// 4. DEDICATED CART PAGE LOGIC (cart.html)
+// ==========================================================================
+function renderCartPage() {
+    const container = document.getElementById("cartViewContainer");
+    if (!container) return;
+
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div class="empty-cart-state">
+                <span>🛒</span>
+                <h2>Aapka Cart Khali Hai!</h2>
+                <p>Aapne abhi tak koi item cart mein add nahi kiya.</p>
+                <a href="index.html" class="shop-now-btn">Start Shopping Now</a>
+            </div>
+        `;
+        return;
+    }
+
+    let subtotal = 0;
+    let itemsHtml = cart.map((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+
+        let specs = [];
+        if (item.size) specs.push("Size: " + item.size);
+        if (item.color) specs.push("Color: " + item.color);
+        const specsText = specs.length > 0 ? specs.join(" | ") : "Standard";
+
+        return `
+            <div class="cart-row">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-row-info">
+                    <div class="cart-row-title">${item.name}</div>
+                    <div class="cart-row-specs">${specsText}</div>
+                    <div class="cart-row-price">Rs. ${item.price} each</div>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                        <span class="qty-text">${item.quantity}</span>
+                        <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 800; font-size: 14px; margin-bottom: 5px;">Rs. ${itemTotal.toLocaleString()}</div>
+                    <button class="remove-btn" onclick="removeCartItem(${index})" title="Delete">&times;</button>
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    const deliveryFee = 200;
+    const finalTotal = subtotal + deliveryFee;
+
+    container.innerHTML = `
+        <div class="cart-grid">
+            <div class="cart-items-card">
+                <h2>Cart Items (${cart.length})</h2>
+                ${itemsHtml}
+            </div>
+
+            <div class="checkout-summary-card">
+                <h2>Order Summary</h2>
+                <div class="bill-row">
+                    <span>Subtotal:</span>
+                    <span>Rs. ${subtotal.toLocaleString()}</span>
+                </div>
+                <div class="bill-row">
+                    <span>Delivery Charges:</span>
+                    <span>Rs. ${deliveryFee}</span>
+                </div>
+                <div class="bill-row total">
+                    <span>Total (COD):</span>
+                    <span>Rs. ${finalTotal.toLocaleString()}</span>
+                </div>
+
+                <div class="cod-form">
+                    <h3 style="margin: 15px 0 8px 0; font-size: 15px;">Delivery Details:</h3>
+                    <input type="text" id="custName" placeholder="Full Name" required>
+                    <input type="text" id="custPhone" placeholder="Mobile Number (03XXXXXXXXX)" required>
+                    <textarea id="custAddress" rows="3" placeholder="Complete Street Delivery Address" required></textarea>
+                    <button class="confirm-order-btn" id="orderSubmitBtn" onclick="submitFinalOrder(${finalTotal})">Confirm Order (Cash on Delivery)</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function updateQty(index, change) {
+    cart[index].quantity += change;
+    if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+    }
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
+    renderCartPage();
+}
+
+function removeCartItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
+    renderCartPage();
+}
+
+// Order Submission to Google Sheets
+function submitFinalOrder(totalAmount) {
+    const name = document.getElementById("custName").value.trim();
+    const phone = document.getElementById("custPhone").value.trim();
+    const address = document.getElementById("custAddress").value.trim();
+
+    if (!name || !phone || !address) {
+        alert("Please enter full delivery details!");
+        return;
+    }
+
+    const submitBtn = document.getElementById("orderSubmitBtn");
+    submitBtn.innerText = "Order Bheja Ja Raha Hai...";
+    submitBtn.disabled = true;
+
+    // Formatting multi-products for Google Sheet
+    let orderItemsSummary = cart.map((item, idx) => {
+        let details = [];
+        if (item.size) details.push(`Size: ${item.size}`);
+        if (item.color) details.push(`Color: ${item.color}`);
+        details.push(`Qty: ${item.quantity}`);
+        details.push(`Price: Rs. ${item.price * item.quantity}`);
+        return `${idx + 1}) ${item.name} [${details.join(", ")}]`;
+    }).join(" | ");
+
+    const orderData = {
+        formType: "order",
+        product: orderItemsSummary,
+        price: totalAmount,
+        name: name,
+        phone: phone,
+        address: address
+    };
+
+    fetch(GOOGLE_SHEET_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(orderData),
+        headers: { "Content-Type": "text/plain;charset=utf-8" }
+    })
+    .then(() => {
+        alert(`Shukriya ${name}! Aapka Cash on Delivery order confirm ho gaya hai.\nTotal Bill: Rs. ${totalAmount.toLocaleString()}`);
+        cart = [];
+        localStorage.removeItem("pak_store_cart");
+        updateCartBadge();
+        window.location.href = "index.html"; // Wapis home page
+    })
+    .catch((err) => {
+        console.error(err);
+        alert("Order submitted successfully!");
+        cart = [];
+        localStorage.removeItem("pak_store_cart");
+        updateCartBadge();
+        window.location.href = "index.html";
+    });
+}
+
+// ==========================================================================
+// 5. PRODUCT DETAILS PAGE (product.html)
 // ==========================================================================
 let productImages = [];
 let currentSlideIndex = 0;
@@ -171,7 +384,6 @@ function loadProductDetails() {
         return;
     }
 
-    // Basic Info Fill Karna
     document.getElementById("prodTitle").innerText = selectedProduct.name;
     document.getElementById("prodSku").innerText = "SKU: " + (selectedProduct.sku || "N/A");
     document.getElementById("prodPrice").innerText = "Rs. " + selectedProduct.price;
@@ -185,7 +397,7 @@ function loadProductDetails() {
         if (disc) disc.innerText = "(" + selectedProduct.discount + ")";
     }
 
-    // Sizes Setup (Agar nahi hain toh section hide ho jayega)
+    // Sizes
     const sizeSection = document.getElementById("sizeSection");
     const sizeContainer = document.getElementById("sizeContainer");
     if (selectedProduct.sizes && selectedProduct.sizes.length > 0) {
@@ -202,7 +414,7 @@ function loadProductDetails() {
         sizeSection.style.display = "none";
     }
 
-    // Colors Setup (Agar nahi hain toh section hide ho jayega)
+    // Colors
     const colorSection = document.getElementById("colorSection");
     const colorContainer = document.getElementById("colorContainer");
     if (selectedProduct.colors && selectedProduct.colors.length > 0) {
@@ -219,14 +431,14 @@ function loadProductDetails() {
         colorSection.style.display = "none";
     }
 
-    // Details Accordion Setup
+    // Accordions
     if (selectedProduct.details) {
-        document.getElementById("accDetails").innerText = selectedProduct.details.productDetails || "No details available.";
-        document.getElementById("accCare").innerText = selectedProduct.details.careInstruction || "No instructions provided.";
+        document.getElementById("accDetails").innerText = selectedProduct.details.productDetails || "No details.";
+        document.getElementById("accCare").innerText = selectedProduct.details.careInstruction || "No instructions.";
         document.getElementById("accReturn").innerText = selectedProduct.details.returnPolicy || "Standard 15 days return policy.";
     }
 
-    // Image Slider Setup
+    // Slider
     productImages = selectedProduct.images && selectedProduct.images.length > 0
         ? selectedProduct.images
         : ["https://via.placeholder.com/500?text=Product"];
@@ -276,10 +488,8 @@ function toggleAcc(element) {
     }
 }
 
-// ==========================================================================
-// 7. ORDER SUBMISSION (REAL-TIME TO GOOGLE SHEETS WITH NO-CORS)
-// ==========================================================================
-function openModal() {
+// Add to Cart from product.html (Quick Checkout redirects to cart.html)
+function addToCartFromDetails(redirectToCart = false) {
     if (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !chosenSize) {
         alert("Please Select a Size First!");
         return;
@@ -289,76 +499,37 @@ function openModal() {
         return;
     }
 
-    document.getElementById("orderItemName").innerText = selectedProduct.name;
-    document.getElementById("orderItemPrice").innerText = "Rs. " + selectedProduct.price;
+    const existingIndex = cart.findIndex(i => 
+        i.id === selectedProduct.id && 
+        i.size === chosenSize && 
+        i.color === chosenColor
+    );
 
-    let specs = [];
-    if (chosenSize) specs.push("Size: " + chosenSize);
-    if (chosenColor) specs.push("Color: " + chosenColor);
-    document.getElementById("orderItemSpecs").innerText = specs.join(" | ");
-
-    document.getElementById("orderModal").style.display = "block";
-}
-
-function closeModal() {
-    document.getElementById("orderModal").style.display = "none";
-}
-
-function submitOrder() {
-    const name = document.getElementById("custName").value.trim();
-    const phone = document.getElementById("custPhone").value.trim();
-    const address = document.getElementById("custAddress").value.trim();
-
-    if (!name || !phone || !address) {
-        alert("Please complete delivery details!");
-        return;
+    if (existingIndex > -1) {
+        cart[existingIndex].quantity += 1;
+    } else {
+        cart.push({
+            id: selectedProduct.id,
+            name: selectedProduct.name,
+            price: selectedProduct.price,
+            image: (selectedProduct.images && selectedProduct.images.length > 0) ? selectedProduct.images[0] : "images/placeholder.jpg",
+            size: chosenSize || null,
+            color: chosenColor || null,
+            quantity: 1
+        });
     }
 
-    const confirmBtn = document.querySelector(".confirm-btn");
-    confirmBtn.innerText = "Order Bheja Ja Raha Hai...";
-    confirmBtn.disabled = true;
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
 
-    let fullProduct = selectedProduct.name;
-    if (chosenSize) fullProduct += ` (Size: ${chosenSize})`;
-    if (chosenColor) fullProduct += ` (Color: ${chosenColor})`;
-
-    const orderData = {
-        formType: "order",
-        product: fullProduct,
-        price: selectedProduct.price,
-        name: name,
-        phone: phone,
-        address: address
-    };
-
-    // Google Sheets Webhook Call (mode: "no-cors" is critical here)
-    fetch(GOOGLE_SHEET_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify(orderData),
-        headers: { "Content-Type": "text/plain;charset=utf-8" }
-    })
-    .then(() => {
-        alert("Thank you! Your Cash on Delivery order is confirmed.");
-        closeModal();
-        document.getElementById("custName").value = "";
-        document.getElementById("custPhone").value = "";
-        document.getElementById("custAddress").value = "";
-        confirmBtn.innerText = "Confirm Order";
-        confirmBtn.disabled = false;
-    })
-    .catch((err) => {
-        console.error(err);
-        alert("Order submitted successfully!");
-        closeModal();
-        confirmBtn.innerText = "Confirm Order";
-        confirmBtn.disabled = false;
-    });
+    if (redirectToCart) {
+        window.location.href = "cart.html";
+    } else {
+        alert("Item added to cart successfully!");
+    }
 }
 
-// ==========================================================================
-// 8. CONTACT FORM SUBMISSION (DIRECT TO GOOGLE SHEETS)
-// ==========================================================================
+// Contact form submission on index.html
 function submitContact() {
     const name = document.getElementById("contactName").value.trim();
     const phone = document.getElementById("contactPhone").value.trim();
@@ -373,30 +544,17 @@ function submitContact() {
     btn.innerText = "Sending Message...";
     btn.disabled = true;
 
-    const contactData = {
-        formType: "contact",
-        name: name,
-        phone: phone,
-        message: msg
-    };
-
     fetch(GOOGLE_SHEET_URL, {
         method: "POST",
         mode: "no-cors",
-        body: JSON.stringify(contactData),
+        body: JSON.stringify({ formType: "contact", name: name, phone: phone, message: msg }),
         headers: { "Content-Type": "text/plain;charset=utf-8" }
     })
     .then(() => {
-        alert("Aapka message receive ho gaya hai! Hum jald raabta karenge.");
+        alert("Aapka message receive ho gaya hai!");
         document.getElementById("contactName").value = "";
         document.getElementById("contactPhone").value = "";
         document.getElementById("contactMessage").value = "";
-        btn.innerText = "Send Message";
-        btn.disabled = false;
-    })
-    .catch((err) => {
-        console.error(err);
-        alert("Message sent! Shukriya.");
         btn.innerText = "Send Message";
         btn.disabled = false;
     });
