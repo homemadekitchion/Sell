@@ -1,0 +1,29 @@
+{
+  "categories": ["All", "Mobiles", "Laptops"],
+  "products": [
+    {
+      "id": 1, 
+      "name": "Samsung S23 Ultra", 
+      "price": 150000, 
+      "category": "Mobiles", 
+      "images": ["images/s1.jpg", "images/s2.jpg", "images/s3.jpg"],
+      "description": "Yeh Samsung ka latest flagship phone hai. Isme 8GB RAM aur 256GB storage hai. 200MP ka main camera aur 5000mAh battery ke sath aata hai. Gaming aur photography ke liye best hai."
+    },
+    {
+      "id": 2, 
+      "name": "Dell Core i7", 
+      "price": 85000, 
+      "category": "Laptops", 
+      "images": ["images/d1.jpg", "images/d2.jpg"],
+      "description": "Dell Latitude series ka best laptop. Intel Core i7 8th Gen, 16GB RAM, aur 512GB SSD. Office work aur freelancing ke liye zabardast machine hai."
+    },
+    {
+      "id": 3, 
+      "name": "iPhone 14 Pro", 
+      "price": 300000, 
+      "category": "Mobiles", 
+      "images": ["images/i1.jpg"],
+      "description": "Apple iPhone 14 Pro PTA Approved. Dynamic island display aur A16 Bionic chip ke sath. 1 saal ki warranty."
+    }
+  ]
+}
