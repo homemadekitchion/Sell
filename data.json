@@ -1,41 +1,407 @@
-
 {
   "banners": [
-    "images/banner1.jpg"
+    "images/banner1.jpg",
+    "images/banner2.jpg",
+    "images/banner3.jpg",
+    "images/banner4.jpg"
   ],
-  "categories": ["All", "Shoes", "Mobiles"],
+  "categories": [
+    "All",
+    "Shoes",
+    "Mobiles",
+    "Laptops",
+    "Fashion",
+    "Watches"
+  ],
   "products": [
     {
       "id": 1,
       "name": "Women Beige Casual Sandals",
       "category": "Shoes",
-      "sku": "33-1202-20-36",
+      "sku": "SH-BEI-1201",
       "price": 1291,
       "mrp": 2690,
       "discount": "52% OFF",
-      "images": ["images/shoe1.jpg", "images/shoe2.jpg"],
+      "images": [
+        "images/shoe1-1.jpg",
+        "images/shoe1-2.jpg",
+        "images/shoe1-3.jpg"
+      ],
       "colors": ["Beige", "Black", "Rose Gold"],
       "sizes": ["3", "4", "5", "6", "7", "8"],
       "details": {
-        "productDetails": "Premium casual sandals perfect for daily wear. Comfortable sole and elegant design.",
-        "careInstruction": "Keep your product dry avoid getting it wet or damp. To clean it, simply wipe with a dry cloth.",
-        "returnPolicy": "Only unused merchandise is eligible for return within 15 days from the date of delivery. Seal tag must be attached."
+        "productDetails": "Soft cushioned footbed with durable outer sole for all-day casual wear.",
+        "careInstruction": "Wipe with a clean dry cloth. Keep away from direct water.",
+        "returnPolicy": "15 days return or exchange with unused condition and original tag intact."
       }
     },
     {
       "id": 2,
+      "name": "Women Rose-Gold Party Sandals",
+      "category": "Shoes",
+      "sku": "SH-RSG-1402",
+      "price": 1444,
+      "mrp": 2490,
+      "discount": "42% OFF",
+      "images": [
+        "images/shoe2-1.jpg",
+        "images/shoe2-2.jpg"
+      ],
+      "colors": ["Rose Gold", "Silver", "Champagne"],
+      "sizes": ["4", "5", "6", "7", "8"],
+      "details": {
+        "productDetails": "Shimmer strap block heel party sandals with anti-slip bottom.",
+        "careInstruction": "Do not wash in water. Clean softly using a soft brush or microfiber cloth.",
+        "returnPolicy": "15 days return available if unused."
+      }
+    },
+    {
+      "id": 3,
+      "name": "Men Classic Leather Oxford Shoes",
+      "category": "Shoes",
+      "sku": "SH-OXF-3301",
+      "price": 4200,
+      "mrp": 6000,
+      "discount": "30% OFF",
+      "images": [
+        "images/shoe3-1.jpg",
+        "images/shoe3-2.jpg"
+      ],
+      "colors": ["Black", "Brown", "Tan"],
+      "sizes": ["7", "8", "9", "10", "11"],
+      "details": {
+        "productDetails": "Premium synthetic leather formal lace-up shoes for business and weddings.",
+        "careInstruction": "Use matching shoe cream polish and store with shoe trees to maintain shape.",
+        "returnPolicy": "7 days exchange policy on sizing issues."
+      }
+    },
+    {
+      "id": 4,
+      "name": "Men Breathable Mesh Sports Sneakers",
+      "category": "Shoes",
+      "sku": "SH-SNK-4402",
+      "price": 2799,
+      "mrp": 4500,
+      "discount": "38% OFF",
+      "images": [
+        "images/shoe4-1.jpg",
+        "images/shoe4-2.jpg"
+      ],
+      "colors": ["Black", "Grey", "Navy Blue"],
+      "sizes": ["6", "7", "8", "9", "10"],
+      "details": {
+        "productDetails": "Ultra lightweight EVA foam running sneakers designed for workouts and daily jogs.",
+        "careInstruction": "Hand wash with mild detergent. Air dry in shade.",
+        "returnPolicy": "15 days return on manufacturing defects."
+      }
+    },
+    {
+      "id": 5,
+      "name": "Women Black Block Heel Mules",
+      "category": "Shoes",
+      "sku": "SH-BLK-5503",
+      "price": 1850,
+      "mrp": 3200,
+      "discount": "42% OFF",
+      "images": [
+        "images/shoe5-1.jpg",
+        "images/shoe5-2.jpg"
+      ],
+      "colors": ["Black", "Nude"],
+      "sizes": ["4", "5", "6", "7"],
+      "details": {
+        "productDetails": "Open-toe slip-on heels with studded strap accent for weddings and casual dinners.",
+        "careInstruction": "Keep in moisture-free shoe box.",
+        "returnPolicy": "15 days return eligibility."
+      }
+    },
+    {
+      "id": 6,
       "name": "Samsung Galaxy S23 Ultra",
       "category": "Mobiles",
-      "sku": "MOB-S23-ULT",
-      "price": 320000,
+      "sku": "MOB-SAM-S23U",
+      "price": 315000,
       "mrp": 350000,
-      "discount": "8% OFF",
-      "images": ["images/s23.jpg"],
-      "colors": ["Phantom Black", "Cream"],
+      "discount": "10% OFF",
+      "images": [
+        "images/mob1-1.jpg",
+        "images/mob1-2.jpg"
+      ],
+      "colors": ["Phantom Black", "Green", "Cream"],
       "details": {
-        "productDetails": "Latest flagship smartphone with 200MP camera and 5000mAh battery.",
-        "careInstruction": "Use a certified screen protector and case.",
-        "returnPolicy": "7 days replacement warranty in case of manufacturing defect only."
+        "productDetails": "Snapdragon 8 Gen 2, 200MP Quad Camera, 5000mAh battery, S-Pen included. 100% PTA Approved.",
+        "careInstruction": "Use high-grade tempered glass and back cover to prevent scratch marks.",
+        "returnPolicy": "7 days brand warranty verification for hardware issues."
+      }
+    },
+    {
+      "id": 7,
+      "name": "Apple iPhone 14 Pro Max",
+      "category": "Mobiles",
+      "sku": "MOB-APL-14PM",
+      "price": 379000,
+      "mrp": 420000,
+      "discount": "10% OFF",
+      "images": [
+        "images/mob2-1.jpg",
+        "images/mob2-2.jpg"
+      ],
+      "colors": ["Deep Purple", "Space Black", "Gold"],
+      "details": {
+        "productDetails": "A16 Bionic chip, 48MP main camera, Dynamic Island display, Super Retina XDR. PTA Approved.",
+        "careInstruction": "Do not charge overnight with non-certified cables.",
+        "returnPolicy": "Apple 1-Year official warranty coverage."
+      }
+    },
+    {
+      "id": 8,
+      "name": "Infinix Note 30 Pro",
+      "category": "Mobiles",
+      "sku": "MOB-INF-N30P",
+      "price": 62999,
+      "mrp": 69999,
+      "discount": "10% OFF",
+      "images": [
+        "images/mob3-1.jpg",
+        "images/mob3-2.jpg"
+      ],
+      "colors": ["Magic Black", "Variable Gold"],
+      "details": {
+        "productDetails": "8GB RAM + 256GB Storage, 68W All-Round FastCharge, 120Hz AMOLED display, 108MP camera.",
+        "careInstruction": "Avoid direct moisture exposure around charging port.",
+        "returnPolicy": "1 year Carlcare official warranty."
+      }
+    },
+    {
+      "id": 9,
+      "name": "Xiaomi Redmi Note 12",
+      "category": "Mobiles",
+      "sku": "MOB-XIA-RN12",
+      "price": 46999,
+      "mrp": 54999,
+      "discount": "15% OFF",
+      "images": [
+        "images/mob4-1.jpg",
+        "images/mob4-2.jpg"
+      ],
+      "colors": ["Onyx Gray", "Ice Blue", "Mint Green"],
+      "details": {
+        "productDetails": "Snapdragon 685 processor, 50MP triple AI camera, 33W fast charger inside box.",
+        "careInstruction": "Use original charging adapter included in box.",
+        "returnPolicy": "Official company replacement within 7 days for factory faults."
+      }
+    },
+    {
+      "id": 10,
+      "name": "Tecno Spark 20 Pro",
+      "category": "Mobiles",
+      "sku": "MOB-TEC-S20P",
+      "price": 38999,
+      "mrp": 44000,
+      "discount": "11% OFF",
+      "images": [
+        "images/mob5-1.jpg",
+        "images/mob5-2.jpg"
+      ],
+      "colors": ["Moonlit Black", "Frosty White", "Sunset Blush"],
+      "details": {
+        "productDetails": "Helio G99 Gaming processor, 108MP Ultra Sensing camera, 256GB large ROM.",
+        "careInstruction": "Clean back panel with alcohol-free microfiber cloth.",
+        "returnPolicy": "Official service warranty applicable across Pakistan."
+      }
+    },
+    {
+      "id": 11,
+      "name": "Dell Latitude 7490 Core i7",
+      "category": "Laptops",
+      "sku": "LAP-DEL-7490",
+      "price": 84999,
+      "mrp": 98000,
+      "discount": "13% OFF",
+      "images": [
+        "images/lap1-1.jpg",
+        "images/lap1-2.jpg"
+      ],
+      "colors": ["Matte Black"],
+      "details": {
+        "productDetails": "Intel Core i7 8th Gen, 16GB DDR4 RAM, 512GB NVMe SSD, 14.0 inch Full HD display, backlit keyboard.",
+        "careInstruction": "Do not block air vents during intensive tasks.",
+        "returnPolicy": "1-month checking warranty provided on refurbished hardware."
+      }
+    },
+    {
+      "id": 12,
+      "name": "HP EliteBook 840 G5 Core i5",
+      "category": "Laptops",
+      "sku": "LAP-HP-840G5",
+      "price": 72500,
+      "mrp": 85000,
+      "discount": "15% OFF",
+      "images": [
+        "images/lap2-1.jpg",
+        "images/lap2-2.jpg"
+      ],
+      "colors": ["Silver"],
+      "details": {
+        "productDetails": "Intel Core i5 8th Gen, 8GB RAM, 256GB SSD, aluminum alloy body, Bang & Olufsen sound.",
+        "careInstruction": "Clean screen using dedicated display screen cleaner spray.",
+        "returnPolicy": "30 days hardware replacement warranty."
+      }
+    },
+    {
+      "id": 13,
+      "name": "Apple MacBook Air M1",
+      "category": "Laptops",
+      "sku": "LAP-APL-MBM1",
+      "price": 218000,
+      "mrp": 245000,
+      "discount": "11% OFF",
+      "images": [
+        "images/lap3-1.jpg",
+        "images/lap3-2.jpg"
+      ],
+      "colors": ["Space Gray", "Silver", "Gold"],
+      "details": {
+        "productDetails": "Apple M1 chip with 8-core CPU, 8GB unified memory, 256GB SSD, Retina display, 18-hour battery.",
+        "careInstruction": "Avoid closing the screen with keyboard covers or webcam sliders attached.",
+        "returnPolicy": "7 days return if box seal is unbroken."
+      }
+    },
+    {
+      "id": 14,
+      "name": "Lenovo ThinkPad T480 Business",
+      "category": "Laptops",
+      "sku": "LAP-LEN-T480",
+      "price": 68000,
+      "mrp": 79000,
+      "discount": "14% OFF",
+      "images": [
+        "images/lap4-1.jpg",
+        "images/lap4-2.jpg"
+      ],
+      "colors": ["Signature Black"],
+      "details": {
+        "productDetails": "Core i5 8th Gen quad-core, 16GB RAM, dual battery design for up to 10 hours runtime.",
+        "careInstruction": "Keep dust clean from trackpoint and fan vents.",
+        "returnPolicy": "1-month store checking warranty."
+      }
+    },
+    {
+      "id": 15,
+      "name": "Men Waterproof Winter Parachute Jacket",
+      "category": "Fashion",
+      "sku": "FSH-JKT-1101",
+      "price": 3899,
+      "mrp": 5500,
+      "discount": "29% OFF",
+      "images": [
+        "images/fash1-1.jpg",
+        "images/fash1-2.jpg"
+      ],
+      "colors": ["Black", "Navy Blue", "Olive Green"],
+      "sizes": ["M", "L", "XL", "XXL"],
+      "details": {
+        "productDetails": "Padded windproof polyester jacket with fleece lining, detachable hood, and deep zipper pockets.",
+        "careInstruction": "Dry clean or cold machine wash. Do not iron directly on nylon shell.",
+        "returnPolicy": "7 days return policy on size misfit."
+      }
+    },
+    {
+      "id": 16,
+      "name": "Slim Fit Stretch Denim Jeans",
+      "category": "Fashion",
+      "sku": "FSH-JNS-2202",
+      "price": 1950,
+      "mrp": 3200,
+      "discount": "39% OFF",
+      "images": [
+        "images/fash2-1.jpg",
+        "images/fash2-2.jpg"
+      ],
+      "colors": ["Dark Indigo", "Light Blue", "Charcoal Black"],
+      "sizes": ["30", "32", "34", "36", "38"],
+      "details": {
+        "productDetails": "98% cotton 2% elastane stretchable denim jeans with durable rivets and zipper fly.",
+        "careInstruction": "Wash inside out in cold water to prevent color fade.",
+        "returnPolicy": "10 days exchange on unworn items."
+      }
+    },
+    {
+      "id": 17,
+      "name": "Men Premium Formal Cotton Shirt",
+      "category": "Fashion",
+      "sku": "FSH-SHT-3303",
+      "price": 1650,
+      "mrp": 2600,
+      "discount": "37% OFF",
+      "images": [
+        "images/fash3-1.jpg",
+        "images/fash3-2.jpg"
+      ],
+      "colors": ["Crisp White", "Sky Blue", "Soft Pink"],
+      "sizes": ["S", "M", "L", "XL"],
+      "details": {
+        "productDetails": "Wrinkle-resistant Egyptian cotton shirt with classic collar and adjustable cuffs.",
+        "careInstruction": "Warm machine wash and medium steam iron.",
+        "returnPolicy": "7 days exchange available."
+      }
+    },
+    {
+      "id": 18,
+      "name": "Women Stitched Embroidered Kurti",
+      "category": "Fashion",
+      "sku": "FSH-KRT-4404",
+      "price": 2499,
+      "mrp": 3999,
+      "discount": "38% OFF",
+      "images": [
+        "images/fash4-1.jpg",
+        "images/fash4-2.jpg"
+      ],
+      "colors": ["Mustard Yellow", "Peach", "Maroon"],
+      "sizes": ["S", "M", "L", "XL"],
+      "details": {
+        "productDetails": "Fine lawn fabric with detailed neckline thread embroidery and lace bordered sleeves.",
+        "careInstruction": "Hand wash separately in cold water. Do not bleach.",
+        "returnPolicy": "7 days return if tags and bag intact."
+      }
+    },
+    {
+      "id": 19,
+      "name": "Rolex Submariner Homage Automatic Watch",
+      "category": "Watches",
+      "sku": "WAT-RLX-SUB01",
+      "price": 8800,
+      "mrp": 14000,
+      "discount": "37% OFF",
+      "images": [
+        "images/wat1-1.jpg",
+        "images/wat1-2.jpg"
+      ],
+      "colors": ["Black Dial", "Green Bezel", "Blue Dial"],
+      "details": {
+        "productDetails": "Stainless steel 316L oyster bracelet, ceramic unidirectional bezel, date cyclops, automatic sweep movement.",
+        "careInstruction": "Avoid hot water baths and steam rooms.",
+        "returnPolicy": "6 months movement warranty. 7 days physical check warranty."
+      }
+    },
+    {
+      "id": 20,
+      "name": "Casio Edifice Chronograph Watch",
+      "category": "Watches",
+      "sku": "WAT-CAS-EDF02",
+      "price": 6499,
+      "mrp": 9500,
+      "discount": "32% OFF",
+      "images": [
+        "images/wat2-1.jpg",
+        "images/wat2-2.jpg"
+      ],
+      "colors": ["Silver Black", "Silver Blue"],
+      "details": {
+        "productDetails": "Multi-dial stopwatch chronograph with tachymeter, scratch-resistant mineral glass, 100m water resistance.",
+        "careInstruction": "Keep away from strong magnetic fields like heavy speaker magnets.",
+        "returnPolicy": "1 year battery and machine warranty."
       }
     }
   ]
