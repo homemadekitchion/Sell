@@ -1,7 +1,7 @@
 // ==========================================================================
 // 1. CONFIGURATION
 // ==========================================================================
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzmHF-UuF0st6es7QLTha9vZwluyYlFaVYi0JOdz4BH/dev";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiexm4od54EpVLZeIjf4JnlSyMe4O7UfIM0UyyMAOTdjbpstURYMREtbpkQ/exec";
 
 // State Variables
 let allProducts = [];
