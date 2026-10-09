@@ -3,142 +3,492 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
+    
+    <!-- Dynamic SEO Tags (JS updates these automatically per product) -->
+    <title id="pageTitle">Product Details - Pak COD Store</title>
+    <meta name="description" id="metaDescription" content="Buy premium products online with Cash on Delivery in Pakistan. 100% genuine products with fast nationwide shipping.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" id="canonicalUrl" href="">
+
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:locale" content="en_PK">
+    <meta property="og:type" content="product">
+    <meta property="og:title" id="ogTitle" content="Product Details - Pak COD Store">
+    <meta property="og:description" id="ogDescription" content="Order online with Cash on Delivery nationwide.">
+    <meta property="og:image" id="ogImage" content="">
+
     <style>
-        body { font-family: Arial, sans-serif; background-color: #fff; margin:0; padding-bottom: 80px; /* Space for sticky footer */ }
-        header { padding: 15px; border-bottom: 1px solid #eee; position: relative;}
-        .back-btn { text-decoration: none; color: #000; font-size: 20px; font-weight: bold;}
-        
-        .detail-container { max-width: 1000px; margin: auto; padding: 15px; }
-        
-        /* PC Split View, Mobile Stack View */
-        .product-layout { display: flex; flex-wrap: wrap; gap: 20px; }
-        .image-section { flex: 1; min-width: 300px; position: relative; background: #f9f9f9; text-align: center; }
-        .image-section img { width: 100%; max-height: 400px; object-fit: contain; mix-blend-mode: multiply;}
-        .info-section { flex: 1; min-width: 300px; }
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            background-color: #fff; 
+            margin: 0; 
+            color: #222; 
+            padding-bottom: 85px; /* Sticky bar ke liye space */
+        }
 
-        .discount-badge { position: absolute; top: 10px; left: 10px; background: #a41c23; color: white; padding: 4px 8px; font-size: 12px; font-weight: bold; }
-        
-        .sku { color: #777; font-size: 13px; margin-bottom: 10px; }
-        h1 { font-size: 22px; margin: 0 0 10px 0; color: #333; }
-        .price-row { font-size: 22px; font-weight: bold; margin-bottom: 20px;}
-        .mrp { text-decoration: line-through; color: #999; font-size: 16px; font-weight: normal; margin-left: 10px;}
-        .discount-text { color: #a41c23; font-size: 16px; margin-left: 10px;}
-        
+        /* Header */
+        header { 
+            background: #fff; 
+            padding: 12px 18px; 
+            border-bottom: 1px solid #e5e5e5; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            position: sticky; 
+            top: 0; 
+            z-index: 50; 
+        }
+        .back-link { 
+            color: #000; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 13px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 4px; 
+        }
+        .header-title { 
+            font-size: 16px; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+            margin: 0; 
+        }
+        .header-title a { color: #000; text-decoration: none; }
+        .cart-link-btn { 
+            background: #000; 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 7px 12px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+        }
+        .cart-badge { 
+            background: #a41c23; 
+            color: #fff; 
+            border-radius: 50%; 
+            padding: 1px 6px; 
+            font-size: 10px; 
+        }
+
+        /* Breadcrumbs for SEO */
+        .breadcrumb-nav { 
+            max-width: 1100px; 
+            margin: 12px auto 0 auto; 
+            padding: 0 15px; 
+            font-size: 12px; 
+            color: #666; 
+        }
+        .breadcrumb-nav a { color: #333; text-decoration: none; }
+        .breadcrumb-nav span { margin: 0 5px; }
+
+        /* Product Container */
+        .product-detail-wrapper { 
+            max-width: 1100px; 
+            margin: 15px auto 40px auto; 
+            padding: 0 15px; 
+        }
+        .product-layout { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 30px; 
+        }
+
+        /* Left Column: Image Slider */
+        .image-col { 
+            flex: 1.1; 
+            min-width: 320px; 
+        }
+        .slider-box { 
+            position: relative; 
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            background: #fafafa; 
+            border: 1px solid #eee; 
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+        }
+        .slider-box img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+            mix-blend-mode: multiply; 
+            transition: opacity 0.3s ease; 
+        }
+        .discount-tag { 
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            background: #a41c23; 
+            color: #fff; 
+            padding: 4px 8px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            letter-spacing: 0.5px; 
+            border-radius: 3px; 
+            z-index: 5; 
+        }
+        .slider-arrow { 
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            background: rgba(0,0,0,0.5); 
+            color: #fff; 
+            border: none; 
+            width: 36px; 
+            height: 36px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            font-size: 16px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: background 0.2s; 
+            z-index: 5; 
+        }
+        .slider-arrow:hover { background: rgba(0,0,0,0.85); }
+        .arrow-prev { left: 10px; }
+        .arrow-next { right: 10px; }
+
+        /* Right Column: Product Information */
+        .info-col { 
+            flex: 1; 
+            min-width: 320px; 
+        }
+        .brand-subtitle { 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #888; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            margin-bottom: 4px; 
+        }
+        h1.prod-heading { 
+            font-size: 22px; 
+            font-weight: 700; 
+            color: #111; 
+            line-height: 1.3; 
+            margin: 0 0 8px 0; 
+        }
+        .sku-text { 
+            font-size: 12px; 
+            color: #777; 
+            margin-bottom: 14px; 
+        }
+
+        /* Price Row */
+        .price-section { 
+            display: flex; 
+            align-items: baseline; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid #f0f0f0; 
+        }
+        .current-price { 
+            font-size: 24px; 
+            font-weight: 800; 
+            color: #000; 
+        }
+        .mrp-price { 
+            font-size: 15px; 
+            color: #888; 
+            text-decoration: line-through; 
+        }
+        .discount-percent { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #a41c23; 
+        }
+        .tax-note { 
+            font-size: 11px; 
+            color: #28a745; 
+            font-weight: 600; 
+            display: block; 
+            margin-top: 3px; 
+        }
+
         /* Size & Color Selectors */
-        .selector-title { font-size: 14px; font-weight: bold; margin: 20px 0 10px 0; text-transform: uppercase;}
-        .options-container { display: flex; flex-wrap: wrap; gap: 10px; }
-        .option-btn { border: 1px solid #ccc; background: white; padding: 10px 15px; cursor: pointer; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold;}
-        .option-btn.color-btn { width: auto; border-radius: 20px; padding: 8px 15px;}
-        .option-btn.active { border-color: #000; background: #000; color: white; }
-        
-        /* Accordion */
-        .accordion { border-top: 1px solid #eee; margin-top: 30px; }
-        .acc-item { border-bottom: 1px solid #eee; }
-        .acc-header { padding: 15px 0; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #333;}
-        .acc-icon { font-size: 20px; color: #a41c23; font-weight: bold;}
-        .acc-content { padding: 0 0 15px 0; display: none; color: #555; line-height: 1.6; font-size: 14px;}
+        .selector-block { margin-bottom: 20px; }
+        .selector-header { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            color: #333; 
+            margin-bottom: 10px; 
+        }
+        .options-list { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+        }
+        .option-btn { 
+            border: 1px solid #ccc; 
+            background: #fff; 
+            min-width: 44px; 
+            height: 44px; 
+            border-radius: 50%; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #222; 
+            transition: all 0.15s; 
+            padding: 0 6px; 
+        }
+        .option-btn.color-btn { 
+            border-radius: 20px; 
+            min-width: auto; 
+            height: 38px; 
+            padding: 0 16px; 
+            font-size: 12px; 
+        }
+        .option-btn:hover { border-color: #000; }
+        .option-btn.active { 
+            background: #000; 
+            color: #fff; 
+            border-color: #000; 
+        }
 
-        /* Sticky Footer (Mobile & PC) */
-        .sticky-footer { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100; }
-        .btn-cart { flex: 1; background: white; color: #333; border: none; border-right: 1px solid #eee; padding: 15px; font-size: 14px; font-weight: bold; cursor: pointer;}
-        .btn-checkout { flex: 1; background: #004dd0; color: white; border: none; padding: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-        .btn-checkout span { font-size: 16px; font-weight: bold; }
-        .btn-checkout small { font-size: 11px; font-style: italic;}
+        /* Delivery Badge Box */
+        .delivery-perks { 
+            background: #fafafa; 
+            border: 1px solid #eee; 
+            border-radius: 6px; 
+            padding: 12px 15px; 
+            margin: 20px 0; 
+            font-size: 12px; 
+            color: #444; 
+            line-height: 1.6; 
+        }
+        .perk-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin: 4px 0; 
+        }
 
-        /* Order Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; }
-        .modal-content { background: white; padding: 20px; width: 90%; max-width: 400px; margin: 10% auto; border-radius: 8px; }
-        .modal input, .modal textarea { width: 100%; margin: 10px 0; padding: 12px; box-sizing: border-box; border:1px solid #ccc; border-radius:4px;}
-        .confirm-btn { background: #28a745; color: white; padding: 15px; width: 100%; border: none; cursor: pointer; font-size: 16px; font-weight: bold; border-radius:4px;}
-        .close-btn { background: transparent; color: red; font-size: 20px; border: none; cursor: pointer; float: right; font-weight:bold;}
+        /* Accordions */
+        .accordion-wrapper { 
+            border-top: 1px solid #e5e5e5; 
+            margin-top: 25px; 
+        }
+        .acc-item { border-bottom: 1px solid #e5e5e5; }
+        .acc-header { 
+            padding: 14px 0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #222; 
+            user-select: none; 
+        }
+        .acc-icon { 
+            font-size: 18px; 
+            font-weight: 700; 
+            color: #a41c23; 
+        }
+        .acc-content { 
+            display: none; 
+            padding: 0 0 14px 0; 
+            font-size: 13px; 
+            color: #555; 
+            line-height: 1.6; 
+        }
+
+        /* Sticky Footer Bar (Mobile & PC) */
+        .sticky-footer { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            display: flex; 
+            background: #fff; 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1); 
+            z-index: 100; 
+        }
+        .btn-cart { 
+            flex: 1; 
+            background: #fff; 
+            color: #111; 
+            border: none; 
+            border-right: 1px solid #eee; 
+            padding: 16px; 
+            font-size: 13px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            letter-spacing: 0.5px; 
+            text-transform: uppercase; 
+        }
+        .btn-checkout { 
+            flex: 1.2; 
+            background: #004dd0; 
+            color: #fff; 
+            border: none; 
+            padding: 10px 14px; 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            transition: background 0.2s; 
+        }
+        .btn-checkout:hover { background: #003bb0; }
+        .btn-checkout span { 
+            font-size: 14px; 
+            font-weight: 800; 
+            letter-spacing: 0.5px; 
+        }
+        .btn-checkout small { 
+            font-size: 10px; 
+            font-style: italic; 
+            opacity: 0.9; 
+        }
+
+        /* Footer */
+        footer { 
+            background: #111; 
+            color: #aaa; 
+            text-align: center; 
+            padding: 25px 15px; 
+            font-size: 12px; 
+            margin-top: 40px; 
+        }
+        footer a { color: #fff; text-decoration: none; margin: 0 8px; }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <header>
-        <a href="index.html" class="back-btn">&#8592;</a>
+        <a href="index.html" class="back-link">&larr; Back to Shop</a>
+        <div class="header-title">
+            <a href="index.html">PAK COD STORE</a>
+        </div>
+        <a href="cart.html" class="cart-link-btn">
+            🛒 Cart <span id="cartCount" class="cart-badge">0</span>
+        </a>
     </header>
 
-    <div class="detail-container">
-        <div class="product-layout">
+    <!-- Breadcrumb Navigation for SEO -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>&gt;</span>
+        <span id="breadCategory">Category</span>
+        <span>&gt;</span>
+        <strong id="breadName">Product</strong>
+    </nav>
+
+    <main class="product-detail-wrapper">
+        <article class="product-layout">
             
-            <!-- Images -->
-            <div class="image-section">
-                <div class="discount-badge" id="prodDiscount" style="display:none;"></div>
-                <img id="mainProductImage" src="" alt="Product Image">
-            </div>
+            <!-- Left Column: Multi-Image Slider -->
+            <section class="image-col" aria-label="Product Images">
+                <div class="slider-box">
+                    <span class="discount-tag" id="prodDiscount" style="display: none;"></span>
+                    <button class="slider-arrow arrow-prev" onclick="changeSlide(-1)" aria-label="Previous Image">&#10094;</button>
+                    <img id="mainProductImage" src="https://via.placeholder.com/500?text=Loading+Product..." alt="Product Image">
+                    <button class="slider-arrow arrow-next" onclick="changeSlide(1)" aria-label="Next Image">&#10095;</button>
+                </div>
+            </section>
 
-            <!-- Details -->
-            <div class="info-section">
-                <h1 id="prodTitle">Loading...</h1>
-                <div class="sku" id="prodSku"></div>
-                
-                <div class="price-row">
-                    <span id="prodPrice"></span>
-                    <span class="mrp" id="prodMrp"></span>
-                    <span class="discount-text" id="prodDiscText"></span>
+            <!-- Right Column: Details, Selectors, and Accordions -->
+            <section class="info-col" aria-label="Product Purchase Information">
+                <div class="brand-subtitle">PAK COD STORE</div>
+                <h1 class="prod-heading" id="prodTitle">Loading Product Details...</h1>
+                <div class="sku-text" id="prodSku">SKU: Loading...</div>
+
+                <!-- Price Row -->
+                <div class="price-section">
+                    <span class="current-price" id="prodPrice">Rs. 0</span>
+                    <span class="mrp-price" id="prodMrp"></span>
+                    <span class="discount-percent" id="prodDiscText"></span>
+                    <span class="tax-note">✓ Inclusive of all taxes</span>
                 </div>
 
-                <!-- Sizes Section (Will hide if no sizes) -->
-                <div id="sizeSection" style="display:none;">
-                    <div class="selector-title">Select Size</div>
-                    <div class="options-container" id="sizeContainer"></div>
+                <!-- Size Selector (Hidden if not applicable) -->
+                <div class="selector-block" id="sizeSection" style="display: none;">
+                    <div class="selector-header">
+                        <span>Select Size:</span>
+                    </div>
+                    <div class="options-list" id="sizeContainer"></div>
                 </div>
 
-                <!-- Colors Section (Will hide if no colors) -->
-                <div id="colorSection" style="display:none;">
-                    <div class="selector-title">Available Colors</div>
-                    <div class="options-container" id="colorContainer"></div>
+                <!-- Color Selector (Hidden if not applicable) -->
+                <div class="selector-block" id="colorSection" style="display: none;">
+                    <div class="selector-header">
+                        <span>Available Colors:</span>
+                    </div>
+                    <div class="options-list" id="colorContainer"></div>
+                </div>
+
+                <!-- Delivery & COD Assurance Perks -->
+                <div class="delivery-perks">
+                    <div class="perk-item">🚚 <span>Cash on Delivery (COD) available nationwide.</span></div>
+                    <div class="perk-item">🛡️ <span>100% Genuine and Inspected Parcel.</span></div>
+                    <div class="perk-item">🔄 <span>15 Days Easy Return / Exchange Policy.</span></div>
                 </div>
 
                 <!-- Accordions -->
-                <div class="accordion">
+                <div class="accordion-wrapper">
                     <div class="acc-item">
-                        <div class="acc-header" onclick="toggleAcc(this)">Product Details <span class="acc-icon">+</span></div>
-                        <div class="acc-content" id="accDetails"></div>
+                        <div class="acc-header" onclick="toggleAcc(this)">
+                            <span>Product Details</span>
+                            <span class="acc-icon">+</span>
+                        </div>
+                        <div class="acc-content" id="accDetails">Loading details...</div>
                     </div>
+
                     <div class="acc-item">
-                        <div class="acc-header" onclick="toggleAcc(this)">Care Instruction <span class="acc-icon">+</span></div>
-                        <div class="acc-content" id="accCare"></div>
+                        <div class="acc-header" onclick="toggleAcc(this)">
+                            <span>Care Instruction</span>
+                            <span class="acc-icon">+</span>
+                        </div>
+                        <div class="acc-content" id="accCare">Loading instructions...</div>
                     </div>
+
                     <div class="acc-item">
-                        <div class="acc-header" onclick="toggleAcc(this)">Return and shipping policy <span class="acc-icon">+</span></div>
-                        <div class="acc-content" id="accReturn"></div>
+                        <div class="acc-header" onclick="toggleAcc(this)">
+                            <span>Return and Shipping Policy</span>
+                            <span class="acc-icon">+</span>
+                        </div>
+                        <div class="acc-content" id="accReturn">Loading policy...</div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            </section>
+        </article>
+    </main>
 
-    <!-- Sticky Footer Bar -->
-    <div class="sticky-footer">
-        <button class="btn-cart" onclick="alert('Added to Cart!')">ADD TO CART</button>
-        <button class="btn-checkout" onclick="openModal()">
+    <!-- Sticky Bottom Ordering Bar (No Modal Popup!) -->
+    <aside class="sticky-footer" aria-label="Purchase Actions">
+        <!-- Item ko cart mein add karega -->
+        <button class="btn-cart" onclick="addToCartFromDetails(false)">ADD TO CART</button>
+        
+        <!-- Fauri cart.html checkout page par le kar jayega -->
+        <button class="btn-checkout" onclick="addToCartFromDetails(true)">
             <span>QUICK CHECKOUT</span>
             <small>Cash on Delivery Available</small>
         </button>
-    </div>
+    </aside>
 
-    <!-- Order Modal -->
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">X</button>
-            <h3 style="margin-top:0;">Complete Your Order</h3>
-            
-            <div style="background:#f9f9f9; padding:10px; margin-bottom:15px; border-radius:5px; font-size:14px;">
-                <strong id="orderItemName"></strong><br>
-                <span id="orderItemSpecs" style="color:#a41c23; font-weight:bold;"></span><br>
-                Total: <strong id="orderItemPrice" style="color:green;"></strong>
-            </div>
-            
-            <input type="text" id="custName" placeholder="Full Name" required>
-            <input type="text" id="custPhone" placeholder="Mobile Number" required>
-            <textarea id="custAddress" placeholder="Complete Delivery Address" rows="3" required></textarea>
-            
-            <button class="confirm-btn" onclick="submitOrder()">Confirm Order</button>
-        </div>
-    </div>
+    <footer>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="cart.html">View Cart</a></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
