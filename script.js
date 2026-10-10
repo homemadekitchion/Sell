@@ -7,9 +7,10 @@ const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiex
 let allProducts = [];
 let allCollections = [];
 let currentCategory = "All";
-let itemsToShow = 6;
+let itemsToShow = 10;
 let searchQuery = "";
 let selectedProduct = null;
+let selectedCollection = null;
 let chosenSize = null;
 let chosenColor = null;
 
@@ -63,6 +64,10 @@ fetch(`./collections.json?v=${cacheTime}`, { cache: 'no-store' })
         if (document.getElementById("fullCollectionsGrid")) {
             renderFullCollectionsPage(data);
         }
+
+        if (document.getElementById("mainCollectionImage")) {
+            loadCollectionDetails();
+        }
     })
     .catch(err => console.error("Error loading collections.json:", err));
 
@@ -75,7 +80,7 @@ function updateCartBadge() {
 }
 
 // ==========================================================================
-// 3. HOME PAGE: ZIG-ZAG SHOWCASE RENDER (WITH BUY BUTTONS)
+// 3. HOME PAGE SHOWCASE RENDER
 // ==========================================================================
 function renderHomeShowcase(data) {
     const container = document.getElementById("showcaseContainer");
@@ -101,11 +106,11 @@ function renderHomeShowcase(data) {
         const discHtml = item.discount ? `<span class="showcase-disc">${item.discount}</span>` : "";
 
         row.innerHTML = `
-            <div class="showcase-img-card" onclick="window.location.href='collection.html'" style="cursor: pointer;">
-                <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/350?text=Collection';">
+            <div class="showcase-img-card" onclick="window.location.href='collection-detail.html?id=${item.id}'" style="cursor: pointer;">
+                <img src="${(item.images && item.images.length > 0) ? item.images[0] : item.image}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/350?text=Collection';">
             </div>
             <div class="showcase-text-box">
-                <h3 class="showcase-item-title">${item.title}</h3>
+                <h3 class="showcase-item-title" onclick="window.location.href='collection-detail.html?id=${item.id}'" style="cursor: pointer;">${item.title}</h3>
                 <p class="showcase-item-desc">${item.description}</p>
                 <div class="showcase-price-box">
                     <span class="showcase-price">Rs. ${item.price}</span>
@@ -113,8 +118,8 @@ function renderHomeShowcase(data) {
                     ${discHtml}
                 </div>
                 <div class="showcase-actions">
-                    <button class="col-buy-btn" onclick="buyCollectionItem(${item.id}, true)">Quick Buy (COD)</button>
-                    <button class="col-cart-btn" onclick="buyCollectionItem(${item.id}, false)">Add to Cart</button>
+                    <button class="col-buy-btn" onclick="window.location.href='collection-detail.html?id=${item.id}'">View & Select Options</button>
+                    <button class="col-cart-btn" onclick="quickAddCollection(${item.id})">Quick Add</button>
                 </div>
             </div>
         `;
@@ -123,7 +128,7 @@ function renderHomeShowcase(data) {
 }
 
 // ==========================================================================
-// 4. COLLECTION PAGE: FULL GRID RENDER (WITH BUY BUTTONS)
+// 4. COLLECTION PAGE: FULL GRID (collection.html)
 // ==========================================================================
 function renderFullCollectionsPage(data) {
     const grid = document.getElementById("fullCollectionsGrid");
@@ -146,15 +151,16 @@ function renderFullCollectionsPage(data) {
 
         const mrpHtml = item.mrp ? `<span class="card-mrp">Rs. ${item.mrp}</span>` : "";
         const discHtml = item.discount ? `<span class="card-disc">${item.discount}</span>` : "";
+        const firstImg = (item.images && item.images.length > 0) ? item.images[0] : item.image;
 
         card.innerHTML = `
-            <div class="collection-img-box">
-                <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400?text=Collection';">
+            <div class="collection-img-box" onclick="window.location.href='collection-detail.html?id=${item.id}'" style="cursor: pointer;">
+                <img src="${firstImg}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400?text=Collection';">
             </div>
             <div class="collection-body">
                 <div>
                     <div class="collection-tag">${item.category || "Collection"}</div>
-                    <h2 class="collection-name">${item.title}</h2>
+                    <h2 class="collection-name" onclick="window.location.href='collection-detail.html?id=${item.id}'" style="cursor: pointer;">${item.title}</h2>
                     <p class="collection-text">${item.description}</p>
                     <div class="card-price-row">
                         <span class="card-price">Rs. ${item.price}</span>
@@ -163,8 +169,8 @@ function renderFullCollectionsPage(data) {
                     </div>
                 </div>
                 <div class="card-action-row">
-                    <button class="card-buy-btn" onclick="buyCollectionItem(${item.id}, true)">Buy Now</button>
-                    <button class="card-cart-btn" onclick="buyCollectionItem(${item.id}, false)">Add to Cart</button>
+                    <button class="card-buy-btn" onclick="window.location.href='collection-detail.html?id=${item.id}'">Select Size / Color</button>
+                    <button class="card-cart-btn" onclick="quickAddCollection(${item.id})">Add to Cart</button>
                 </div>
             </div>
         `;
@@ -173,13 +179,135 @@ function renderFullCollectionsPage(data) {
 }
 
 // ==========================================================================
-// 5. BUY / ADD TO CART LOGIC FOR COLLECTIONS
+// 5. COLLECTION DETAILS PAGE LOGIC (collection-detail.html)
 // ==========================================================================
-function buyCollectionItem(colId, redirectToCheckout) {
-    const item = allCollections.find(c => c.id === colId);
-    if (!item) return;
+let colImages = [];
+let colSlideIndex = 0;
+let colSlideInterval = null;
 
-    const cartItemId = "col_" + item.id;
+function loadCollectionDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const colId = parseInt(urlParams.get("id"));
+
+    selectedCollection = allCollections.find(c => c.id === colId);
+
+    if (!selectedCollection) {
+        const titleEl = document.getElementById("colTitle");
+        if (titleEl) titleEl.innerText = "Collection Not Found!";
+        return;
+    }
+
+    document.getElementById("colTitle").innerText = selectedCollection.title;
+    document.getElementById("colSku").innerText = "SKU: " + (selectedCollection.sku || "N/A");
+    document.getElementById("colPrice").innerText = "Rs. " + selectedCollection.price;
+
+    const bCat = document.getElementById("colBreadCategory");
+    if (bCat) bCat.innerText = selectedCollection.category || "Collection";
+    const bName = document.getElementById("colBreadName");
+    if (bName) bName.innerText = selectedCollection.title;
+    const catBadge = document.getElementById("colCatBadge");
+    if (catBadge) catBadge.innerText = selectedCollection.category || "Featured";
+
+    if (selectedCollection.discount) {
+        const badge = document.getElementById("colDiscount");
+        if (badge) { badge.innerText = selectedCollection.discount; badge.style.display = "inline-block"; }
+        const mrp = document.getElementById("colMrp");
+        if (mrp) mrp.innerText = "MRP: Rs. " + selectedCollection.mrp;
+        const disc = document.getElementById("colDiscText");
+        if (disc) disc.innerText = "(" + selectedCollection.discount + ")";
+    }
+
+    // Sizes Rendering
+    const sizeSection = document.getElementById("colSizeSection");
+    const sizeContainer = document.getElementById("colSizeContainer");
+    if (selectedCollection.sizes && selectedCollection.sizes.length > 0) {
+        sizeSection.style.display = "block";
+        sizeContainer.innerHTML = "";
+        selectedCollection.sizes.forEach(size => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = size;
+            btn.onclick = () => selectColOption(btn, "size", size);
+            sizeContainer.appendChild(btn);
+        });
+    } else if (sizeSection) {
+        sizeSection.style.display = "none";
+    }
+
+    // Colors Rendering
+    const colorSection = document.getElementById("colColorSection");
+    const colorContainer = document.getElementById("colColorContainer");
+    if (selectedCollection.colors && selectedCollection.colors.length > 0) {
+        colorSection.style.display = "block";
+        colorContainer.innerHTML = "";
+        selectedCollection.colors.forEach(col => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn color-btn";
+            btn.innerText = col;
+            btn.onclick = () => selectColOption(btn, "color", col);
+            colorContainer.appendChild(btn);
+        });
+    } else if (colorSection) {
+        colorSection.style.display = "none";
+    }
+
+    // Accordions
+    if (selectedCollection.details) {
+        document.getElementById("colAccDetails").innerText = selectedCollection.details.productDetails || selectedCollection.description;
+        document.getElementById("colAccCare").innerText = selectedCollection.details.careInstruction || "Standard care.";
+        document.getElementById("colAccReturn").innerText = selectedCollection.details.returnPolicy || "15 days replacement warranty.";
+    }
+
+    // Multi-Image Slider
+    colImages = selectedCollection.images && selectedCollection.images.length > 0
+        ? selectedCollection.images
+        : [selectedCollection.image || "https://via.placeholder.com/500?text=Collection"];
+
+    showColSlide(0);
+
+    if (colImages.length > 1) {
+        colSlideInterval = setInterval(() => changeColSlide(1), 5000);
+    }
+}
+
+function selectColOption(button, type, value) {
+    const siblings = button.parentElement.getElementsByClassName("option-btn");
+    for (let s of siblings) s.classList.remove("active");
+    button.classList.add("active");
+
+    if (type === "size") chosenSize = value;
+    if (type === "color") chosenColor = value;
+}
+
+function changeColSlide(direction) {
+    colSlideIndex += direction;
+    if (colSlideIndex >= colImages.length) colSlideIndex = 0;
+    if (colSlideIndex < 0) colSlideIndex = colImages.length - 1;
+    showColSlide(colSlideIndex);
+
+    if (colSlideInterval) {
+        clearInterval(colSlideInterval);
+        colSlideInterval = setInterval(() => changeColSlide(1), 5000);
+    }
+}
+
+function showColSlide(index) {
+    const img = document.getElementById("mainCollectionImage");
+    if (img) img.src = colImages[index];
+}
+
+// Add to Cart from collection-detail.html
+function addCollectionFromDetails(redirectToCart = false) {
+    if (selectedCollection.sizes && selectedCollection.sizes.length > 0 && !chosenSize) {
+        alert("Please Select a Size First!");
+        return;
+    }
+    if (selectedCollection.colors && selectedCollection.colors.length > 0 && !chosenColor) {
+        alert("Please Select a Color First!");
+        return;
+    }
+
+    const cartItemId = `col_${selectedCollection.id}_${chosenSize || ''}_${chosenColor || ''}`;
     const existingIndex = cart.findIndex(i => i.id === cartItemId);
 
     if (existingIndex > -1) {
@@ -187,11 +315,11 @@ function buyCollectionItem(colId, redirectToCheckout) {
     } else {
         cart.push({
             id: cartItemId,
-            name: item.title + " (Featured Collection)",
-            price: item.price,
-            image: item.image || "images/placeholder.jpg",
-            size: "Standard",
-            color: "Featured Pack",
+            name: selectedCollection.title + " (Curated Collection)",
+            price: selectedCollection.price,
+            image: (selectedCollection.images && selectedCollection.images.length > 0) ? selectedCollection.images[0] : (selectedCollection.image || "images/placeholder.jpg"),
+            size: chosenSize || null,
+            color: chosenColor || null,
             quantity: 1
         });
     }
@@ -199,11 +327,36 @@ function buyCollectionItem(colId, redirectToCheckout) {
     localStorage.setItem("pak_store_cart", JSON.stringify(cart));
     updateCartBadge();
 
-    if (redirectToCheckout) {
+    if (redirectToCart) {
         window.location.href = "cart.html";
     } else {
-        alert(`"${item.title}" successfully added to cart!`);
+        alert(`"${selectedCollection.title}" added to cart!`);
     }
+}
+
+function quickAddCollection(colId) {
+    const item = allCollections.find(c => c.id === colId);
+    if (!item) return;
+
+    // If it has sizes or colors, take user to detail page first so they can choose
+    if ((item.sizes && item.sizes.length > 0) || (item.colors && item.colors.length > 0)) {
+        window.location.href = `collection-detail.html?id=${item.id}`;
+        return;
+    }
+
+    cart.push({
+        id: `col_${item.id}`,
+        name: item.title,
+        price: item.price,
+        image: (item.images && item.images.length > 0) ? item.images[0] : (item.image || "images/placeholder.jpg"),
+        size: null,
+        color: null,
+        quantity: 1
+    });
+
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
+    alert(`"${item.title}" added to cart!`);
 }
 
 // ==========================================================================
@@ -347,7 +500,7 @@ function loadMore() {
 }
 
 // ==========================================================================
-// 7. DEDICATED CART PAGE (cart.html)
+// 7. CART PAGE (cart.html)
 // ==========================================================================
 function renderCartPage() {
     const container = document.getElementById("cartViewContainer");
