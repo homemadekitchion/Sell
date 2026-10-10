@@ -7,7 +7,7 @@ const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiex
 let allProducts = [];
 let allCollections = [];
 let currentCategory = "All";
-let itemsToShow = 10;
+let itemsToShow = 6;
 let searchQuery = "";
 let selectedProduct = null;
 let chosenSize = null;
@@ -17,7 +17,7 @@ let chosenColor = null;
 let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
 
 // ==========================================================================
-// 2. DATA INITIALIZATION (data.json & collections.json)
+// 2. DATA INITIALIZATION
 // ==========================================================================
 const cacheTime = new Date().getTime();
 
@@ -50,18 +50,16 @@ fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
     })
     .catch(err => console.error("Error loading data.json:", err));
 
-// 2. Collections JSON Fetch (For Showcase on Home & Full on collection.html)
+// 2. Collections JSON Fetch
 fetch(`./collections.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
         allCollections = data.collections || [];
 
-        // Home Page Zig-Zag Showcase Render
         if (document.getElementById("showcaseContainer")) {
             renderHomeShowcase(data);
         }
 
-        // Dedicated Collection Page Render
         if (document.getElementById("fullCollectionsGrid")) {
             renderFullCollectionsPage(data);
         }
@@ -77,7 +75,7 @@ function updateCartBadge() {
 }
 
 // ==========================================================================
-// 3. HOME PAGE: ZIG-ZAG SHOWCASE RENDER (MATCHING SCREENSHOT)
+// 3. HOME PAGE: ZIG-ZAG SHOWCASE RENDER (WITH BUY BUTTONS)
 // ==========================================================================
 function renderHomeShowcase(data) {
     const container = document.getElementById("showcaseContainer");
@@ -95,9 +93,12 @@ function renderHomeShowcase(data) {
     container.innerHTML = "";
 
     data.collections.forEach((item, index) => {
-        const isReverse = index % 2 !== 0; // Alternating zig-zag
+        const isReverse = index % 2 !== 0;
         const row = document.createElement("div");
         row.className = `showcase-row ${isReverse ? 'reverse' : ''}`;
+
+        const mrpHtml = item.mrp ? `<span class="showcase-mrp">Rs. ${item.mrp}</span>` : "";
+        const discHtml = item.discount ? `<span class="showcase-disc">${item.discount}</span>` : "";
 
         row.innerHTML = `
             <div class="showcase-img-card" onclick="window.location.href='collection.html'" style="cursor: pointer;">
@@ -106,6 +107,15 @@ function renderHomeShowcase(data) {
             <div class="showcase-text-box">
                 <h3 class="showcase-item-title">${item.title}</h3>
                 <p class="showcase-item-desc">${item.description}</p>
+                <div class="showcase-price-box">
+                    <span class="showcase-price">Rs. ${item.price}</span>
+                    ${mrpHtml}
+                    ${discHtml}
+                </div>
+                <div class="showcase-actions">
+                    <button class="col-buy-btn" onclick="buyCollectionItem(${item.id}, true)">Quick Buy (COD)</button>
+                    <button class="col-cart-btn" onclick="buyCollectionItem(${item.id}, false)">Add to Cart</button>
+                </div>
             </div>
         `;
         container.appendChild(row);
@@ -113,7 +123,7 @@ function renderHomeShowcase(data) {
 }
 
 // ==========================================================================
-// 4. COLLECTION PAGE: FULL GRID RENDER (collection.html)
+// 4. COLLECTION PAGE: FULL GRID RENDER (WITH BUY BUTTONS)
 // ==========================================================================
 function renderFullCollectionsPage(data) {
     const grid = document.getElementById("fullCollectionsGrid");
@@ -133,6 +143,10 @@ function renderFullCollectionsPage(data) {
     data.collections.forEach(item => {
         const card = document.createElement("div");
         card.className = "collection-card";
+
+        const mrpHtml = item.mrp ? `<span class="card-mrp">Rs. ${item.mrp}</span>` : "";
+        const discHtml = item.discount ? `<span class="card-disc">${item.discount}</span>` : "";
+
         card.innerHTML = `
             <div class="collection-img-box">
                 <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400?text=Collection';">
@@ -142,8 +156,16 @@ function renderFullCollectionsPage(data) {
                     <div class="collection-tag">${item.category || "Collection"}</div>
                     <h2 class="collection-name">${item.title}</h2>
                     <p class="collection-text">${item.description}</p>
+                    <div class="card-price-row">
+                        <span class="card-price">Rs. ${item.price}</span>
+                        ${mrpHtml}
+                        ${discHtml}
+                    </div>
                 </div>
-                <a href="index.html" class="browse-btn">Explore Items</a>
+                <div class="card-action-row">
+                    <button class="card-buy-btn" onclick="buyCollectionItem(${item.id}, true)">Buy Now</button>
+                    <button class="card-cart-btn" onclick="buyCollectionItem(${item.id}, false)">Add to Cart</button>
+                </div>
             </div>
         `;
         grid.appendChild(card);
@@ -151,14 +173,47 @@ function renderFullCollectionsPage(data) {
 }
 
 // ==========================================================================
-// 5. HOME PAGE: SEARCH, CATEGORIES & PRODUCTS
+// 5. BUY / ADD TO CART LOGIC FOR COLLECTIONS
+// ==========================================================================
+function buyCollectionItem(colId, redirectToCheckout) {
+    const item = allCollections.find(c => c.id === colId);
+    if (!item) return;
+
+    const cartItemId = "col_" + item.id;
+    const existingIndex = cart.findIndex(i => i.id === cartItemId);
+
+    if (existingIndex > -1) {
+        cart[existingIndex].quantity += 1;
+    } else {
+        cart.push({
+            id: cartItemId,
+            name: item.title + " (Featured Collection)",
+            price: item.price,
+            image: item.image || "images/placeholder.jpg",
+            size: "Standard",
+            color: "Featured Pack",
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
+
+    if (redirectToCheckout) {
+        window.location.href = "cart.html";
+    } else {
+        alert(`"${item.title}" successfully added to cart!`);
+    }
+}
+
+// ==========================================================================
+// 6. HOME PAGE: SEARCH, CATEGORIES & PRODUCTS
 // ==========================================================================
 function handleSearch() {
     const input = document.getElementById("searchInput");
     searchQuery = input.value.trim().toLowerCase();
     itemsToShow = 10;
-    
-    // Search active hone par showcase ko hide kar dein taake focus products par rahe
+
     const showcaseWrapper = document.getElementById("showcaseWrapper");
     if (showcaseWrapper) {
         showcaseWrapper.style.display = searchQuery === "" ? "block" : "none";
@@ -292,7 +347,7 @@ function loadMore() {
 }
 
 // ==========================================================================
-// 6. DEDICATED CART PAGE (cart.html)
+// 7. DEDICATED CART PAGE (cart.html)
 // ==========================================================================
 function renderCartPage() {
     const container = document.getElementById("cartViewContainer");
@@ -451,7 +506,7 @@ function submitFinalOrder(totalAmount) {
 }
 
 // ==========================================================================
-// 7. PRODUCT DETAILS PAGE (product.html)
+// 8. PRODUCT DETAILS PAGE (product.html)
 // ==========================================================================
 let productImages = [];
 let currentSlideIndex = 0;
