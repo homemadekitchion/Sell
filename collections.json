@@ -3,32 +3,48 @@
   "heading": "See what's new",
   "collections": [
     {
-      "id": 1,
+      "id": 101,
       "title": "Premium Footwear Elements",
       "description": "Over 42 unique casual and formal designs crafted to make stepping out effortless and stylish.",
       "image": "images/shoe1-1.jpg",
-      "category": "Shoes"
+      "category": "Shoes",
+      "price": 2499,
+      "mrp": 4500,
+      "discount": "44% OFF",
+      "sku": "COL-SHOE-01"
     },
     {
-      "id": 2,
+      "id": 102,
       "title": "E-commerce Tech Solutions",
       "description": "Building optimized smartphones and high-performance laptops with 100% genuine warranty across Pakistan.",
       "image": "images/mob1-1.jpg",
-      "category": "Mobiles"
+      "category": "Mobiles",
+      "price": 64999,
+      "mrp": 72000,
+      "discount": "10% OFF",
+      "sku": "COL-TECH-02"
     },
     {
-      "id": 3,
+      "id": 103,
       "title": "Fully Responsive Fashion",
       "description": "From winter parachute jackets to tailored Egyptian cotton shirts. Modern fits wherever you are.",
       "image": "images/fash1-1.jpg",
-      "category": "Fashion"
+      "category": "Fashion",
+      "price": 3499,
+      "mrp": 5200,
+      "discount": "33% OFF",
+      "sku": "COL-FASH-03"
     },
     {
-      "id": 4,
+      "id": 104,
       "title": "Luxury Timepieces & Accents",
       "description": "Automatic homage movements and chronograph stainless steel dials designed to elevate your everyday presence.",
       "image": "images/wat1-1.jpg",
-      "category": "Watches"
+      "category": "Watches",
+      "price": 7999,
+      "mrp": 12000,
+      "discount": "33% OFF",
+      "sku": "COL-WAT-04"
     }
   ]
 }
