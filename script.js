@@ -20,21 +20,17 @@ let chosenColor = null;
 let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
 
 // ==========================================================================
-// SMART IMAGE RESOLVER (Pictures Kabhi Fail / Blank Nahi Hongi)
+// SMART IMAGE RESOLVER
 // ==========================================================================
 function getProductImage(item) {
-    if (!item) return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80";
-    
-    // 1. Agar images array hai aur usme tasweer mojood hai
+    if (!item) return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80";
     if (item.images && Array.isArray(item.images) && item.images.length > 0 && item.images[0]) {
         return item.images[0];
     }
-    // 2. Agar single image string hai
     if (item.image && typeof item.image === "string" && item.image.trim() !== "") {
         return item.image;
     }
-    // 3. Fallback High-Quality Image
-    return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80";
+    return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80";
 }
 
 // ==========================================================================
@@ -60,7 +56,8 @@ fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
             }
         }
 
-        if (document.getElementById("mainProductImage")) {
+        // Product Details Page (product.html) Trigger
+        if (document.getElementById("mainProductImage") || document.getElementById("prodTitle")) {
             loadProductDetails();
         }
 
@@ -138,7 +135,225 @@ function updateCartBadge() {
 }
 
 // ==========================================================================
-// 3. HOME PAGE: MAIN PRODUCTS GRID (PICTURE LOADING FIXED)
+// 3. PRODUCT DETAILS LOADER (100% FIXED FOR product.html)
+// ==========================================================================
+let productImages = [];
+let currentSlideIndex = 0;
+let autoSlideInterval = null;
+
+function loadProductDetails() {
+    if (!allProducts || allProducts.length === 0) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const rawId = urlParams.get("id");
+
+    // Smart Match: String vs Number loose check
+    if (rawId) {
+        selectedProduct = allProducts.find(p => 
+            String(p.id).trim() === String(rawId).trim() || 
+            p.id == rawId
+        );
+    }
+
+    // Agar ID match na ho ya URL mein ?id na ho toh pehla product default load karo
+    if (!selectedProduct) {
+        selectedProduct = allProducts[0];
+    }
+
+    if (!selectedProduct) {
+        const titleEl = document.getElementById("prodTitle");
+        if (titleEl) titleEl.innerText = "Product Not Found!";
+        return;
+    }
+
+    // Title, SKU, Price Safe Injection
+    const titleEl = document.getElementById("prodTitle");
+    if (titleEl) titleEl.innerText = selectedProduct.name || "Product Name";
+
+    const skuEl = document.getElementById("prodSku");
+    if (skuEl) skuEl.innerText = "SKU: " + (selectedProduct.sku || "N/A");
+
+    const priceEl = document.getElementById("prodPrice");
+    if (priceEl) priceEl.innerText = "Rs. " + (selectedProduct.price || 0);
+
+    const bCat = document.getElementById("breadCategory");
+    if (bCat) bCat.innerText = selectedProduct.category || "Shop";
+
+    const bName = document.getElementById("breadName");
+    if (bName) bName.innerText = selectedProduct.name || "Product Details";
+
+    // Discount & MRP
+    const badge = document.getElementById("prodDiscount");
+    const mrp = document.getElementById("prodMrp");
+    const disc = document.getElementById("prodDiscText");
+
+    if (selectedProduct.discount) {
+        if (badge) { badge.innerText = selectedProduct.discount; badge.style.display = "inline-block"; }
+        if (mrp) mrp.innerText = "MRP: Rs. " + (selectedProduct.mrp || "");
+        if (disc) disc.innerText = "(" + selectedProduct.discount + ")";
+    } else {
+        if (badge) badge.style.display = "none";
+        if (mrp) mrp.innerText = "";
+        if (disc) disc.innerText = "";
+    }
+
+    // Sizes Injection
+    const sizeSection = document.getElementById("sizeSection");
+    const sizeContainer = document.getElementById("sizeContainer");
+    if (selectedProduct.sizes && Array.isArray(selectedProduct.sizes) && selectedProduct.sizes.length > 0) {
+        if (sizeSection) sizeSection.style.display = "block";
+        if (sizeContainer) {
+            sizeContainer.innerHTML = "";
+            selectedProduct.sizes.forEach(size => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerText = size;
+                btn.onclick = () => selectOption(btn, "size", size);
+                sizeContainer.appendChild(btn);
+            });
+        }
+    } else if (sizeSection) {
+        sizeSection.style.display = "none";
+    }
+
+    // Colors Injection
+    const colorSection = document.getElementById("colorSection");
+    const colorContainer = document.getElementById("colorContainer");
+    if (selectedProduct.colors && Array.isArray(selectedProduct.colors) && selectedProduct.colors.length > 0) {
+        if (colorSection) colorSection.style.display = "block";
+        if (colorContainer) {
+            colorContainer.innerHTML = "";
+            selectedProduct.colors.forEach(col => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn color-btn";
+                btn.innerText = col;
+                btn.onclick = () => selectOption(btn, "color", col);
+                colorContainer.appendChild(btn);
+            });
+        }
+    } else if (colorSection) {
+        colorSection.style.display = "none";
+    }
+
+    // Accordions
+    const accDet = document.getElementById("accDetails");
+    const accCare = document.getElementById("accCare");
+    const accRet = document.getElementById("accReturn");
+
+    if (selectedProduct.details) {
+        if (accDet) accDet.innerText = selectedProduct.details.productDetails || selectedProduct.description || "Premium quality product.";
+        if (accCare) accCare.innerText = selectedProduct.details.careInstruction || "Handle with care.";
+        if (accRet) accRet.innerText = selectedProduct.details.returnPolicy || "Standard 15 days return policy.";
+    } else {
+        if (accDet) accDet.innerText = selectedProduct.description || "Premium quality guaranteed.";
+        if (accCare) accCare.innerText = "Keep clean and dry.";
+        if (accRet) accRet.innerText = "15 days replacement warranty.";
+    }
+
+    // Multi-Images Slider Safe Setup
+    if (selectedProduct.images && Array.isArray(selectedProduct.images) && selectedProduct.images.length > 0) {
+        productImages = selectedProduct.images;
+    } else if (selectedProduct.image) {
+        productImages = [selectedProduct.image];
+    } else {
+        productImages = ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80"];
+    }
+
+    currentSlideIndex = 0;
+    showSlide(0);
+
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
+    if (productImages.length > 1) {
+        autoSlideInterval = setInterval(() => changeSlide(1), 5000);
+    }
+}
+
+function selectOption(button, type, value) {
+    const siblings = button.parentElement.getElementsByClassName("option-btn");
+    for (let s of siblings) s.classList.remove("active");
+    button.classList.add("active");
+
+    if (type === "size") chosenSize = value;
+    if (type === "color") chosenColor = value;
+}
+
+function changeSlide(direction) {
+    if (!productImages || productImages.length === 0) return;
+    currentSlideIndex += direction;
+    if (currentSlideIndex >= productImages.length) currentSlideIndex = 0;
+    if (currentSlideIndex < 0) currentSlideIndex = productImages.length - 1;
+    showSlide(currentSlideIndex);
+
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => changeSlide(1), 5000);
+    }
+}
+
+function showSlide(index) {
+    const img = document.getElementById("mainProductImage");
+    if (img && productImages && productImages.length > 0) {
+        img.src = productImages[index];
+        img.onerror = function() {
+            this.src = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80";
+        };
+    }
+}
+
+function toggleAcc(element) {
+    const content = element.nextElementSibling;
+    const icon = element.querySelector(".acc-icon");
+    if (content.style.display === "block") {
+        content.style.display = "none";
+        if (icon) icon.innerText = "+";
+    } else {
+        content.style.display = "block";
+        if (icon) icon.innerText = "-";
+    }
+}
+
+function addToCartFromDetails(redirectToCart = false) {
+    if (!selectedProduct) return;
+
+    if (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !chosenSize) {
+        alert("Please Select a Size First!");
+        return;
+    }
+    if (selectedProduct.colors && selectedProduct.colors.length > 0 && !chosenColor) {
+        alert("Please Select a Color First!");
+        return;
+    }
+
+    const cartItemId = `prod_${selectedProduct.id}_${chosenSize || ''}_${chosenColor || ''}`;
+    const existingIndex = cart.findIndex(i => i.id === cartItemId);
+    const prodImg = getProductImage(selectedProduct);
+
+    if (existingIndex > -1) {
+        cart[existingIndex].quantity += 1;
+    } else {
+        cart.push({
+            id: cartItemId,
+            name: selectedProduct.name,
+            price: selectedProduct.price,
+            image: prodImg,
+            size: chosenSize || null,
+            color: chosenColor || null,
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
+
+    if (redirectToCart) {
+        window.location.href = "cart.html";
+    } else {
+        alert("Item added to cart successfully!");
+    }
+}
+
+// ==========================================================================
+// 4. HOME PAGE: PRODUCTS & CATEGORIES
 // ==========================================================================
 function displayProducts() {
     const container = document.getElementById("product-container");
@@ -185,7 +400,6 @@ function displayProducts() {
             colorsHtml = `<div class="colors-count">${prod.colors.length} colors available</div>`;
         }
 
-        // Smart Picture URL
         const prodImg = getProductImage(prod);
 
         card.innerHTML = `
@@ -213,7 +427,6 @@ function loadMore() {
     displayProducts();
 }
 
-// Banner Slider
 function startBannerSlider(bannerImages) {
     let bannerIndex = 0;
     const bannerImg = document.getElementById("bannerImage");
@@ -256,7 +469,7 @@ function displayCategories(categories) {
 }
 
 // ==========================================================================
-// 4. HOME PAGE: BEST SELLERS & ON SALE PREVIEWS (PICTURES FIXED)
+// 5. HOME PREVIEWS & SHOWCASE
 // ==========================================================================
 function renderHomeBestSellers(products) {
     const grid = document.getElementById("homeBestGrid");
@@ -349,9 +562,6 @@ function addGenericToCart(name, price, image, redirectToCart) {
     }
 }
 
-// ==========================================================================
-// 5. HOME PAGE: ZIG-ZAG SHOWCASE
-// ==========================================================================
 function renderHomeShowcase(data) {
     const container = document.getElementById("showcaseContainer");
     if (!container) return;
@@ -486,186 +696,7 @@ function buyNewItem(id, redirectToCart) {
 }
 
 // ==========================================================================
-// 7. PRODUCT DETAILS PAGE (product.html)
-// ==========================================================================
-let productImages = [];
-let currentSlideIndex = 0;
-let autoSlideInterval = null;
-
-function loadProductDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = parseInt(urlParams.get("id"));
-
-    selectedProduct = allProducts.find(p => p.id === productId);
-
-    if (!selectedProduct) {
-        const titleEl = document.getElementById("prodTitle");
-        if (titleEl) titleEl.innerText = "Product Not Found!";
-        return;
-    }
-
-    document.getElementById("prodTitle").innerText = selectedProduct.name;
-    document.getElementById("prodSku").innerText = "SKU: " + (selectedProduct.sku || "N/A");
-    document.getElementById("prodPrice").innerText = "Rs. " + selectedProduct.price;
-
-    const bCat = document.getElementById("breadCategory");
-    if (bCat) bCat.innerText = selectedProduct.category;
-    const bName = document.getElementById("breadName");
-    if (bName) bName.innerText = selectedProduct.name;
-
-    if (selectedProduct.discount) {
-        const badge = document.getElementById("prodDiscount");
-        if (badge) { badge.innerText = selectedProduct.discount; badge.style.display = "inline-block"; }
-        const mrp = document.getElementById("prodMrp");
-        if (mrp) mrp.innerText = "MRP: Rs. " + selectedProduct.mrp;
-        const disc = document.getElementById("prodDiscText");
-        if (disc) disc.innerText = "(" + selectedProduct.discount + ")";
-    }
-
-    // Sizes
-    const sizeSection = document.getElementById("sizeSection");
-    const sizeContainer = document.getElementById("sizeContainer");
-    if (selectedProduct.sizes && selectedProduct.sizes.length > 0) {
-        sizeSection.style.display = "block";
-        sizeContainer.innerHTML = "";
-        selectedProduct.sizes.forEach(size => {
-            const btn = document.createElement("button");
-            btn.className = "option-btn";
-            btn.innerText = size;
-            btn.onclick = () => selectOption(btn, "size", size);
-            sizeContainer.appendChild(btn);
-        });
-    } else if (sizeSection) {
-        sizeSection.style.display = "none";
-    }
-
-    // Colors
-    const colorSection = document.getElementById("colorSection");
-    const colorContainer = document.getElementById("colorContainer");
-    if (selectedProduct.colors && selectedProduct.colors.length > 0) {
-        colorSection.style.display = "block";
-        colorContainer.innerHTML = "";
-        selectedProduct.colors.forEach(col => {
-            const btn = document.createElement("button");
-            btn.className = "option-btn color-btn";
-            btn.innerText = col;
-            btn.onclick = () => selectOption(btn, "color", col);
-            colorContainer.appendChild(btn);
-        });
-    } else if (colorSection) {
-        colorSection.style.display = "none";
-    }
-
-    // Accordions
-    if (selectedProduct.details) {
-        document.getElementById("accDetails").innerText = selectedProduct.details.productDetails || "No details.";
-        document.getElementById("accCare").innerText = selectedProduct.details.careInstruction || "No instructions.";
-        document.getElementById("accReturn").innerText = selectedProduct.details.returnPolicy || "Standard 15 days return policy.";
-    }
-
-    // Images Array Fix
-    if (selectedProduct.images && Array.isArray(selectedProduct.images) && selectedProduct.images.length > 0) {
-        productImages = selectedProduct.images;
-    } else if (selectedProduct.image) {
-        productImages = [selectedProduct.image];
-    } else {
-        productImages = ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80"];
-    }
-
-    showSlide(0);
-
-    if (productImages.length > 1) {
-        autoSlideInterval = setInterval(() => changeSlide(1), 5000);
-    }
-}
-
-function selectOption(button, type, value) {
-    const siblings = button.parentElement.getElementsByClassName("option-btn");
-    for (let s of siblings) s.classList.remove("active");
-    button.classList.add("active");
-
-    if (type === "size") chosenSize = value;
-    if (type === "color") chosenColor = value;
-}
-
-function changeSlide(direction) {
-    currentSlideIndex += direction;
-    if (currentSlideIndex >= productImages.length) currentSlideIndex = 0;
-    if (currentSlideIndex < 0) currentSlideIndex = productImages.length - 1;
-    showSlide(currentSlideIndex);
-
-    if (autoSlideInterval) {
-        clearInterval(autoSlideInterval);
-        autoSlideInterval = setInterval(() => changeSlide(1), 5000);
-    }
-}
-
-function showSlide(index) {
-    const img = document.getElementById("mainProductImage");
-    if (img) {
-        img.src = productImages[index];
-        img.onerror = function() {
-            this.src = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80";
-        };
-    }
-}
-
-function toggleAcc(element) {
-    const content = element.nextElementSibling;
-    const icon = element.querySelector(".acc-icon");
-    if (content.style.display === "block") {
-        content.style.display = "none";
-        if (icon) icon.innerText = "+";
-    } else {
-        content.style.display = "block";
-        if (icon) icon.innerText = "-";
-    }
-}
-
-function addToCartFromDetails(redirectToCart = false) {
-    if (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !chosenSize) {
-        alert("Please Select a Size First!");
-        return;
-    }
-    if (selectedProduct.colors && selectedProduct.colors.length > 0 && !chosenColor) {
-        alert("Please Select a Color First!");
-        return;
-    }
-
-    const existingIndex = cart.findIndex(i => 
-        i.id === selectedProduct.id && 
-        i.size === chosenSize && 
-        i.color === chosenColor
-    );
-
-    const prodImg = getProductImage(selectedProduct);
-
-    if (existingIndex > -1) {
-        cart[existingIndex].quantity += 1;
-    } else {
-        cart.push({
-            id: selectedProduct.id,
-            name: selectedProduct.name,
-            price: selectedProduct.price,
-            image: prodImg,
-            size: chosenSize || null,
-            color: chosenColor || null,
-            quantity: 1
-        });
-    }
-
-    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
-    updateCartBadge();
-
-    if (redirectToCart) {
-        window.location.href = "cart.html";
-    } else {
-        alert("Item added to cart successfully!");
-    }
-}
-
-// ==========================================================================
-// 8. CART PAGE (cart.html)
+// 7. CART PAGE (cart.html)
 // ==========================================================================
 function renderCartPage() {
     const container = document.getElementById("cartViewContainer");
