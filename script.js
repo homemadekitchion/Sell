@@ -9,9 +9,10 @@ let allCollections = [];
 let allBestSellers = [];
 let allOnSale = [];
 let currentCategory = "All";
-let itemsToShow = 10;
+let itemsToShow = 6;
 let searchQuery = "";
 let selectedProduct = null;
+let selectedCollection = null;
 let chosenSize = null;
 let chosenColor = null;
 
@@ -19,11 +20,11 @@ let chosenColor = null;
 let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
 
 // ==========================================================================
-// 2. DATA INITIALIZATION
+// 2. DATA INITIALIZATION & PAGE ROUTING
 // ==========================================================================
 const cacheTime = new Date().getTime();
 
-// 1. Load Main data.json
+// 1. Load Main data.json (For index.html, product.html, cart.html)
 fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
@@ -51,15 +52,21 @@ fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
     })
     .catch(err => console.error("Error loading data.json:", err));
 
-// 2. Load New Arrivals (For Home Promo Banner)
+// 2. Load New Arrivals (For Home Promo Banner & new-arrivals.html)
 fetch(`./new-arrivals.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
+        // Home page promo banner
         if (data.hero && document.getElementById("homePromoImg")) {
             document.getElementById("homePromoImg").src = data.hero.image;
             document.getElementById("homePromoPill").innerText = "🌸 " + data.hero.badge;
             document.getElementById("homePromoTitle").innerText = data.hero.title;
             document.getElementById("homePromoDesc").innerText = data.hero.description;
+        }
+
+        // new-arrivals.html page grid & hero
+        if (document.getElementById("newArrivalsGrid")) {
+            renderNewArrivalsPage(data);
         }
     })
     .catch(err => console.error("Error loading new-arrivals.json:", err));
@@ -86,7 +93,7 @@ fetch(`./on-sale.json?v=${cacheTime}`, { cache: 'no-store' })
     })
     .catch(err => console.error("Error loading on-sale.json:", err));
 
-// 5. Load Collections (For Home Showcase & collection.html)
+// 5. Load Collections (For Home Showcase, collection.html & collection-detail.html)
 fetch(`./collections.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
@@ -115,7 +122,94 @@ function updateCartBadge() {
 }
 
 // ==========================================================================
-// 3. HOME PAGE: BEST SELLERS & ON SALE PREVIEWS
+// 3. NEW ARRIVALS PAGE LOGIC (new-arrivals.html)
+// ==========================================================================
+function renderNewArrivalsPage(data) {
+    if (data.hero) {
+        const img = document.getElementById("newHeroImg");
+        const pill = document.getElementById("newHeroPill");
+        const title = document.getElementById("newHeroTitle");
+        const desc = document.getElementById("newHeroDesc");
+        if (img) img.src = data.hero.image;
+        if (pill) pill.innerText = data.hero.badge;
+        if (title) title.innerText = data.hero.title;
+        if (desc) desc.innerText = data.hero.description;
+    }
+
+    const grid = document.getElementById("newArrivalsGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    data.products.forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "new-card";
+
+        const mrpHtml = prod.mrp ? `<span class="mrp">Rs. ${prod.mrp}</span>` : "";
+        const discHtml = prod.discount ? `<span class="disc">${prod.discount}</span>` : "";
+
+        card.innerHTML = `
+            <div class="new-tag">${prod.badge || "NEW"}</div>
+            <div class="img-box" onclick="buyNewItem(${prod.id}, true)">
+                <img src="${prod.image}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=New+Arrival';">
+            </div>
+            <div class="card-info">
+                <div class="rating-stars">★★★★★</div>
+                <h3 class="card-title" onclick="buyNewItem(${prod.id}, true)">${prod.name}</h3>
+                <div class="price-row">
+                    <span class="price">Rs. ${prod.price}</span>
+                    ${mrpHtml}
+                    ${discHtml}
+                </div>
+                <div class="colors-strip">
+                    ${prod.colors ? prod.colors.map(() => '<span class="color-dot"></span>').join('') : ''}
+                </div>
+                <div class="card-actions">
+                    <button class="btn-buy" onclick="buyNewItem(${prod.id}, true)">Buy Now</button>
+                    <button class="btn-cart" onclick="buyNewItem(${prod.id}, false)">Add to Cart</button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function buyNewItem(id, redirectToCart) {
+    fetch(`./new-arrivals.json`)
+        .then(res => res.json())
+        .then(data => {
+            const item = data.products.find(p => p.id === id);
+            if (!item) return;
+
+            const cartItemId = `new_${item.id}`;
+            const existingIndex = cart.findIndex(i => i.id === cartItemId);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: cartItemId,
+                    name: `${item.name} [New Arrival]`,
+                    price: item.price,
+                    image: item.image,
+                    size: item.sizes ? item.sizes[0] : "Standard",
+                    color: item.colors ? item.colors[0] : "Standard",
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+            updateCartBadge();
+
+            if (redirectToCart) {
+                window.location.href = "cart.html";
+            } else {
+                alert(`"${item.name}" added to cart!`);
+            }
+        });
+}
+
+// ==========================================================================
+// 4. HOME PAGE: BEST SELLERS & ON SALE PREVIEWS
 // ==========================================================================
 function renderHomeBestSellers(products) {
     const grid = document.getElementById("homeBestGrid");
@@ -178,7 +272,6 @@ function renderHomeOnSale(products) {
     });
 }
 
-// Universal Cart Addition
 function addGenericToCart(name, price, image, redirectToCart) {
     const cartItemId = `item_${encodeURIComponent(name)}`;
     const existingIndex = cart.findIndex(i => i.id === cartItemId);
@@ -208,7 +301,7 @@ function addGenericToCart(name, price, image, redirectToCart) {
 }
 
 // ==========================================================================
-// 4. HOME PAGE: ZIG-ZAG SHOWCASE
+// 5. HOME PAGE: ZIG-ZAG SHOWCASE
 // ==========================================================================
 function renderHomeShowcase(data) {
     const container = document.getElementById("showcaseContainer");
@@ -257,14 +350,13 @@ function renderHomeShowcase(data) {
 }
 
 // ==========================================================================
-// 5. SEARCH & MAIN CATALOG
+// 6. SEARCH & MAIN CATALOG
 // ==========================================================================
 function handleSearch() {
     const input = document.getElementById("searchInput");
     searchQuery = input.value.trim().toLowerCase();
     itemsToShow = 10;
 
-    // Search karte waqt featured blocks ko hide kar dein taake direct matching products samne aayein
     const featBlocks = document.getElementById("homeFeaturedBlocks");
     if (featBlocks) {
         featBlocks.style.display = searchQuery === "" ? "block" : "none";
@@ -398,7 +490,7 @@ function loadMore() {
 }
 
 // ==========================================================================
-// 6. CART PAGE (cart.html)
+// 7. CART PAGE (cart.html)
 // ==========================================================================
 function renderCartPage() {
     const container = document.getElementById("cartViewContainer");
