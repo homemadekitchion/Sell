@@ -1,7 +1,7 @@
 // ==========================================================================
 // 1. CONFIGURATION (Aapka Google Sheet Webhook URL)
 // ==========================================================================
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiexm4od54EpVLZeIjf4JnlSyMe4O7UfIM0UyyMAOTdjbpstURYMREtbpkQ/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyxVAGEGPNZLDk_kxb3flQBZm3xETEqc_CWZk2Hz-Rz7HaoIIQZXOkmn4KQ9xHaa4dPWw/exec";
 
 // Global Variables
 let allProducts = [];
