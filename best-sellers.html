@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en-PK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Sellers - Pak COD Store</title>
+    <meta name="description" content="Shop our all-time top selling shoes, mobiles, laptops, and watches with nationwide Cash on Delivery.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://aapki-website.github.io/best-sellers.html">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Georgia", serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #fff8f8; /* Soft subtle boutique background */
+            color: #222; 
+        }
+
+        /* Header */
+        header { 
+            background: #fff; 
+            padding: 14px 20px; 
+            border-bottom: 1px solid #f3e6e8; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+        .back-link { color: #111; text-decoration: none; font-weight: 700; font-size: 13px; font-family: sans-serif; }
+        .header-title { font-size: 16px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin: 0; font-family: sans-serif; }
+        .header-title a { color: #111; text-decoration: none; }
+        .cart-link-btn { background: #111; color: #fff; text-decoration: none; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; font-family: sans-serif; }
+        .cart-badge { background: #a41c23; color: #fff; border-radius: 50%; padding: 1px 6px; font-size: 10px; margin-left: 4px; }
+
+        /* Hero / Title Section (Tasveer #1 Style) */
+        .best-hero { 
+            text-align: center; 
+            padding: 45px 15px 30px 15px; 
+        }
+        .arch-badge {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #8c6a6f;
+            margin-bottom: 8px;
+            font-family: sans-serif;
+        }
+        .best-main-title { 
+            font-size: 36px; 
+            font-weight: 400; 
+            font-family: "Georgia", serif; 
+            margin: 0 0 10px 0; 
+            color: #1a1a1a; 
+            letter-spacing: 1px;
+        }
+        .best-subtitle { 
+            font-size: 14px; 
+            color: #777; 
+            margin: 0; 
+            font-family: sans-serif;
+        }
+
+        /* Products Grid (Tasveer #1 Portrait Row Layout) */
+        .best-grid { 
+            display: grid; 
+            gap: 20px; 
+            padding: 10px 20px 60px 20px; 
+            max-width: 1200px; 
+            margin: auto; 
+        }
+        @media (min-width: 1024px) { .best-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
+        @media (min-width: 601px) and (max-width: 1023px) { .best-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+        @media (max-width: 600px) { .best-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 10px; } }
+
+        /* Card (Exact Tasveer #1 Design) */
+        .best-card { 
+            background: #fff; 
+            border: 1px solid #f0e6e6; 
+            border-radius: 4px; 
+            padding: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            text-align: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02); 
+            transition: transform 0.2s, box-shadow 0.2s; 
+        }
+        .best-card:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06); 
+        }
+
+        /* Portrait Image Container */
+        .best-img-box { 
+            width: 100%; 
+            aspect-ratio: 3 / 4; /* Portrait ratio like Image 1 */
+            background: #faf8f8; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 14px; 
+            overflow: hidden; 
+            cursor: pointer;
+        }
+        .best-img-box img { 
+            max-width: 90%; 
+            max-height: 90%; 
+            object-fit: contain; 
+            mix-blend-mode: multiply; 
+            transition: transform 0.3s ease; 
+        }
+        .best-card:hover .best-img-box img { 
+            transform: scale(1.05); 
+        }
+
+        /* Centered Product Info */
+        .best-info { 
+            margin-bottom: 14px; 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+        }
+        .sales-tag { 
+            font-size: 10px; 
+            font-weight: 800; 
+            color: #a41c23; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            margin-bottom: 4px; 
+            font-family: sans-serif;
+        }
+        .best-title { 
+            font-size: 14px; 
+            font-weight: 400; 
+            font-family: "Georgia", serif; 
+            color: #111; 
+            margin: 0 0 8px 0; 
+            line-height: 1.4; 
+            height: 38px; 
+            overflow: hidden; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            cursor: pointer;
+        }
+        .best-price-row { 
+            font-size: 15px; 
+            font-weight: 700; 
+            color: #222; 
+            font-family: sans-serif;
+        }
+        .best-mrp { 
+            text-decoration: line-through; 
+            color: #999; 
+            font-size: 12px; 
+            font-weight: 400; 
+            margin-left: 6px; 
+        }
+
+        /* Prominent Framed ADD TO CART Button (Like Image 1) */
+        .btn-add-cart { 
+            width: 100%; 
+            background: #fff; 
+            color: #111; 
+            border: 1px solid #111; 
+            padding: 10px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            font-family: sans-serif; 
+            transition: all 0.2s; 
+        }
+        .btn-add-cart:hover { 
+            background: #111; 
+            color: #fff; 
+        }
+
+        .btn-quick-buy {
+            width: 100%;
+            background: #a41c23;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: sans-serif;
+            margin-top: 6px;
+            border-radius: 2px;
+        }
+        .btn-quick-buy:hover { background: #88141a; }
+
+        footer { background: #111; color: #aaa; text-align: center; padding: 25px 15px; font-size: 12px; font-family: sans-serif; }
+        footer a { color: #fff; text-decoration: none; margin: 0 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="index.html" class="back-link">&larr; Back to Home</a>
+        <div class="header-title"><a href="index.html">PAK COD STORE</a></div>
+        <a href="cart.html" class="cart-link-btn">🛒 Cart <span id="cartCount" class="cart-badge">0</span></a>
+    </header>
+
+    <main>
+        <!-- Arched Aesthetic Hero Title (Image 1 Style) -->
+        <section class="best-hero">
+            <span class="arch-badge">&mdash; Customer Favorites &mdash;</span>
+            <h1 class="best-main-title" id="bestMainTitle">Best Sellers</h1>
+            <p class="best-subtitle" id="bestSubtitle">Most Loved & Highly Rated Products with Cash on Delivery</p>
+        </section>
+
+        <!-- Best Sellers Portrait Grid -->
+        <section class="best-grid" id="bestSellersGrid" aria-label="Best Selling Products"></section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="cart.html">View Cart</a></p>
+    </footer>
+
+    <!-- Independent Auto-Runner Script for this page -->
+    <script>
+        // Update Cart Badge from localStorage
+        function refreshCartBadge() {
+            const cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
+            const badge = document.getElementById("cartCount");
+            if (badge) {
+                const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+                badge.innerText = total;
+            }
+        }
+        refreshCartBadge();
+
+        // Load best-sellers.json
+        const cacheBust = new Date().getTime();
+        fetch(`./best-sellers.json?v=${cacheBust}`, { cache: 'no-store' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.sectionTitle) document.getElementById("bestMainTitle").innerText = data.sectionTitle;
+                if (data.subtitle) document.getElementById("bestSubtitle").innerText = data.subtitle;
+
+                const grid = document.getElementById("bestSellersGrid");
+                if (!grid) return;
+                grid.innerHTML = "";
+
+                data.products.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "best-card";
+
+                    const mrpHtml = item.mrp ? `<span class="best-mrp">Rs. ${item.mrp}</span>` : "";
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="best-img-box" onclick="addBestToCart(${item.id}, true)">
+                                <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Best+Seller';">
+                            </div>
+                            <div class="best-info">
+                                <div class="sales-tag">${item.badge || item.sales || 'Best Seller'}</div>
+                                <h3 class="best-title" onclick="addBestToCart(${item.id}, true)">${item.name}</h3>
+                                <div class="best-price-row">
+                                    <span>Rs. ${item.price}</span>
+                                    ${mrpHtml}
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn-add-cart" onclick="addBestToCart(${item.id}, false)">ADD TO CART</button>
+                            <button class="btn-quick-buy" onclick="addBestToCart(${item.id}, true)">Quick Buy (COD)</button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            })
+            .catch(err => console.error("Error loading best-sellers.json:", err));
+
+        // Add to Cart Function
+        function addBestToCart(id, redirectToCart) {
+            fetch('./best-sellers.json')
+                .then(res => res.json())
+                .then(data => {
+                    const product = data.products.find(p => p.id === id);
+                    if (!product) return;
+
+                    let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
+                    const cartItemId = `best_${product.id}`;
+                    const existingIndex = cart.findIndex(i => i.id === cartItemId);
+
+                    if (existingIndex > -1) {
+                        cart[existingIndex].quantity += 1;
+                    } else {
+                        cart.push({
+                            id: cartItemId,
+                            name: `${product.name} [Best Seller]`,
+                            price: product.price,
+                            image: product.image,
+                            size: product.sizes ? product.sizes[0] : "Standard",
+                            color: product.colors ? product.colors[0] : "Standard",
+                            quantity: 1
+                        });
+                    }
+
+                    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+                    refreshCartBadge();
+
+                    if (redirectToCart) {
+                        window.location.href = "cart.html";
+                    } else {
+                        alert(`"${product.name}" added to cart!`);
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
