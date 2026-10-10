@@ -3,26 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Arrivals - Pak COD Store</title>
-    <meta name="description" content="Shop newly launched fashion, shoes, smartphones and watches with Cash on Delivery across Pakistan.">
+    <title>New Arrivals & Fresh Drops - Pak COD Store</title>
+    <meta name="description" content="Explore newly launched luxury footwear, trendy smartphones, winter jackets, and casual fashion with nationwide Cash on Delivery in Pakistan.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://aapki-website.github.io/new-arrivals.html">
+
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:locale" content="en_PK">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="New Arrivals & Fresh Drops - Pak COD Store">
+    <meta property="og:description" content="Shop newly launched fashion, shoes, smartphones and watches with Cash on Delivery across Pakistan.">
+    <meta property="og:url" content="https://aapki-website.github.io/new-arrivals.html">
+    <meta property="og:image" content="images/shoe2-1.jpg">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Pak COD Store New Arrivals",
+      "description": "Newly launched footwear, electronics, and fashion collections.",
+      "url": "https://aapki-website.github.io/new-arrivals.html",
+      "provider": {
+        "@type": "Organization",
+        "name": "Pak COD Store",
+        "url": "https://aapki-website.github.io/"
+      }
+    }
+    </script>
 
     <style>
         * { box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
             margin: 0; 
             padding: 0; 
-            background: #fff5f7; /* Soft aesthetic background like Image 3 */
-            color: #222; 
+            background: #fff6f8; /* Soft Chic Pastel Background (Image 3 Style) */
+            color: #1e293b; 
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Header */
         header { 
-            background: #fff; 
-            padding: 12px 18px; 
-            border-bottom: 1px solid #f0e1e6; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(10px);
+            padding: 12px 20px; 
+            border-bottom: 1px solid #fce7f3; 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
@@ -30,150 +56,281 @@
             top: 0; 
             z-index: 100; 
         }
-        .back-link { color: #000; text-decoration: none; font-weight: 700; font-size: 13px; }
-        .header-title { font-size: 16px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin: 0; }
-        .header-title a { color: #000; text-decoration: none; }
-        .cart-link-btn { background: #000; color: #fff; text-decoration: none; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-        .cart-badge { background: #d81b60; color: #fff; border-radius: 50%; padding: 1px 6px; font-size: 10px; margin-left: 4px; }
-
-        /* Retro/Pastel Promo Banner (Tasveer #3 Style) */
-        .promo-hero-card {
-            max-width: 1100px;
-            margin: 25px auto 35px auto;
-            background: #fce4ec;
+        .back-link { 
+            color: #111; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 13px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+            padding: 6px 12px;
             border-radius: 20px;
-            padding: 30px;
+            background: #fdf2f8;
+            transition: all 0.2s;
+        }
+        .back-link:hover { background: #fbcfe8; }
+
+        .header-title { 
+            font-size: 16px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: 900; 
+            margin: 0; 
+        }
+        .header-title a { color: #0f172a; text-decoration: none; }
+
+        .cart-link-btn { 
+            background: #0f172a; 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 700; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            transition: transform 0.15s;
+        }
+        .cart-link-btn:hover { transform: scale(1.03); }
+        .cart-badge { 
+            background: #db2777; 
+            color: #fff; 
+            border-radius: 50%; 
+            padding: 1px 6px; 
+            font-size: 11px; 
+            font-weight: 800; 
+        }
+
+        /* Breadcrumbs */
+        .breadcrumb-nav { 
+            max-width: 1240px; 
+            margin: 14px auto 0 auto; 
+            padding: 0 18px; 
+            font-size: 12px; 
+            color: #64748b; 
+        }
+        .breadcrumb-nav a { color: #334155; text-decoration: none; font-weight: 600; }
+        .breadcrumb-nav span { margin: 0 6px; }
+
+        /* ================= PROMO HERO BANNER (TASVEER #3 STYLE) ================= */
+        .promo-hero-wrapper {
+            max-width: 1240px;
+            margin: 18px auto 35px auto;
+            padding: 0 18px;
+        }
+        .promo-hero-card {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            border-radius: 24px;
+            padding: 35px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 30px;
-            border: 2px solid #f8bbd0;
-            box-shadow: 0 10px 30px rgba(216, 27, 96, 0.08);
+            gap: 35px;
+            border: 2px solid #222;
+            box-shadow: 8px 8px 0px #222; /* Retro drop shadow like Image 3 */
+            position: relative;
+            overflow: hidden;
         }
         @media (max-width: 768px) {
-            .promo-hero-card { flex-direction: column; text-align: center; padding: 20px; margin: 15px; }
+            .promo-hero-card { 
+                flex-direction: column; 
+                text-align: center; 
+                padding: 24px 18px; 
+                box-shadow: 5px 5px 0px #222;
+            }
         }
 
         .promo-frame {
             flex: 1;
-            max-width: 380px;
-            height: 280px;
+            max-width: 360px;
+            height: 270px;
             background: #fff;
-            border-radius: 12px;
+            border-radius: 16px;
             border: 2px solid #222;
-            box-shadow: 6px 6px 0px #222; /* Retro window shadow */
+            box-shadow: 6px 6px 0px #222;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 15px;
+            position: relative;
         }
-        .promo-frame img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+        .promo-frame img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+            mix-blend-mode: multiply; 
+            transition: transform 0.4s ease;
+        }
+        .promo-hero-card:hover .promo-frame img { transform: scale(1.05); }
 
-        .promo-content { flex: 1.2; }
+        .promo-content { flex: 1.3; }
         .promo-pill { 
             background: #fff; 
-            color: #d81b60; 
-            font-size: 12px; 
+            color: #db2777; 
+            font-size: 11px; 
             font-weight: 800; 
             padding: 6px 16px; 
             border-radius: 20px; 
             display: inline-block; 
             margin-bottom: 12px;
-            border: 1px solid #f48fb1;
+            border: 2px solid #222;
+            box-shadow: 2px 2px 0px #222;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .promo-heading { 
             font-size: 38px; 
             font-weight: 900; 
-            margin: 0 0 12px 0; 
-            color: #1a1a1a; 
+            margin: 0 0 10px 0; 
+            color: #0f172a; 
             letter-spacing: -1px;
             line-height: 1.1; 
         }
-        .promo-desc { color: #555; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0; }
-        .promo-badge-tag {
-            background: #222;
+        @media (max-width: 600px) { .promo-heading { font-size: 28px; } }
+
+        .promo-desc { 
+            color: #475569; 
+            font-size: 14.5px; 
+            line-height: 1.6; 
+            margin: 0 0 20px 0; 
+            max-width: 520px;
+        }
+        .promo-action-tag {
+            background: #0f172a;
             color: #fff;
-            padding: 10px 24px;
-            border-radius: 25px;
-            font-size: 13px;
-            font-weight: 700;
-            display: inline-block;
+            padding: 11px 26px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
         }
 
+        /* Trust Strip */
+        .trust-strip {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto 35px auto;
+            padding: 12px 20px;
+            background: #fff;
+            border-radius: 30px;
+            border: 1px solid #fbcfe8;
+            box-shadow: 0 2px 10px rgba(219, 39, 119, 0.05);
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+        }
+        .trust-item { display: flex; align-items: center; gap: 6px; }
+
         /* Products Grid */
-        .section-header { text-align: center; margin-bottom: 25px; }
-        .section-header h2 { font-size: 24px; font-weight: 800; margin: 0; color: #111; }
-        .section-header p { font-size: 13px; color: #777; margin: 6px 0 0 0; }
+        .section-header { text-align: center; margin-bottom: 25px; padding: 0 15px; }
+        .section-header h2 { font-size: 26px; font-weight: 900; margin: 0; color: #0f172a; letter-spacing: -0.5px; }
+        .section-header p { font-size: 13px; color: #64748b; margin: 6px 0 0 0; }
 
         .new-grid { 
             display: grid; 
-            gap: 15px; 
-            padding: 0 15px 50px 15px; 
+            gap: 16px; 
+            padding: 0 18px 60px 18px; 
             max-width: 1240px; 
             margin: auto; 
         }
         @media (min-width: 1024px) { .new-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
-        @media (min-width: 601px) and (max-width: 1023px) { .new-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 600px) { .new-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        @media (min-width: 601px) and (max-width: 1023px) { .new-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+        @media (max-width: 600px) { .new-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 10px 40px 10px; } }
 
         /* Modern Aesthetic Card */
         .new-card { 
             background: #fff; 
-            border: 1px solid #fce4ec; 
-            border-radius: 12px; 
+            border: 1px solid #fce7f3; 
+            border-radius: 14px; 
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
-            transition: transform 0.2s, box-shadow 0.2s; 
+            box-shadow: 0 4px 15px rgba(219, 39, 119, 0.04); 
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
             position: relative;
         }
-        .new-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(216, 27, 96, 0.12); }
+        .new-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 16px 30px rgba(219, 39, 119, 0.12); 
+            border-color: #fbcfe8;
+        }
 
         .new-tag { 
             position: absolute; 
             top: 10px; 
             left: 10px; 
-            background: #d81b60; 
+            background: #db2777; 
             color: #fff; 
             font-size: 10px; 
             font-weight: 800; 
-            padding: 3px 8px; 
-            border-radius: 4px; 
+            padding: 3px 9px; 
+            border-radius: 6px; 
             z-index: 5; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(219, 39, 119, 0.3);
         }
 
         .img-box { 
             position: relative; 
-            background: #fafafa; 
+            background: linear-gradient(135deg, #fff 0%, #fdf2f8 100%); 
             aspect-ratio: 1 / 1; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            padding: 20px; 
+            padding: 22px; 
             cursor: pointer;
+            overflow: hidden;
         }
-        .img-box img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+        .img-box img { 
+            max-width: 90%; 
+            max-height: 90%; 
+            object-fit: contain; 
+            mix-blend-mode: multiply; 
+            transition: transform 0.3s ease;
+        }
+        .new-card:hover .img-box img { transform: scale(1.06); }
 
         .card-info { padding: 14px; }
-        .rating-stars { color: #f59e0b; font-size: 13px; margin-bottom: 4px; }
-        .card-title { font-size: 13px; font-weight: 600; color: #111; margin: 0 0 6px 0; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; cursor: pointer; }
+        .rating-stars { color: #f59e0b; font-size: 13px; margin-bottom: 4px; letter-spacing: 1px; }
+        .card-title { 
+            font-size: 13.5px; 
+            font-weight: 700; 
+            color: #0f172a; 
+            margin: 0 0 6px 0; 
+            height: 36px; 
+            overflow: hidden; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            cursor: pointer; 
+            line-height: 1.35;
+        }
         .price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
-        .price { font-size: 16px; font-weight: 800; color: #000; }
-        .mrp { font-size: 12px; color: #999; text-decoration: line-through; }
-        .disc { font-size: 11px; font-weight: 700; color: #d81b60; }
+        .price { font-size: 16px; font-weight: 900; color: #0f172a; }
+        .mrp { font-size: 12px; color: #94a3b8; text-decoration: line-through; }
+        .disc { font-size: 11px; font-weight: 800; color: #db2777; background: #fdf2f8; padding: 2px 6px; border-radius: 4px; }
 
-        .colors-strip { display: flex; gap: 4px; margin-bottom: 12px; }
-        .color-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #ccc; background: #eee; }
+        .colors-strip { display: flex; gap: 5px; margin-bottom: 12px; }
+        .color-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #cbd5e1; background: #e2e8f0; display: inline-block; }
 
+        /* Action Buttons */
         .card-actions { display: flex; gap: 6px; }
         .btn-buy { 
-            flex: 1; 
-            background: #d81b60; 
+            flex: 1.2; 
+            background: #db2777; 
             color: #fff; 
             border: none; 
             padding: 10px; 
@@ -182,58 +339,125 @@
             font-weight: 800; 
             cursor: pointer; 
             text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(219, 39, 119, 0.25);
+            transition: all 0.2s;
         }
+        .btn-buy:hover { background: #be185d; }
         .btn-cart { 
+            flex: 1; 
             background: #fff; 
-            color: #111; 
-            border: 1px solid #ccc; 
-            padding: 10px 12px; 
+            color: #0f172a; 
+            border: 1px solid #cbd5e1; 
+            padding: 10px; 
             border-radius: 6px; 
             font-size: 11px; 
             font-weight: 700; 
             cursor: pointer; 
+            transition: all 0.2s;
         }
-        .btn-cart:hover { border-color: #000; }
+        .btn-cart:hover { border-color: #0f172a; background: #f8fafc; }
 
-        footer { background: #111; color: #aaa; text-align: center; padding: 25px 15px; font-size: 12px; }
-        footer a { color: #fff; text-decoration: none; margin: 0 8px; }
+        /* Guarantee Strip */
+        .perks-card {
+            max-width: 1240px;
+            margin: 0 auto 50px auto;
+            padding: 25px 20px;
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #fce7f3;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            text-align: center;
+        }
+        .perk-box { flex: 1; min-width: 200px; }
+        .perk-icon { font-size: 26px; margin-bottom: 6px; }
+        .perk-heading { font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
+        .perk-sub { font-size: 12px; color: #64748b; }
+
+        footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 25px 15px; font-size: 12px; }
+        footer a { color: #f8fafc; text-decoration: none; margin: 0 8px; }
     </style>
 </head>
 <body>
 
+    <!-- Header Navigation -->
     <header>
-        <a href="index.html" class="back-link">&larr; Back to Home</a>
+        <a href="index.html" class="back-link">&larr; Back to Shop</a>
         <h1 class="header-title"><a href="index.html">PAK COD STORE</a></h1>
-        <a href="cart.html" class="cart-link-btn">🛒 Cart <span id="cartCount" class="cart-badge">0</span></a>
+        <a href="cart.html" class="cart-link-btn">
+            🛒 Cart <span id="cartCount" class="cart-badge">0</span>
+        </a>
     </header>
 
-    <main>
-        <!-- Retro-Pastel Hero Box (Image 3 Style) -->
-        <section class="promo-hero-card">
-            <div class="promo-frame">
-                <img id="newHeroImg" src="" alt="New Arrival Featured">
-            </div>
-            <div class="promo-content">
-                <span class="promo-pill" id="newHeroPill">Fresh Drops</span>
-                <h1 class="promo-heading" id="newHeroTitle">New Arrival</h1>
-                <p class="promo-desc" id="newHeroDesc">Discover newly curated trends for the season with nationwide Cash on Delivery.</p>
-                <div class="promo-badge-tag">100% Cash on Delivery</div>
-            </div>
-        </section>
+    <!-- Breadcrumb for SEO -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>&gt;</span>
+        <strong>New Arrivals</strong>
+    </nav>
 
-        <!-- Product Listing Grid -->
-        <div class="section-header">
-            <h2>Latest Arrivals</h2>
-            <p>Fresh inventory checked and ready to dispatch</p>
+    <main>
+        <!-- Promo Hero Banner (Tasveer #3 Style) -->
+        <div class="promo-hero-wrapper">
+            <section class="promo-hero-card">
+                <div class="promo-frame">
+                    <img id="newHeroImg" src="images/shoe2-1.jpg" alt="Featured New Arrival">
+                </div>
+                <div class="promo-content">
+                    <span class="promo-pill" id="newHeroPill">🌸 Fresh Drops</span>
+                    <h1 class="promo-heading" id="newHeroTitle">New Arrival Collection</h1>
+                    <p class="promo-desc" id="newHeroDesc">Discover newly curated trends for the season with nationwide Cash on Delivery across Pakistan.</p>
+                    <div class="promo-action-tag">🚚 100% Cash on Delivery</div>
+                </div>
+            </section>
         </div>
 
+        <!-- Trust & Assurance Strip -->
+        <div class="trust-strip">
+            <div class="trust-item">🚚 <span>Fast Shipping (3-5 Days)</span></div>
+            <div class="trust-item">🛡️ <span>Parcel Checked Before Payment</span></div>
+            <div class="trust-item">🔄 <span>15 Days Easy Returns</span></div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header">
+            <h2>Fresh Inventory & Latest Styles</h2>
+            <p>Inspected quality products checked and ready for nationwide dispatch</p>
+        </div>
+
+        <!-- Products Grid (Auto-Loaded via script.js from new-arrivals.json) -->
         <section class="new-grid" id="newArrivalsGrid" aria-label="New Arrivals Products"></section>
+
+        <!-- Customer Guarantees Banner -->
+        <section class="perks-card">
+            <div class="perk-box">
+                <div class="perk-icon">⚡</div>
+                <div class="perk-heading">Rapid Dispatch</div>
+                <div class="perk-sub">Delivered via TCS, Trax & Leopards</div>
+            </div>
+            <div class="perk-box">
+                <div class="perk-icon">💵</div>
+                <div class="perk-heading">Zero Advance Payment</div>
+                <div class="perk-sub">Pay only cash when you hold the parcel</div>
+            </div>
+            <div class="perk-box">
+                <div class="perk-icon">📞</div>
+                <div class="perk-heading">WhatsApp Order Tracking</div>
+                <div class="perk-sub">Real-time tracking link on your phone</div>
+            </div>
+        </section>
     </main>
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="cart.html">View Cart</a></p>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="new-arrivals.html">New Arrivals</a> | <a href="best-sellers.html">Best Sellers</a> | <a href="on-sale.html">On Sale</a> | <a href="cart.html">View Cart</a></p>
     </footer>
 
+    <!-- Connected to Unified Master Script -->
     <script src="script.js"></script>
 </body>
 </html>
