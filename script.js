@@ -1,10 +1,11 @@
 // ==========================================================================
-// 1. CONFIGURATION (Aapka Google Sheet Webhook URL)
+// 1. CONFIGURATION (Google Sheet Webhook URL)
 // ==========================================================================
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyxVAGEGPNZLDk_kxb3flQBZm3xETEqc_CWZk2Hz-Rz7HaoIIQZXOkmn4KQ9xHaa4dPWw/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOfFRYi8QQiexm4od54EpVLZeIjf4JnlSyMe4O7UfIM0UyyMAOTdjbpstURYMREtbpkQ/exec";
 
-// Global Variables
+// Global State
 let allProducts = [];
+let allCollections = [];
 let currentCategory = "All";
 let itemsToShow = 10;
 let searchQuery = "";
@@ -16,56 +17,57 @@ let chosenColor = null;
 let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
 
 // ==========================================================================
-// 2. DATA.JSON FETCH (Cache-Buster Enabled)
+// 2. DATA INITIALIZATION (data.json & collections.json)
 // ==========================================================================
-const cacheBusterUrl = './data.json?v=' + new Date().getTime();
+const cacheTime = new Date().getTime();
 
-fetch(cacheBusterUrl, {
-    cache: 'no-store',
-    headers: { 'Cache-Control': 'no-cache' }
-})
-.then(res => {
-    if (!res.ok) throw new Error(`HTTP Error Status: ${res.status}`);
-    return res.json();
-})
-.then(data => {
-    initApp(data);
-})
-.catch(err => {
-    console.error("data.json error:", err);
-    const loadingEl = document.getElementById("loadingMsg");
-    if (loadingEl) loadingEl.innerText = "Error loading products from data.json";
-});
+// 1. Main Products Fetch
+fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
+    .then(res => res.json())
+    .then(data => {
+        allProducts = data.products || [];
 
-function initApp(data) {
-    allProducts = data.products || [];
+        const loadingEl = document.getElementById("loadingMsg");
+        if (loadingEl) loadingEl.style.display = "none";
 
-    const loadingEl = document.getElementById("loadingMsg");
-    if (loadingEl) loadingEl.style.display = "none";
+        updateCartBadge();
 
-    updateCartBadge();
-
-    // 1. Agar Home Page (index.html) par hain
-    if (document.getElementById("product-container")) {
-        displayCategories(data.categories || ["All"]);
-        displayProducts();
-        if (data.banners && data.banners.length > 0) {
-            startBannerSlider(data.banners);
+        if (document.getElementById("product-container")) {
+            displayCategories(data.categories || ["All"]);
+            displayProducts();
+            if (data.banners && data.banners.length > 0) {
+                startBannerSlider(data.banners);
+            }
         }
-    }
 
-    // 2. Agar Product Details Page (product.html) par hain
-    if (document.getElementById("mainProductImage")) {
-        loadProductDetails();
-    }
+        if (document.getElementById("mainProductImage")) {
+            loadProductDetails();
+        }
 
-    // 3. Agar Dedicated Cart Page (cart.html) par hain
-    if (document.getElementById("cartViewContainer")) {
-        renderCartPage();
-    }
-}
+        if (document.getElementById("cartViewContainer")) {
+            renderCartPage();
+        }
+    })
+    .catch(err => console.error("Error loading data.json:", err));
 
-// Cart Badge Update
+// 2. Collections JSON Fetch (For Showcase on Home & Full on collection.html)
+fetch(`./collections.json?v=${cacheTime}`, { cache: 'no-store' })
+    .then(res => res.json())
+    .then(data => {
+        allCollections = data.collections || [];
+
+        // Home Page Zig-Zag Showcase Render
+        if (document.getElementById("showcaseContainer")) {
+            renderHomeShowcase(data);
+        }
+
+        // Dedicated Collection Page Render
+        if (document.getElementById("fullCollectionsGrid")) {
+            renderFullCollectionsPage(data);
+        }
+    })
+    .catch(err => console.error("Error loading collections.json:", err));
+
 function updateCartBadge() {
     const badge = document.getElementById("cartCount");
     if (badge) {
@@ -75,12 +77,93 @@ function updateCartBadge() {
 }
 
 // ==========================================================================
-// 3. HOME PAGE: SEARCH & PRODUCTS
+// 3. HOME PAGE: ZIG-ZAG SHOWCASE RENDER (MATCHING SCREENSHOT)
+// ==========================================================================
+function renderHomeShowcase(data) {
+    const container = document.getElementById("showcaseContainer");
+    if (!container) return;
+
+    if (data.badge) {
+        const badgeEl = document.getElementById("showcaseBadge");
+        if (badgeEl) badgeEl.innerText = data.badge;
+    }
+    if (data.heading) {
+        const headEl = document.getElementById("showcaseHeading");
+        if (headEl) headEl.innerText = data.heading;
+    }
+
+    container.innerHTML = "";
+
+    data.collections.forEach((item, index) => {
+        const isReverse = index % 2 !== 0; // Alternating zig-zag
+        const row = document.createElement("div");
+        row.className = `showcase-row ${isReverse ? 'reverse' : ''}`;
+
+        row.innerHTML = `
+            <div class="showcase-img-card" onclick="window.location.href='collection.html'" style="cursor: pointer;">
+                <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/350?text=Collection';">
+            </div>
+            <div class="showcase-text-box">
+                <h3 class="showcase-item-title">${item.title}</h3>
+                <p class="showcase-item-desc">${item.description}</p>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+}
+
+// ==========================================================================
+// 4. COLLECTION PAGE: FULL GRID RENDER (collection.html)
+// ==========================================================================
+function renderFullCollectionsPage(data) {
+    const grid = document.getElementById("fullCollectionsGrid");
+    if (!grid) return;
+
+    if (data.badge) {
+        const b = document.getElementById("pageBadge");
+        if (b) b.innerText = data.badge;
+    }
+    if (data.heading) {
+        const h = document.getElementById("pageHeading");
+        if (h) h.innerText = data.heading;
+    }
+
+    grid.innerHTML = "";
+
+    data.collections.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "collection-card";
+        card.innerHTML = `
+            <div class="collection-img-box">
+                <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400?text=Collection';">
+            </div>
+            <div class="collection-body">
+                <div>
+                    <div class="collection-tag">${item.category || "Collection"}</div>
+                    <h2 class="collection-name">${item.title}</h2>
+                    <p class="collection-text">${item.description}</p>
+                </div>
+                <a href="index.html" class="browse-btn">Explore Items</a>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// ==========================================================================
+// 5. HOME PAGE: SEARCH, CATEGORIES & PRODUCTS
 // ==========================================================================
 function handleSearch() {
     const input = document.getElementById("searchInput");
     searchQuery = input.value.trim().toLowerCase();
     itemsToShow = 10;
+    
+    // Search active hone par showcase ko hide kar dein taake focus products par rahe
+    const showcaseWrapper = document.getElementById("showcaseWrapper");
+    if (showcaseWrapper) {
+        showcaseWrapper.style.display = searchQuery === "" ? "block" : "none";
+    }
+
     displayProducts();
 }
 
@@ -89,6 +172,10 @@ function clearSearch() {
     if (input) input.value = "";
     searchQuery = "";
     currentCategory = "All";
+
+    const showcaseWrapper = document.getElementById("showcaseWrapper");
+    if (showcaseWrapper) showcaseWrapper.style.display = "block";
+
     document.querySelectorAll(".cat-btn").forEach(b => {
         b.classList.toggle("active", b.innerText === "All");
     });
@@ -205,7 +292,7 @@ function loadMore() {
 }
 
 // ==========================================================================
-// 4. DEDICATED CART PAGE LOGIC (cart.html)
+// 6. DEDICATED CART PAGE (cart.html)
 // ==========================================================================
 function renderCartPage() {
     const container = document.getElementById("cartViewContainer");
@@ -308,7 +395,6 @@ function removeCartItem(index) {
     renderCartPage();
 }
 
-// Order Submission to Google Sheets
 function submitFinalOrder(totalAmount) {
     const name = document.getElementById("custName").value.trim();
     const phone = document.getElementById("custPhone").value.trim();
@@ -323,7 +409,6 @@ function submitFinalOrder(totalAmount) {
     submitBtn.innerText = "Order Bheja Ja Raha Hai...";
     submitBtn.disabled = true;
 
-    // Formatting multi-products for Google Sheet
     let orderItemsSummary = cart.map((item, idx) => {
         let details = [];
         if (item.size) details.push(`Size: ${item.size}`);
@@ -353,7 +438,7 @@ function submitFinalOrder(totalAmount) {
         cart = [];
         localStorage.removeItem("pak_store_cart");
         updateCartBadge();
-        window.location.href = "index.html"; // Wapis home page
+        window.location.href = "index.html";
     })
     .catch((err) => {
         console.error(err);
@@ -366,7 +451,7 @@ function submitFinalOrder(totalAmount) {
 }
 
 // ==========================================================================
-// 5. PRODUCT DETAILS PAGE (product.html)
+// 7. PRODUCT DETAILS PAGE (product.html)
 // ==========================================================================
 let productImages = [];
 let currentSlideIndex = 0;
@@ -387,6 +472,11 @@ function loadProductDetails() {
     document.getElementById("prodTitle").innerText = selectedProduct.name;
     document.getElementById("prodSku").innerText = "SKU: " + (selectedProduct.sku || "N/A");
     document.getElementById("prodPrice").innerText = "Rs. " + selectedProduct.price;
+
+    const bCat = document.getElementById("breadCategory");
+    if (bCat) bCat.innerText = selectedProduct.category;
+    const bName = document.getElementById("breadName");
+    if (bName) bName.innerText = selectedProduct.name;
 
     if (selectedProduct.discount) {
         const badge = document.getElementById("prodDiscount");
@@ -488,7 +578,6 @@ function toggleAcc(element) {
     }
 }
 
-// Add to Cart from product.html (Quick Checkout redirects to cart.html)
 function addToCartFromDetails(redirectToCart = false) {
     if (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !chosenSize) {
         alert("Please Select a Size First!");
@@ -529,7 +618,6 @@ function addToCartFromDetails(redirectToCart = false) {
     }
 }
 
-// Contact form submission on index.html
 function submitContact() {
     const name = document.getElementById("contactName").value.trim();
     const phone = document.getElementById("contactPhone").value.trim();
