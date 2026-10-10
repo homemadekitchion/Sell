@@ -14,7 +14,7 @@
       "mrp": 2490,
       "discount": "42% OFF",
       "rating": 5,
-      "image": "images/shoe2-1.jpg",
+      "image": "images/images (9).jpeg",
       "colors": ["Rose Gold", "Silver", "Champagne"],
       "sizes": ["4", "5", "6", "7", "8"],
       "badge": "NEW"
@@ -27,7 +27,7 @@
       "mrp": 4500,
       "discount": "38% OFF",
       "rating": 5,
-      "image": "images/shoe4-1.jpg",
+      "image": "images/images (9).jpeg",
       "colors": ["Black", "Grey", "Navy"],
       "sizes": ["6", "7", "8", "9", "10"],
       "badge": "TRENDING"
@@ -40,7 +40,7 @@
       "mrp": 69999,
       "discount": "10% OFF",
       "rating": 5,
-      "image": "images/mob3-1.jpg",
+      "image": "images/images (9).jpeg",
       "colors": ["Magic Black", "Gold"],
       "badge": "HOT"
     },
@@ -52,7 +52,7 @@
       "mrp": 5500,
       "discount": "29% OFF",
       "rating": 5,
-      "image": "images/fash1-1.jpg",
+      "image": "images/images (9).jpeg",
       "colors": ["Black", "Navy Blue", "Olive"],
       "sizes": ["M", "L", "XL", "XXL"],
       "badge": "NEW"
