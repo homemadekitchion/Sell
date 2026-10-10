@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pak COD Store - Buy Shoes, Mobiles & Fashion Online in Pakistan</title>
-    <meta name="description" content="Pakistan's trusted online store. Buy premium Shoes, Mobiles, Laptops, Fashion and Watches with Cash on Delivery nationwide. Fast shipping.">
+    <title>Pak COD Store - Premium Online Shopping in Pakistan</title>
+    <meta name="description" content="Pakistan's trusted online store for Shoes, Mobiles, Laptops, Fashion and Watches. 100% genuine products with nationwide Cash on Delivery.">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://aapki-website.github.io/index.html">
 
     <!-- Structured Data -->
@@ -19,13 +20,13 @@
 
     <style>
         * { box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 0; background-color: #f7f7f7; color: #222; }
-        
-        /* Header */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 0; background-color: #f8fafc; color: #1e293b; }
+
+        /* ================= 1. HEADER ================= */
         header { 
             background: #fff; 
             padding: 12px 18px; 
-            border-bottom: 1px solid #e5e5e5; 
+            border-bottom: 1px solid #e2e8f0; 
             position: sticky; 
             top: 0; 
             z-index: 100;
@@ -38,23 +39,23 @@
         .search-box {
             width: 100%;
             padding: 9px 12px 9px 34px;
-            border: 1px solid #ddd;
+            border: 1px solid #cbd5e1;
             border-radius: 20px;
             font-size: 13px;
             outline: none;
-            background: #fbfbfb;
+            background: #f8fafc;
             transition: all 0.2s;
         }
-        .search-box:focus { border-color: #000; background: #fff; }
-        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #888; pointer-events: none; }
+        .search-box:focus { border-color: #0f172a; background: #fff; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #64748b; pointer-events: none; }
 
         .header-center { flex: 1; text-align: center; }
         .header-center h1 { margin: 0; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
-        .header-center a { color: #000; text-decoration: none; }
+        .header-center a { color: #0f172a; text-decoration: none; }
 
         .header-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
         .cart-link-btn {
-            background: #000;
+            background: #0f172a;
             color: #fff;
             text-decoration: none;
             padding: 8px 14px;
@@ -65,7 +66,7 @@
             font-size: 13px;
             font-weight: 700;
         }
-        .cart-badge { background: #a41c23; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 11px; font-weight: bold; }
+        .cart-badge { background: #e11d48; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 11px; font-weight: bold; }
 
         @media (max-width: 600px) {
             header { padding: 10px; }
@@ -74,210 +75,182 @@
             .cart-link-btn { padding: 6px 10px; font-size: 12px; }
         }
 
-        /* Banner */
+        /* Banner Slider */
         .banner { width: 100%; height: 260px; overflow: hidden; position: relative; background: #eaeaea; }
         .banner img { width: 100%; height: 100%; object-fit: cover; }
         @media (min-width: 768px) { .banner { height: 380px; } }
 
-        /* ZIG-ZAG SHOWCASE SECTION */
-        .showcase-section {
-            background: #faf8fb;
-            padding: 50px 15px 40px 15px;
-            border-bottom: 1px solid #ede9f2;
-        }
-        .showcase-header { text-align: center; margin-bottom: 35px; }
-        .showcase-badge {
-            background: #fff;
-            color: #5540d9;
-            padding: 6px 18px;
+        /* ================= 2. PROMO BANNER (TASVEER #3 STYLE) ================= */
+        .promo-hero-card {
+            max-width: 1180px;
+            margin: 25px auto 15px auto;
+            background: #fce4ec;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        .showcase-title {
-            font-size: 26px;
-            font-weight: 800;
-            margin: 0;
-            color: #111;
-            letter-spacing: -0.5px;
-        }
-
-        .showcase-container {
-            max-width: 920px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 35px;
-        }
-
-        .showcase-row {
+            padding: 25px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 30px;
+            gap: 25px;
+            border: 2px solid #f8bbd0;
+            box-shadow: 0 10px 25px rgba(216, 27, 96, 0.08);
         }
-        .showcase-row.reverse { flex-direction: row-reverse; }
         @media (max-width: 768px) {
-            .showcase-row, .showcase-row.reverse {
-                flex-direction: column !important;
-                text-align: center;
-                gap: 15px;
-            }
+            .promo-hero-card { flex-direction: column; text-align: center; padding: 20px; margin: 15px; }
         }
-
-        .showcase-img-card {
+        .promo-frame {
             flex: 1;
-            min-width: 280px;
-            max-width: 420px;
-            height: 250px;
+            max-width: 320px;
+            height: 220px;
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            border: 2px solid #222;
+            box-shadow: 5px 5px 0px #222;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
-            overflow: hidden;
-            border: 1px solid #f0edf5;
+            padding: 10px;
         }
-        .showcase-img-card img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            mix-blend-mode: multiply;
-        }
+        .promo-frame img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+        .promo-content { flex: 1.3; }
+        .promo-pill { background: #fff; color: #d81b60; font-size: 11px; font-weight: 800; padding: 5px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; border: 1px solid #f48fb1; }
+        .promo-heading { font-size: 32px; font-weight: 900; margin: 0 0 8px 0; color: #111; letter-spacing: -1px; }
+        .promo-desc { color: #555; font-size: 14px; line-height: 1.5; margin: 0 0 16px 0; }
+        .btn-shop-now { background: #222; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 25px; font-size: 13px; font-weight: 700; display: inline-block; text-transform: uppercase; }
 
-        .showcase-text-box {
-            flex: 1;
-            max-width: 420px;
+        /* ================= 3. 3 QUICK GATEWAY CARDS ================= */
+        .gateway-grid {
+            max-width: 1180px;
+            margin: 0 auto 35px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 0 15px;
         }
-        .showcase-item-title {
-            font-size: 19px;
-            font-weight: 700;
-            color: #111;
-            margin: 0 0 6px 0;
-        }
-        .showcase-item-desc {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.6;
-            margin: 0 0 12px 0;
-        }
-
-        /* Showcase Price & Buy Buttons */
-        .showcase-price-box {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-        .showcase-price { font-size: 18px; font-weight: 800; color: #000; }
-        .showcase-mrp { font-size: 13px; color: #888; text-decoration: line-through; }
-        .showcase-disc { font-size: 12px; font-weight: 700; color: #a41c23; }
-
-        .showcase-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .col-buy-btn {
-            background: #004dd0;
-            color: #fff;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: background 0.2s;
-        }
-        .col-buy-btn:hover { background: #003bb0; }
-        .col-cart-btn {
+        @media (max-width: 600px) { .gateway-grid { grid-template-columns: 1fr; gap: 10px; } }
+        .gateway-card {
             background: #fff;
-            color: #111;
-            border: 1px solid #ccc;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .col-cart-btn:hover { border-color: #000; background: #f0f0f0; }
-
-        .showcase-footer { text-align: center; margin-top: 35px; }
-        .view-more-btn {
-            background: #121020;
-            color: #fff;
+            border: 2px solid #222;
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
             text-decoration: none;
-            padding: 13px 36px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            color: #222;
+            box-shadow: 4px 4px 0px #222;
+            transition: all 0.15s;
+            display: block;
         }
+        .gateway-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #222; }
+        .gateway-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+        .gateway-title { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin: 0; }
 
-        /* Categories */
-        .categories-wrapper { background: #fff; padding: 12px 10px; border-bottom: 1px solid #eee; overflow-x: auto; white-space: nowrap; text-align: center; }
-        .cat-btn { display: inline-block; padding: 8px 18px; margin: 3px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 20px; font-size: 13px; font-weight: 600; color: #333; }
-        .cat-btn.active { background: #000; color: #fff; border-color: #000; }
+        /* ================= 4. BEST SELLERS PREVIEW (TASVEER #1 STYLE) ================= */
+        .section-wrap { max-width: 1200px; margin: 0 auto 40px auto; padding: 0 15px; }
+        .section-bar { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+        .section-bar h2 { margin: 0; font-size: 22px; font-weight: 800; color: #0f172a; }
+        .section-view-all { color: #0284c7; text-decoration: none; font-size: 13px; font-weight: 700; }
+        .section-view-all:hover { text-decoration: underline; }
 
-        /* Product Grid */
-        .product-container { display: grid; gap: 12px; padding: 12px; max-width: 1240px; margin: auto; }
-        @media (min-width: 1024px) { .product-container { grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 20px; } }
-        @media (min-width: 601px) and (max-width: 1023px) { .product-container { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
-        @media (max-width: 600px) { .product-container { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; } }
+        .best-grid { display: grid; gap: 15px; grid-template-columns: repeat(4, 1fr); }
+        @media (max-width: 1023px) { .best-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 600px) { .best-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
-        .product-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
+        .best-card { background: #fff; border: 1px solid #f1f5f9; border-radius: 6px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .best-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.07); }
+        .best-img-box { width: 100%; aspect-ratio: 3 / 4; background: #fafafa; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; cursor: pointer; }
+        .best-img-box img { max-width: 90%; max-height: 90%; object-fit: contain; mix-blend-mode: multiply; }
+        .best-card-title { font-size: 13px; font-weight: 600; color: #0f172a; margin: 0 0 6px 0; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; cursor: pointer; }
+        .best-price-row { font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 10px; }
+        .btn-add-cart-best { width: 100%; background: #fff; color: #0f172a; border: 1.5px solid #0f172a; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase; border-radius: 4px; }
+        .btn-add-cart-best:hover { background: #0f172a; color: #fff; }
+
+        /* ================= 5. ON SALE / TRENDING PREVIEW (TASVEER #2 STYLE) ================= */
+        .sale-grid { display: grid; gap: 15px; grid-template-columns: repeat(4, 1fr); }
+        @media (max-width: 1023px) { .sale-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 600px) { .sale-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+
+        .sale-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        .badge-circle { position: absolute; top: 8px; left: 8px; width: 34px; height: 34px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; z-index: 5; }
+        .sale-img-box { width: 100%; aspect-ratio: 1 / 1; background: #f8fafc; display: flex; align-items: center; justify-content: center; padding: 16px; cursor: pointer; }
+        .sale-img-box img { max-width: 90%; max-height: 90%; object-fit: contain; mix-blend-mode: multiply; }
+        .sale-info { padding: 10px; text-align: left; }
+        .sale-card-title { font-size: 12px; font-weight: 700; color: #0f172a; margin: 0 0 4px 0; height: 32px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; cursor: pointer; }
+        .sale-card-price { font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
+        .stars-row { color: #f59e0b; font-size: 12px; margin-bottom: 6px; }
+        .swatches-row { display: flex; gap: 4px; margin-bottom: 8px; }
+        .swatch-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #cbd5e1; }
+        .btn-quick-sale { width: 100%; background: #0f172a; color: #fff; border: none; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
+
+        /* ================= 6. ZIG-ZAG FEATURED SHOWCASE ================= */
+        .showcase-section { background: #faf8fb; padding: 45px 15px 35px 15px; border-top: 1px solid #ede9f2; border-bottom: 1px solid #ede9f2; margin-bottom: 35px; }
+        .showcase-header { text-align: center; margin-bottom: 30px; }
+        .showcase-badge { background: #fff; color: #5540d9; padding: 5px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; display: inline-block; margin-bottom: 8px; border: 1px solid #e0dcf8; }
+        .showcase-title { font-size: 26px; font-weight: 900; margin: 0; color: #0f172a; }
+        .showcase-container { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+        .showcase-row { display: flex; align-items: center; justify-content: space-between; gap: 25px; }
+        .showcase-row.reverse { flex-direction: row-reverse; }
+        @media (max-width: 768px) { .showcase-row, .showcase-row.reverse { flex-direction: column !important; text-align: center; } }
+        .showcase-img-card { flex: 1; min-width: 260px; max-width: 400px; height: 230px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 15px; border: 1px solid #f0edf5; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .showcase-img-card img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+        .showcase-text-box { flex: 1; max-width: 400px; }
+        .showcase-item-title { font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0; cursor: pointer; }
+        .showcase-item-desc { font-size: 13px; color: #64748b; line-height: 1.6; margin: 0 0 10px 0; }
+        .showcase-price-box { font-size: 17px; font-weight: 900; color: #0f172a; margin-bottom: 12px; }
+        .showcase-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .col-buy-btn { background: #0284c7; color: #fff; border: none; padding: 9px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .col-cart-btn { background: #fff; color: #0f172a; border: 1px solid #cbd5e1; padding: 9px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .showcase-footer { text-align: center; margin-top: 30px; }
+        .view-more-btn { background: #0f172a; color: #fff; text-decoration: none; padding: 12px 32px; border-radius: 25px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: inline-block; }
+
+        /* ================= 7. MAIN CATALOG ================= */
+        .categories-wrapper { background: #fff; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; overflow-x: auto; white-space: nowrap; text-align: center; margin-bottom: 20px; }
+        .cat-btn { display: inline-block; padding: 8px 18px; margin: 3px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; border-radius: 20px; font-size: 13px; font-weight: 700; color: #334155; }
+        .cat-btn.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+        .product-container { display: grid; gap: 12px; padding: 0 15px; max-width: 1240px; margin: auto; }
+        @media (min-width: 1024px) { .product-container { grid-template-columns: repeat(4, 1fr); gap: 18px; } }
+        @media (min-width: 601px) and (max-width: 1023px) { .product-container { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 600px) { .product-container { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+
+        .product-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
         .product-img-box { position: relative; background: #fdfdfd; padding: 15px; text-align: center; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; }
         .product-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
         .badge { position: absolute; top: 0; left: 0; background: #a41c23; color: #fff; padding: 3px 7px; font-size: 11px; font-weight: 700; border-bottom-right-radius: 4px; }
-
         .product-info { padding: 12px; }
-        .product-info h3 { margin: 0 0 6px 0; font-size: 13px; font-weight: 500; color: #333; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .price-box { font-size: 15px; font-weight: 700; color: #111; }
-        .mrp { text-decoration: line-through; color: #888; font-size: 12px; font-weight: 400; margin-left: 6px; }
-        .discount-text { color: #a41c23; font-size: 12px; font-weight: 600; margin-left: 4px; }
-        .colors-count { font-size: 11px; color: #666; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
-        .color-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #bbb; background: #e0e0e0; display: inline-block; }
+        .product-info h3 { margin: 0 0 6px 0; font-size: 13px; font-weight: 600; color: #0f172a; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .price-box { font-size: 15px; font-weight: 800; color: #0f172a; }
+        .mrp { text-decoration: line-through; color: #94a3b8; font-size: 12px; font-weight: 400; margin-left: 6px; }
+        .discount-text { color: #a41c23; font-size: 12px; font-weight: 700; margin-left: 4px; }
+        .colors-count { font-size: 11px; color: #64748b; margin-top: 6px; }
 
         .load-more-container { text-align: center; margin: 25px 0 40px 0; }
-        .load-more-btn { background: #000; color: #fff; padding: 12px 30px; border: none; cursor: pointer; border-radius: 25px; font-size: 13px; font-weight: 700; text-transform: uppercase; }
+        .load-more-btn { background: #0f172a; color: #fff; padding: 12px 30px; border: none; cursor: pointer; border-radius: 25px; font-size: 13px; font-weight: 700; text-transform: uppercase; }
 
         /* Search Empty State */
-        .no-results-box { grid-column: 1 / -1; text-align: center; background: #fff; padding: 40px 20px; border-radius: 8px; border: 1px dashed #ccc; margin: 20px auto; max-width: 500px; }
+        .no-results-box { grid-column: 1 / -1; text-align: center; background: #fff; padding: 40px 20px; border-radius: 8px; border: 1px dashed #cbd5e1; margin: 20px auto; max-width: 500px; }
         .no-results-box span { font-size: 45px; display: block; margin-bottom: 10px; }
-        .no-results-box h3 { margin: 0 0 8px 0; color: #a41c23; font-size: 18px; }
-        .no-results-box p { color: #666; font-size: 14px; margin-bottom: 18px; }
-        .no-results-box button { background: #000; color: #fff; padding: 10px 20px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .no-results-box h3 { margin: 0 0 8px 0; color: #e11d48; font-size: 18px; }
+        .no-results-box button { background: #0f172a; color: #fff; padding: 10px 20px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
 
         /* SEO & Contact */
-        .seo-content, .contact-section { max-width: 1200px; margin: 30px auto; padding: 25px; background: #fff; border-radius: 6px; border: 1px solid #e8e8e8; }
-        .seo-content h2, .contact-section h2 { color: #111; border-bottom: 2px solid #000; padding-bottom: 8px; font-size: 20px; margin-top: 0; }
-        .seo-content h3 { font-size: 16px; margin-top: 18px; color: #333; }
-        .seo-content p { line-height: 1.7; color: #555; font-size: 14px; text-align: justify; }
+        .seo-content, .contact-section { max-width: 1200px; margin: 30px auto; padding: 25px; background: #fff; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .seo-content h2, .contact-section h2 { color: #0f172a; border-bottom: 2px solid #0f172a; padding-bottom: 8px; font-size: 20px; margin-top: 0; }
+        .seo-content p { line-height: 1.7; color: #475569; font-size: 14px; text-align: justify; }
+        .faq-item { border-bottom: 1px dashed #e2e8f0; padding: 12px 0; }
+        .faq-item strong { display: block; color: #0f172a; margin-bottom: 4px; font-size: 14px; }
+        .faq-item p { margin: 0; color: #64748b; font-size: 13px; }
 
-        .faq-item { border-bottom: 1px dashed #ddd; padding: 12px 0; }
-        .faq-item strong { display: block; color: #000; margin-bottom: 4px; font-size: 14px; }
-        .faq-item p { margin: 0; color: #555; font-size: 13px; line-height: 1.5; }
+        .contact-form input, .contact-form textarea { width: 100%; margin: 8px 0; padding: 11px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; font-family: inherit; }
+        .contact-form button { background: #0f172a; color: #fff; padding: 12px; width: 100%; border: none; cursor: pointer; font-size: 14px; font-weight: 700; border-radius: 4px; text-transform: uppercase; }
 
-        .contact-form input, .contact-form textarea { width: 100%; margin: 8px 0; padding: 11px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
-        .contact-form button { background: #000; color: #fff; padding: 12px; width: 100%; border: none; cursor: pointer; font-size: 14px; font-weight: 700; border-radius: 4px; text-transform: uppercase; }
-
-        footer { background: #111; color: #aaa; text-align: center; padding: 25px 15px; font-size: 12px; margin-top: 40px; }
-        footer a { color: #fff; text-decoration: none; margin: 0 8px; }
-        #loadingMsg { text-align: center; padding: 40px; font-size: 15px; color: #666; font-weight: bold; }
+        footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 25px 15px; font-size: 12px; margin-top: 40px; }
+        footer a { color: #f8fafc; text-decoration: none; margin: 0 8px; }
+        #loadingMsg { text-align: center; padding: 40px; font-size: 15px; color: #64748b; font-weight: bold; }
     </style>
 </head>
 <body>
 
+    <!-- Header Navigation -->
     <header>
         <div class="header-left">
             <span class="search-icon">🔍</span>
@@ -293,39 +266,92 @@
         </div>
     </header>
 
-    <!-- Top Banner -->
+    <!-- 1. Main Banner Slider -->
     <div class="banner">
         <img id="bannerImage" src="" alt="Pak COD Store Sale Banner">
     </div>
 
-    <!-- ZIG-ZAG SHOWCASE SECTION (WITH BUY NOW / ADD TO CART) -->
-    <section class="showcase-section" id="showcaseWrapper">
-        <div class="showcase-header">
-            <span class="showcase-badge" id="showcaseBadge">Featured Elements</span>
-            <h2 class="showcase-title" id="showcaseHeading">See what's new</h2>
-        </div>
+    <!-- Container for dynamic sections (Hidden during search) -->
+    <div id="homeFeaturedBlocks">
+        
+        <!-- 2. Promo Banner (Tasveer #3 Style) -->
+        <section class="promo-hero-card">
+            <div class="promo-frame">
+                <img id="homePromoImg" src="images/shoe2-1.jpg" alt="New Arrival Special">
+            </div>
+            <div class="promo-content">
+                <span class="promo-pill" id="homePromoPill">🌸 Fresh Drops</span>
+                <h2 class="promo-heading" id="homePromoTitle">New Arrival</h2>
+                <p class="promo-desc" id="homePromoDesc">Discover newly curated trends for the season with nationwide Cash on Delivery.</p>
+                <a href="new-arrivals.html" class="btn-shop-now">SHOP NOW &rarr;</a>
+            </div>
+        </section>
 
-        <div class="showcase-container" id="showcaseContainer"></div>
+        <!-- 3. 3 Quick Gateway Cards (Tasveer #3 Bottom) -->
+        <section class="gateway-grid">
+            <a href="new-arrivals.html" class="gateway-card">
+                <span class="gateway-icon">🌸</span>
+                <h3 class="gateway-title">NEW ARRIVAL</h3>
+            </a>
+            <a href="best-sellers.html" class="gateway-card">
+                <span class="gateway-icon">⭐</span>
+                <h3 class="gateway-title">BEST SELLERS</h3>
+            </a>
+            <a href="on-sale.html" class="gateway-card">
+                <span class="gateway-icon">🔥</span>
+                <h3 class="gateway-title">NOW ON SALE</h3>
+            </a>
+        </section>
 
-        <div class="showcase-footer">
-            <a href="collection.html" class="view-more-btn">VIEW MORE</a>
-        </div>
-    </section>
+        <!-- 4. Best Sellers Preview (Tasveer #1 Style) -->
+        <section class="section-wrap">
+            <div class="section-bar">
+                <h2>Best Sellers</h2>
+                <a href="best-sellers.html" class="section-view-all">View All Best Sellers &rarr;</a>
+            </div>
+            <div class="best-grid" id="homeBestGrid"></div>
+        </section>
 
-    <!-- Categories Filters -->
+        <!-- 5. Trending & On Sale Preview (Tasveer #2 Style) -->
+        <section class="section-wrap">
+            <div class="section-bar">
+                <h2>Trending Collection</h2>
+                <a href="on-sale.html" class="section-view-all">View All Deals &rarr;</a>
+            </div>
+            <div class="sale-grid" id="homeSaleGrid"></div>
+        </section>
+
+        <!-- 6. Zig-Zag Curated Collections Showcase -->
+        <section class="showcase-section" id="showcaseWrapper">
+            <div class="showcase-header">
+                <span class="showcase-badge" id="showcaseBadge">Featured Elements</span>
+                <h2 class="showcase-title" id="showcaseHeading">See what's new</h2>
+            </div>
+            <div class="showcase-container" id="showcaseContainer"></div>
+            <div class="showcase-footer">
+                <a href="collection.html" class="view-more-btn">VIEW MORE COLLECTIONS</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 7. Main Catalog Categories & Products -->
+    <div class="section-wrap" style="margin-bottom: 10px;">
+        <h2 style="font-size: 22px; font-weight: 800; color: #0f172a; margin: 0 0 10px 0;">All Products Catalog</h2>
+    </div>
+    
     <nav class="categories-wrapper" id="category-container" aria-label="Product Categories"></nav>
 
     <div id="loadingMsg">Loading Products...</div>
 
-    <!-- Main Products Grid -->
     <main>
-        <section class="product-container" id="product-container" aria-label="Featured Products"></section>
+        <section class="product-container" id="product-container" aria-label="Main Products Grid"></section>
 
         <div class="load-more-container">
             <button id="loadMoreBtn" class="load-more-btn" style="display: none;" onclick="loadMore()">Load More Products</button>
         </div>
 
-        <!-- SEO Article & 20 FAQs -->
+        <!-- 8. SEO Article & 20 FAQs -->
         <section class="seo-content">
             <h2>Online Shopping in Pakistan - Cash on Delivery Store</h2>
             <p>Welcome to <strong>Pak COD Store</strong>, Pakistan's trusted online marketplace offering genuine Shoes, Mobiles, Laptops, Fashion Apparel, and Luxury Watches with nationwide Cash on Delivery (COD).</p>
@@ -356,7 +382,7 @@
             <div class="faq-item"><strong>20. Raabta kaise karein?</strong><p>Neeche diye gaye Contact Form ya WhatsApp number ke zariye.</p></div>
         </section>
 
-        <!-- Contact Section -->
+        <!-- 9. Contact Form (Direct to Google Sheets) -->
         <section class="contact-section">
             <h2>Contact Us (Direct Message)</h2>
             <p>Kisi bhi sawal ya rehnumai ke liye apna message send karein:</p>
@@ -370,7 +396,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="collection.html">Collections</a> | <a href="cart.html">Cart</a></p>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="new-arrivals.html">New Arrivals</a> | <a href="best-sellers.html">Best Sellers</a> | <a href="on-sale.html">On Sale</a> | <a href="collection.html">Collections</a> | <a href="cart.html">Cart</a></p>
     </footer>
 
     <script src="script.js"></script>
