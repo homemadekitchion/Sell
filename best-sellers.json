@@ -1,0 +1,81 @@
+{
+  "sectionTitle": "Best Sellers",
+  "subtitle": "Most Loved & Top Rated Across Pakistan",
+  "products": [
+    {
+      "id": 301,
+      "name": "Women Beige Casual Comfort Sandals",
+      "category": "Shoes",
+      "price": 1291,
+      "mrp": 2690,
+      "discount": "52% OFF",
+      "sales": "1,450+ Sold",
+      "image": "images/shoe1-1.jpg",
+      "colors": ["Beige", "Black", "Rose Gold"],
+      "sizes": ["4", "5", "6", "7", "8"],
+      "badge": "#1 Best Seller"
+    },
+    {
+      "id": 302,
+      "name": "Men Handcrafted Leather Oxford Shoes",
+      "category": "Shoes",
+      "price": 4200,
+      "mrp": 6000,
+      "discount": "30% OFF",
+      "sales": "980+ Sold",
+      "image": "images/shoe3-1.jpg",
+      "colors": ["Black", "Brown"],
+      "sizes": ["7", "8", "9", "10", "11"],
+      "badge": "Top Rated"
+    },
+    {
+      "id": 303,
+      "name": "Rolex Submariner Homage Automatic Watch",
+      "category": "Watches",
+      "price": 8800,
+      "mrp": 14000,
+      "discount": "37% OFF",
+      "sales": "620+ Sold",
+      "image": "images/wat1-1.jpg",
+      "colors": ["Black Dial", "Green Bezel"],
+      "badge": "Trending"
+    },
+    {
+      "id": 304,
+      "name": "Samsung Galaxy S23 Ultra Flagship",
+      "category": "Mobiles",
+      "price": 315000,
+      "mrp": 350000,
+      "discount": "10% OFF",
+      "sales": "310+ Sold",
+      "image": "images/mob1-1.jpg",
+      "colors": ["Phantom Black", "Cream"],
+      "badge": "Customer Choice"
+    },
+    {
+      "id": 305,
+      "name": "Slim Fit Stretch Denim Casual Jeans",
+      "category": "Fashion",
+      "price": 1950,
+      "mrp": 3200,
+      "discount": "39% OFF",
+      "sales": "1,120+ Sold",
+      "image": "images/fash2-1.jpg",
+      "colors": ["Dark Indigo", "Light Blue", "Black"],
+      "sizes": ["30", "32", "34", "36", "38"],
+      "badge": "#1 In Fashion"
+    },
+    {
+      "id": 306,
+      "name": "Apple MacBook Air M1 Chip 256GB SSD",
+      "category": "Laptops",
+      "price": 218000,
+      "mrp": 245000,
+      "discount": "11% OFF",
+      "sales": "180+ Sold",
+      "image": "images/lap3-1.jpg",
+      "colors": ["Space Gray", "Silver"],
+      "badge": "Bestseller Tech"
+    }
+  ]
+}
