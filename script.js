@@ -9,7 +9,7 @@ let allCollections = [];
 let allBestSellers = [];
 let allOnSale = [];
 let currentCategory = "All";
-let itemsToShow = 6;
+let itemsToShow = 10;
 let searchQuery = "";
 let selectedProduct = null;
 let selectedCollection = null;
@@ -20,11 +20,29 @@ let chosenColor = null;
 let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
 
 // ==========================================================================
+// SMART IMAGE RESOLVER (Pictures Kabhi Fail / Blank Nahi Hongi)
+// ==========================================================================
+function getProductImage(item) {
+    if (!item) return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80";
+    
+    // 1. Agar images array hai aur usme tasweer mojood hai
+    if (item.images && Array.isArray(item.images) && item.images.length > 0 && item.images[0]) {
+        return item.images[0];
+    }
+    // 2. Agar single image string hai
+    if (item.image && typeof item.image === "string" && item.image.trim() !== "") {
+        return item.image;
+    }
+    // 3. Fallback High-Quality Image
+    return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80";
+}
+
+// ==========================================================================
 // 2. DATA INITIALIZATION & PAGE ROUTING
 // ==========================================================================
 const cacheTime = new Date().getTime();
 
-// 1. Load Main data.json (For index.html, product.html, cart.html)
+// 1. Load Main data.json
 fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
@@ -52,26 +70,24 @@ fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
     })
     .catch(err => console.error("Error loading data.json:", err));
 
-// 2. Load New Arrivals (For Home Promo Banner & new-arrivals.html)
+// 2. Load New Arrivals
 fetch(`./new-arrivals.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
-        // Home page promo banner
         if (data.hero && document.getElementById("homePromoImg")) {
-            document.getElementById("homePromoImg").src = data.hero.image;
-            document.getElementById("homePromoPill").innerText = "🌸 " + data.hero.badge;
-            document.getElementById("homePromoTitle").innerText = data.hero.title;
-            document.getElementById("homePromoDesc").innerText = data.hero.description;
+            document.getElementById("homePromoImg").src = getProductImage(data.hero);
+            document.getElementById("homePromoPill").innerText = "🌸 " + (data.hero.badge || "Fresh Drops");
+            document.getElementById("homePromoTitle").innerText = data.hero.title || "New Arrival";
+            document.getElementById("homePromoDesc").innerText = data.hero.description || "";
         }
 
-        // new-arrivals.html page grid & hero
         if (document.getElementById("newArrivalsGrid")) {
             renderNewArrivalsPage(data);
         }
     })
     .catch(err => console.error("Error loading new-arrivals.json:", err));
 
-// 3. Load Best Sellers (For Home Preview)
+// 3. Load Best Sellers
 fetch(`./best-sellers.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
@@ -82,7 +98,7 @@ fetch(`./best-sellers.json?v=${cacheTime}`, { cache: 'no-store' })
     })
     .catch(err => console.error("Error loading best-sellers.json:", err));
 
-// 4. Load On Sale (For Home Preview)
+// 4. Load On Sale
 fetch(`./on-sale.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
@@ -93,7 +109,7 @@ fetch(`./on-sale.json?v=${cacheTime}`, { cache: 'no-store' })
     })
     .catch(err => console.error("Error loading on-sale.json:", err));
 
-// 5. Load Collections (For Home Showcase, collection.html & collection-detail.html)
+// 5. Load Collections
 fetch(`./collections.json?v=${cacheTime}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
@@ -122,301 +138,8 @@ function updateCartBadge() {
 }
 
 // ==========================================================================
-// 3. NEW ARRIVALS PAGE LOGIC (new-arrivals.html)
+// 3. HOME PAGE: MAIN PRODUCTS GRID (PICTURE LOADING FIXED)
 // ==========================================================================
-function renderNewArrivalsPage(data) {
-    if (data.hero) {
-        const img = document.getElementById("newHeroImg");
-        const pill = document.getElementById("newHeroPill");
-        const title = document.getElementById("newHeroTitle");
-        const desc = document.getElementById("newHeroDesc");
-        if (img) img.src = data.hero.image;
-        if (pill) pill.innerText = data.hero.badge;
-        if (title) title.innerText = data.hero.title;
-        if (desc) desc.innerText = data.hero.description;
-    }
-
-    const grid = document.getElementById("newArrivalsGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
-
-    data.products.forEach(prod => {
-        const card = document.createElement("div");
-        card.className = "new-card";
-
-        const mrpHtml = prod.mrp ? `<span class="mrp">Rs. ${prod.mrp}</span>` : "";
-        const discHtml = prod.discount ? `<span class="disc">${prod.discount}</span>` : "";
-
-        card.innerHTML = `
-            <div class="new-tag">${prod.badge || "NEW"}</div>
-            <div class="img-box" onclick="buyNewItem(${prod.id}, true)">
-                <img src="${prod.image}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=New+Arrival';">
-            </div>
-            <div class="card-info">
-                <div class="rating-stars">★★★★★</div>
-                <h3 class="card-title" onclick="buyNewItem(${prod.id}, true)">${prod.name}</h3>
-                <div class="price-row">
-                    <span class="price">Rs. ${prod.price}</span>
-                    ${mrpHtml}
-                    ${discHtml}
-                </div>
-                <div class="colors-strip">
-                    ${prod.colors ? prod.colors.map(() => '<span class="color-dot"></span>').join('') : ''}
-                </div>
-                <div class="card-actions">
-                    <button class="btn-buy" onclick="buyNewItem(${prod.id}, true)">Buy Now</button>
-                    <button class="btn-cart" onclick="buyNewItem(${prod.id}, false)">Add to Cart</button>
-                </div>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function buyNewItem(id, redirectToCart) {
-    fetch(`./new-arrivals.json`)
-        .then(res => res.json())
-        .then(data => {
-            const item = data.products.find(p => p.id === id);
-            if (!item) return;
-
-            const cartItemId = `new_${item.id}`;
-            const existingIndex = cart.findIndex(i => i.id === cartItemId);
-
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += 1;
-            } else {
-                cart.push({
-                    id: cartItemId,
-                    name: `${item.name} [New Arrival]`,
-                    price: item.price,
-                    image: item.image,
-                    size: item.sizes ? item.sizes[0] : "Standard",
-                    color: item.colors ? item.colors[0] : "Standard",
-                    quantity: 1
-                });
-            }
-
-            localStorage.setItem("pak_store_cart", JSON.stringify(cart));
-            updateCartBadge();
-
-            if (redirectToCart) {
-                window.location.href = "cart.html";
-            } else {
-                alert(`"${item.name}" added to cart!`);
-            }
-        });
-}
-
-// ==========================================================================
-// 4. HOME PAGE: BEST SELLERS & ON SALE PREVIEWS
-// ==========================================================================
-function renderHomeBestSellers(products) {
-    const grid = document.getElementById("homeBestGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
-
-    products.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "best-card";
-        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:5px;">Rs. ${item.mrp}</span>` : "";
-
-        card.innerHTML = `
-            <div>
-                <div class="best-img-box" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${item.image}', true)">
-                    <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Best+Seller';">
-                </div>
-                <h3 class="best-card-title" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${item.image}', true)">${item.name}</h3>
-                <div class="best-price-row">Rs. ${item.price} ${mrpHtml}</div>
-            </div>
-            <button class="btn-add-cart-best" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${item.image}', false)">ADD TO CART</button>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function renderHomeOnSale(products) {
-    const grid = document.getElementById("homeSaleGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
-
-    products.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "sale-card";
-        const badgeColor = item.badgeColor || "#e11d48";
-        const badgeHtml = item.badge ? `<div class="badge-circle" style="background-color: ${badgeColor};">${item.badge}</div>` : "";
-
-        let swatchesHtml = "";
-        if (item.colors && item.colors.length > 0) {
-            swatchesHtml = `<div class="swatches-row">` + item.colors.map(c => `<span class="swatch-dot" style="background-color: ${c};"></span>`).join('') + `</div>`;
-        }
-
-        card.innerHTML = `
-            <div>
-                ${badgeHtml}
-                <div class="sale-img-box" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${item.image}', true)">
-                    <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=Trending';">
-                </div>
-                <div class="sale-info">
-                    <h3 class="sale-card-title" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${item.image}', true)">${item.name}</h3>
-                    <div class="sale-card-price">Rs. ${item.price}</div>
-                    <div class="stars-row">★★★★★</div>
-                    ${swatchesHtml}
-                </div>
-            </div>
-            <div style="padding: 0 10px 10px 10px;">
-                <button class="btn-quick-sale" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${item.image}', true)">Quick Buy</button>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function addGenericToCart(name, price, image, redirectToCart) {
-    const cartItemId = `item_${encodeURIComponent(name)}`;
-    const existingIndex = cart.findIndex(i => i.id === cartItemId);
-
-    if (existingIndex > -1) {
-        cart[existingIndex].quantity += 1;
-    } else {
-        cart.push({
-            id: cartItemId,
-            name: name,
-            price: price,
-            image: image || "images/placeholder.jpg",
-            size: "Standard",
-            color: "Featured",
-            quantity: 1
-        });
-    }
-
-    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
-    updateCartBadge();
-
-    if (redirectToCart) {
-        window.location.href = "cart.html";
-    } else {
-        alert(`"${name}" added to cart!`);
-    }
-}
-
-// ==========================================================================
-// 5. HOME PAGE: ZIG-ZAG SHOWCASE
-// ==========================================================================
-function renderHomeShowcase(data) {
-    const container = document.getElementById("showcaseContainer");
-    if (!container) return;
-
-    if (data.badge) {
-        const badgeEl = document.getElementById("showcaseBadge");
-        if (badgeEl) badgeEl.innerText = data.badge;
-    }
-    if (data.heading) {
-        const headEl = document.getElementById("showcaseHeading");
-        if (headEl) headEl.innerText = data.heading;
-    }
-
-    container.innerHTML = "";
-
-    data.collections.forEach((item, index) => {
-        const isReverse = index % 2 !== 0;
-        const row = document.createElement("div");
-        row.className = `showcase-row ${isReverse ? 'reverse' : ''}`;
-
-        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:6px;">Rs. ${item.mrp}</span>` : "";
-        const discHtml = item.discount ? `<span style="color:#e11d48;font-size:12px;font-weight:700;margin-left:4px;">${item.discount}</span>` : "";
-        const firstImg = (item.images && item.images.length > 0) ? item.images[0] : item.image;
-
-        row.innerHTML = `
-            <div class="showcase-img-card" onclick="window.location.href='collection-detail.html?id=${item.id}'">
-                <img src="${firstImg}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/350?text=Collection';">
-            </div>
-            <div class="showcase-text-box">
-                <h3 class="showcase-item-title" onclick="window.location.href='collection-detail.html?id=${item.id}'">${item.title}</h3>
-                <p class="showcase-item-desc">${item.description}</p>
-                <div class="showcase-price-box">
-                    <span>Rs. ${item.price}</span>
-                    ${mrpHtml}
-                    ${discHtml}
-                </div>
-                <div class="showcase-actions">
-                    <button class="col-buy-btn" onclick="window.location.href='collection-detail.html?id=${item.id}'">View & Select Options</button>
-                    <button class="col-cart-btn" onclick="addGenericToCart('${item.title} (Collection)', ${item.price}, '${firstImg}', false)">Quick Add</button>
-                </div>
-            </div>
-        `;
-        container.appendChild(row);
-    });
-}
-
-// ==========================================================================
-// 6. SEARCH & MAIN CATALOG
-// ==========================================================================
-function handleSearch() {
-    const input = document.getElementById("searchInput");
-    searchQuery = input.value.trim().toLowerCase();
-    itemsToShow = 10;
-
-    const featBlocks = document.getElementById("homeFeaturedBlocks");
-    if (featBlocks) {
-        featBlocks.style.display = searchQuery === "" ? "block" : "none";
-    }
-
-    displayProducts();
-}
-
-function clearSearch() {
-    const input = document.getElementById("searchInput");
-    if (input) input.value = "";
-    searchQuery = "";
-    currentCategory = "All";
-
-    const featBlocks = document.getElementById("homeFeaturedBlocks");
-    if (featBlocks) featBlocks.style.display = "block";
-
-    document.querySelectorAll(".cat-btn").forEach(b => {
-        b.classList.toggle("active", b.innerText === "All");
-    });
-    displayProducts();
-}
-
-function startBannerSlider(bannerImages) {
-    let bannerIndex = 0;
-    const bannerImg = document.getElementById("bannerImage");
-    if (!bannerImg || bannerImages.length === 0) return;
-
-    bannerImg.src = bannerImages[0];
-    if (bannerImages.length > 1) {
-        setInterval(() => {
-            bannerIndex = (bannerIndex + 1) % bannerImages.length;
-            bannerImg.src = bannerImages[bannerIndex];
-        }, 4000);
-    }
-}
-
-function displayCategories(categories) {
-    const catContainer = document.getElementById("category-container");
-    if (!catContainer) return;
-    catContainer.innerHTML = "";
-
-    categories.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.innerText = cat;
-        btn.className = "cat-btn" + (cat === "All" ? " active" : "");
-        btn.onclick = () => {
-            document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            currentCategory = cat;
-            searchQuery = "";
-            const searchInput = document.getElementById("searchInput");
-            if (searchInput) searchInput.value = "";
-            itemsToShow = 10;
-            displayProducts();
-        };
-        catContainer.appendChild(btn);
-    });
-}
-
 function displayProducts() {
     const container = document.getElementById("product-container");
     if (!container) return;
@@ -462,12 +185,13 @@ function displayProducts() {
             colorsHtml = `<div class="colors-count">${prod.colors.length} colors available</div>`;
         }
 
-        const firstImage = (prod.images && prod.images.length > 0) ? prod.images[0] : "images/placeholder.jpg";
+        // Smart Picture URL
+        const prodImg = getProductImage(prod);
 
         card.innerHTML = `
             <div class="product-img-box">
                 ${badgeHtml}
-                <img src="${firstImage}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=Product';">
+                <img src="${prodImg}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80';">
             </div>
             <div class="product-info">
                 <h3>${prod.name}</h3>
@@ -489,8 +213,459 @@ function loadMore() {
     displayProducts();
 }
 
+// Banner Slider
+function startBannerSlider(bannerImages) {
+    let bannerIndex = 0;
+    const bannerImg = document.getElementById("bannerImage");
+    if (!bannerImg || bannerImages.length === 0) return;
+
+    bannerImg.src = bannerImages[0];
+    bannerImg.onerror = function() {
+        this.src = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80";
+    };
+
+    if (bannerImages.length > 1) {
+        setInterval(() => {
+            bannerIndex = (bannerIndex + 1) % bannerImages.length;
+            bannerImg.src = bannerImages[bannerIndex];
+        }, 4000);
+    }
+}
+
+function displayCategories(categories) {
+    const catContainer = document.getElementById("category-container");
+    if (!catContainer) return;
+    catContainer.innerHTML = "";
+
+    categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.innerText = cat;
+        btn.className = "cat-btn" + (cat === "All" ? " active" : "");
+        btn.onclick = () => {
+            document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentCategory = cat;
+            searchQuery = "";
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.value = "";
+            itemsToShow = 10;
+            displayProducts();
+        };
+        catContainer.appendChild(btn);
+    });
+}
+
 // ==========================================================================
-// 7. CART PAGE (cart.html)
+// 4. HOME PAGE: BEST SELLERS & ON SALE PREVIEWS (PICTURES FIXED)
+// ==========================================================================
+function renderHomeBestSellers(products) {
+    const grid = document.getElementById("homeBestGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    products.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "best-card";
+        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:5px;">Rs. ${item.mrp}</span>` : "";
+        const itemImg = getProductImage(item);
+
+        card.innerHTML = `
+            <div>
+                <div class="best-img-box" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${itemImg}', true)">
+                    <img src="${itemImg}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&q=80';">
+                </div>
+                <h3 class="best-card-title" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${itemImg}', true)">${item.name}</h3>
+                <div class="best-price-row">Rs. ${item.price} ${mrpHtml}</div>
+            </div>
+            <button class="btn-add-cart-best" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${itemImg}', false)">ADD TO CART</button>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function renderHomeOnSale(products) {
+    const grid = document.getElementById("homeSaleGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    products.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "sale-card";
+        const badgeColor = item.badgeColor || "#e11d48";
+        const badgeHtml = item.badge ? `<div class="badge-circle" style="background-color: ${badgeColor};">${item.badge}</div>` : "";
+        const itemImg = getProductImage(item);
+
+        let swatchesHtml = "";
+        if (item.colors && item.colors.length > 0) {
+            swatchesHtml = `<div class="swatches-row">` + item.colors.map(c => `<span class="swatch-dot" style="background-color: ${c};"></span>`).join('') + `</div>`;
+        }
+
+        card.innerHTML = `
+            <div>
+                ${badgeHtml}
+                <div class="sale-img-box" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${itemImg}', true)">
+                    <img src="${itemImg}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80';">
+                </div>
+                <div class="sale-info">
+                    <h3 class="sale-card-title" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${itemImg}', true)">${item.name}</h3>
+                    <div class="sale-card-price">Rs. ${item.price}</div>
+                    <div class="stars-row">★★★★★</div>
+                    ${swatchesHtml}
+                </div>
+            </div>
+            <div style="padding: 0 10px 10px 10px;">
+                <button class="btn-quick-sale" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${itemImg}', true)">Quick Buy</button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function addGenericToCart(name, price, image, redirectToCart) {
+    const cartItemId = `item_${encodeURIComponent(name)}`;
+    const existingIndex = cart.findIndex(i => i.id === cartItemId);
+
+    if (existingIndex > -1) {
+        cart[existingIndex].quantity += 1;
+    } else {
+        cart.push({
+            id: cartItemId,
+            name: name,
+            price: price,
+            image: image,
+            size: "Standard",
+            color: "Featured",
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
+
+    if (redirectToCart) {
+        window.location.href = "cart.html";
+    } else {
+        alert(`"${name}" added to cart!`);
+    }
+}
+
+// ==========================================================================
+// 5. HOME PAGE: ZIG-ZAG SHOWCASE
+// ==========================================================================
+function renderHomeShowcase(data) {
+    const container = document.getElementById("showcaseContainer");
+    if (!container) return;
+
+    if (data.badge && document.getElementById("showcaseBadge")) {
+        document.getElementById("showcaseBadge").innerText = data.badge;
+    }
+    if (data.heading && document.getElementById("showcaseHeading")) {
+        document.getElementById("showcaseHeading").innerText = data.heading;
+    }
+
+    container.innerHTML = "";
+
+    data.collections.forEach((item, index) => {
+        const isReverse = index % 2 !== 0;
+        const row = document.createElement("div");
+        row.className = `showcase-row ${isReverse ? 'reverse' : ''}`;
+
+        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:6px;">Rs. ${item.mrp}</span>` : "";
+        const discHtml = item.discount ? `<span style="color:#e11d48;font-size:12px;font-weight:700;margin-left:4px;">${item.discount}</span>` : "";
+        const firstImg = getProductImage(item);
+
+        row.innerHTML = `
+            <div class="showcase-img-card" onclick="window.location.href='collection-detail.html?id=${item.id}'">
+                <img src="${firstImg}" alt="${item.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80';">
+            </div>
+            <div class="showcase-text-box">
+                <h3 class="showcase-item-title" onclick="window.location.href='collection-detail.html?id=${item.id}'">${item.title}</h3>
+                <p class="showcase-item-desc">${item.description}</p>
+                <div class="showcase-price-box">
+                    <span>Rs. ${item.price}</span>
+                    ${mrpHtml}
+                    ${discHtml}
+                </div>
+                <div class="showcase-actions">
+                    <button class="col-buy-btn" onclick="window.location.href='collection-detail.html?id=${item.id}'">View & Select Options</button>
+                    <button class="col-cart-btn" onclick="addGenericToCart('${item.title} (Collection)', ${item.price}, '${firstImg}', false)">Quick Add</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+}
+
+// ==========================================================================
+// 6. NEW ARRIVALS PAGE LOADER (new-arrivals.html)
+// ==========================================================================
+function renderNewArrivalsPage(data) {
+    if (data.hero) {
+        const img = document.getElementById("newHeroImg");
+        const pill = document.getElementById("newHeroPill");
+        const title = document.getElementById("newHeroTitle");
+        const desc = document.getElementById("newHeroDesc");
+        if (img) img.src = getProductImage(data.hero);
+        if (pill) pill.innerText = "🌸 " + (data.hero.badge || "Fresh Drops");
+        if (title) title.innerText = data.hero.title || "New Arrival";
+        if (desc) desc.innerText = data.hero.description || "";
+    }
+
+    const grid = document.getElementById("newArrivalsGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    data.products.forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "new-card";
+
+        const mrpHtml = prod.mrp ? `<span class="mrp">Rs. ${prod.mrp}</span>` : "";
+        const discHtml = prod.discount ? `<span class="disc">${prod.discount}</span>` : "";
+        const prodImg = getProductImage(prod);
+
+        card.innerHTML = `
+            <div class="new-tag">${prod.badge || "NEW"}</div>
+            <div class="img-box" onclick="buyNewItem(${prod.id}, true)">
+                <img src="${prodImg}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80';">
+            </div>
+            <div class="card-info">
+                <div class="rating-stars">★★★★★</div>
+                <h3 class="card-title" onclick="buyNewItem(${prod.id}, true)">${prod.name}</h3>
+                <div class="price-row">
+                    <span class="price">Rs. ${prod.price}</span>
+                    ${mrpHtml}
+                    ${discHtml}
+                </div>
+                <div class="colors-strip">
+                    ${prod.colors ? prod.colors.map(() => '<span class="color-dot"></span>').join('') : ''}
+                </div>
+                <div class="card-actions">
+                    <button class="btn-buy" onclick="buyNewItem(${prod.id}, true)">Buy Now</button>
+                    <button class="btn-cart" onclick="buyNewItem(${prod.id}, false)">Add to Cart</button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function buyNewItem(id, redirectToCart) {
+    fetch(`./new-arrivals.json`)
+        .then(res => res.json())
+        .then(data => {
+            const item = data.products.find(p => p.id === id);
+            if (!item) return;
+
+            const cartItemId = `new_${item.id}`;
+            const existingIndex = cart.findIndex(i => i.id === cartItemId);
+            const imgUrl = getProductImage(item);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: cartItemId,
+                    name: `${item.name} [New Arrival]`,
+                    price: item.price,
+                    image: imgUrl,
+                    size: item.sizes ? item.sizes[0] : "Standard",
+                    color: item.colors ? item.colors[0] : "Standard",
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+            updateCartBadge();
+
+            if (redirectToCart) {
+                window.location.href = "cart.html";
+            } else {
+                alert(`"${item.name}" added to cart!`);
+            }
+        });
+}
+
+// ==========================================================================
+// 7. PRODUCT DETAILS PAGE (product.html)
+// ==========================================================================
+let productImages = [];
+let currentSlideIndex = 0;
+let autoSlideInterval = null;
+
+function loadProductDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = parseInt(urlParams.get("id"));
+
+    selectedProduct = allProducts.find(p => p.id === productId);
+
+    if (!selectedProduct) {
+        const titleEl = document.getElementById("prodTitle");
+        if (titleEl) titleEl.innerText = "Product Not Found!";
+        return;
+    }
+
+    document.getElementById("prodTitle").innerText = selectedProduct.name;
+    document.getElementById("prodSku").innerText = "SKU: " + (selectedProduct.sku || "N/A");
+    document.getElementById("prodPrice").innerText = "Rs. " + selectedProduct.price;
+
+    const bCat = document.getElementById("breadCategory");
+    if (bCat) bCat.innerText = selectedProduct.category;
+    const bName = document.getElementById("breadName");
+    if (bName) bName.innerText = selectedProduct.name;
+
+    if (selectedProduct.discount) {
+        const badge = document.getElementById("prodDiscount");
+        if (badge) { badge.innerText = selectedProduct.discount; badge.style.display = "inline-block"; }
+        const mrp = document.getElementById("prodMrp");
+        if (mrp) mrp.innerText = "MRP: Rs. " + selectedProduct.mrp;
+        const disc = document.getElementById("prodDiscText");
+        if (disc) disc.innerText = "(" + selectedProduct.discount + ")";
+    }
+
+    // Sizes
+    const sizeSection = document.getElementById("sizeSection");
+    const sizeContainer = document.getElementById("sizeContainer");
+    if (selectedProduct.sizes && selectedProduct.sizes.length > 0) {
+        sizeSection.style.display = "block";
+        sizeContainer.innerHTML = "";
+        selectedProduct.sizes.forEach(size => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = size;
+            btn.onclick = () => selectOption(btn, "size", size);
+            sizeContainer.appendChild(btn);
+        });
+    } else if (sizeSection) {
+        sizeSection.style.display = "none";
+    }
+
+    // Colors
+    const colorSection = document.getElementById("colorSection");
+    const colorContainer = document.getElementById("colorContainer");
+    if (selectedProduct.colors && selectedProduct.colors.length > 0) {
+        colorSection.style.display = "block";
+        colorContainer.innerHTML = "";
+        selectedProduct.colors.forEach(col => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn color-btn";
+            btn.innerText = col;
+            btn.onclick = () => selectOption(btn, "color", col);
+            colorContainer.appendChild(btn);
+        });
+    } else if (colorSection) {
+        colorSection.style.display = "none";
+    }
+
+    // Accordions
+    if (selectedProduct.details) {
+        document.getElementById("accDetails").innerText = selectedProduct.details.productDetails || "No details.";
+        document.getElementById("accCare").innerText = selectedProduct.details.careInstruction || "No instructions.";
+        document.getElementById("accReturn").innerText = selectedProduct.details.returnPolicy || "Standard 15 days return policy.";
+    }
+
+    // Images Array Fix
+    if (selectedProduct.images && Array.isArray(selectedProduct.images) && selectedProduct.images.length > 0) {
+        productImages = selectedProduct.images;
+    } else if (selectedProduct.image) {
+        productImages = [selectedProduct.image];
+    } else {
+        productImages = ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80"];
+    }
+
+    showSlide(0);
+
+    if (productImages.length > 1) {
+        autoSlideInterval = setInterval(() => changeSlide(1), 5000);
+    }
+}
+
+function selectOption(button, type, value) {
+    const siblings = button.parentElement.getElementsByClassName("option-btn");
+    for (let s of siblings) s.classList.remove("active");
+    button.classList.add("active");
+
+    if (type === "size") chosenSize = value;
+    if (type === "color") chosenColor = value;
+}
+
+function changeSlide(direction) {
+    currentSlideIndex += direction;
+    if (currentSlideIndex >= productImages.length) currentSlideIndex = 0;
+    if (currentSlideIndex < 0) currentSlideIndex = productImages.length - 1;
+    showSlide(currentSlideIndex);
+
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => changeSlide(1), 5000);
+    }
+}
+
+function showSlide(index) {
+    const img = document.getElementById("mainProductImage");
+    if (img) {
+        img.src = productImages[index];
+        img.onerror = function() {
+            this.src = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80";
+        };
+    }
+}
+
+function toggleAcc(element) {
+    const content = element.nextElementSibling;
+    const icon = element.querySelector(".acc-icon");
+    if (content.style.display === "block") {
+        content.style.display = "none";
+        if (icon) icon.innerText = "+";
+    } else {
+        content.style.display = "block";
+        if (icon) icon.innerText = "-";
+    }
+}
+
+function addToCartFromDetails(redirectToCart = false) {
+    if (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !chosenSize) {
+        alert("Please Select a Size First!");
+        return;
+    }
+    if (selectedProduct.colors && selectedProduct.colors.length > 0 && !chosenColor) {
+        alert("Please Select a Color First!");
+        return;
+    }
+
+    const existingIndex = cart.findIndex(i => 
+        i.id === selectedProduct.id && 
+        i.size === chosenSize && 
+        i.color === chosenColor
+    );
+
+    const prodImg = getProductImage(selectedProduct);
+
+    if (existingIndex > -1) {
+        cart[existingIndex].quantity += 1;
+    } else {
+        cart.push({
+            id: selectedProduct.id,
+            name: selectedProduct.name,
+            price: selectedProduct.price,
+            image: prodImg,
+            size: chosenSize || null,
+            color: chosenColor || null,
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
+    updateCartBadge();
+
+    if (redirectToCart) {
+        window.location.href = "cart.html";
+    } else {
+        alert("Item added to cart successfully!");
+    }
+}
+
+// ==========================================================================
+// 8. CART PAGE (cart.html)
 // ==========================================================================
 function renderCartPage() {
     const container = document.getElementById("cartViewContainer");
@@ -520,7 +695,7 @@ function renderCartPage() {
 
         return `
             <div class="cart-row">
-                <img src="${item.image}" alt="${item.name}">
+                <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80';">
                 <div class="cart-row-info">
                     <div class="cart-row-title">${item.name}</div>
                     <div class="cart-row-specs">${specsText}</div>
@@ -675,4 +850,33 @@ function submitContact() {
         btn.innerText = "Send Message";
         btn.disabled = false;
     });
+}
+
+// Search System
+function handleSearch() {
+    const input = document.getElementById("searchInput");
+    searchQuery = input.value.trim().toLowerCase();
+    itemsToShow = 10;
+
+    const featBlocks = document.getElementById("homeFeaturedBlocks");
+    if (featBlocks) {
+        featBlocks.style.display = searchQuery === "" ? "block" : "none";
+    }
+
+    displayProducts();
+}
+
+function clearSearch() {
+    const input = document.getElementById("searchInput");
+    if (input) input.value = "";
+    searchQuery = "";
+    currentCategory = "All";
+
+    const featBlocks = document.getElementById("homeFeaturedBlocks");
+    if (featBlocks) featBlocks.style.display = "block";
+
+    document.querySelectorAll(".cat-btn").forEach(b => {
+        b.classList.toggle("active", b.innerText === "All");
+    });
+    displayProducts();
 }
