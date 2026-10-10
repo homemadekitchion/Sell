@@ -1,0 +1,84 @@
+{
+  "saleTitle": "Special Discounts & Trending",
+  "subtitle": "Limited Time Price Drop - 100% Cash on Delivery",
+  "products": [
+    {
+      "id": 401,
+      "name": "Classic Vintage Washed Cotton Baseball Cap",
+      "category": "Fashion",
+      "price": 899,
+      "mrp": 1499,
+      "discount": "40% OFF",
+      "badge": "-40%",
+      "badgeColor": "#e11d48",
+      "rating": 5,
+      "image": "images/fash3-1.jpg",
+      "colors": ["#8d5b4c", "#1f2937", "#1e3a8a", "#15803d"]
+    },
+    {
+      "id": 402,
+      "name": "Women Elegant Leather Everyday Tote Bag",
+      "category": "Fashion",
+      "price": 2899,
+      "mrp": 4800,
+      "discount": "40% OFF",
+      "badge": "-40%",
+      "badgeColor": "#e11d48",
+      "rating": 5,
+      "image": "images/fash4-1.jpg",
+      "colors": ["#f472b6", "#111827", "#fef08a", "#d1d5db"]
+    },
+    {
+      "id": 403,
+      "name": "Women Minimalist Leather Ankle Boots",
+      "category": "Shoes",
+      "price": 3499,
+      "mrp": 5999,
+      "discount": "42% OFF",
+      "badge": "-42%",
+      "badgeColor": "#059669",
+      "rating": 5,
+      "image": "images/shoe5-1.jpg",
+      "colors": ["#f5f5f4", "#18181b", "#78350f"]
+    },
+    {
+      "id": 404,
+      "name": "Casual Sage Green Full Sleeve Shirt",
+      "category": "Fashion",
+      "price": 1499,
+      "mrp": 2499,
+      "discount": "40% OFF",
+      "badge": "-40%",
+      "badgeColor": "#e11d48",
+      "rating": 5,
+      "image": "images/fash1-1.jpg",
+      "colors": ["#86efac", "#93c5fd", "#fca5a5", "#ffffff"]
+    },
+    {
+      "id": 405,
+      "name": "Women Block Heel Party Sandals",
+      "category": "Shoes",
+      "price": 1291,
+      "mrp": 2690,
+      "discount": "52% OFF",
+      "badge": "-52%",
+      "badgeColor": "#059669",
+      "rating": 5,
+      "image": "images/shoe1-1.jpg",
+      "colors": ["#fef08a", "#18181b", "#fbcfe8"]
+    },
+    {
+      "id": 406,
+      "name": "Casio Edifice Multi-Dial Chronograph",
+      "category": "Watches",
+      "price": 6499,
+      "mrp": 9500,
+      "discount": "32% OFF",
+      "badge": "-32%",
+      "badgeColor": "#059669",
+      "rating": 5,
+      "image": "images/wat2-1.jpg",
+      "colors": ["#000000", "#1e3a8a", "#e5e7eb"]
+    }
+  ]
+}
