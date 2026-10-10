@@ -1,0 +1,86 @@
+{
+  "hero": {
+    "badge": "Fresh Drops",
+    "title": "New Arrival Collection",
+    "description": "Welcome this season with newly launched designs, innovative footwear, and authentic gadgets. Available exclusively with nationwide Cash on Delivery.",
+    "image": "images/shoe2-1.jpg"
+  },
+  "products": [
+    {
+      "id": 201,
+      "name": "Women Rose-Gold Shimmer Party Sandals",
+      "category": "Shoes",
+      "price": 1444,
+      "mrp": 2490,
+      "discount": "42% OFF",
+      "rating": 5,
+      "image": "images/shoe2-1.jpg",
+      "colors": ["Rose Gold", "Silver", "Champagne"],
+      "sizes": ["4", "5", "6", "7", "8"],
+      "badge": "NEW"
+    },
+    {
+      "id": 202,
+      "name": "Ultra Breathable Foam Running Sneakers",
+      "category": "Shoes",
+      "price": 2799,
+      "mrp": 4500,
+      "discount": "38% OFF",
+      "rating": 5,
+      "image": "images/shoe4-1.jpg",
+      "colors": ["Black", "Grey", "Navy"],
+      "sizes": ["6", "7", "8", "9", "10"],
+      "badge": "TRENDING"
+    },
+    {
+      "id": 203,
+      "name": "Infinix Note 30 Pro 68W Fast Charge",
+      "category": "Mobiles",
+      "price": 62999,
+      "mrp": 69999,
+      "discount": "10% OFF",
+      "rating": 5,
+      "image": "images/mob3-1.jpg",
+      "colors": ["Magic Black", "Gold"],
+      "badge": "HOT"
+    },
+    {
+      "id": 204,
+      "name": "All-Weather Parachute Winter Jacket",
+      "category": "Fashion",
+      "price": 3899,
+      "mrp": 5500,
+      "discount": "29% OFF",
+      "rating": 5,
+      "image": "images/fash1-1.jpg",
+      "colors": ["Black", "Navy Blue", "Olive"],
+      "sizes": ["M", "L", "XL", "XXL"],
+      "badge": "NEW"
+    },
+    {
+      "id": 205,
+      "name": "Women Embroidered Lawn Stitched Kurti",
+      "category": "Fashion",
+      "price": 2499,
+      "mrp": 3999,
+      "discount": "38% OFF",
+      "rating": 5,
+      "image": "images/fash4-1.jpg",
+      "colors": ["Mustard", "Peach", "Maroon"],
+      "sizes": ["S", "M", "L", "XL"],
+      "badge": "EXCLUSIVE"
+    },
+    {
+      "id": 206,
+      "name": "Casio Edifice Chronograph Sports Watch",
+      "category": "Watches",
+      "price": 6499,
+      "mrp": 9500,
+      "discount": "32% OFF",
+      "rating": 5,
+      "image": "images/wat2-1.jpg",
+      "colors": ["Silver Black", "Silver Blue"],
+      "badge": "NEW"
+    }
+  ]
+}
