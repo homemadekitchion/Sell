@@ -5,46 +5,85 @@
     {
       "id": 101,
       "title": "Premium Footwear Elements",
-      "description": "Over 42 unique casual and formal designs crafted to make stepping out effortless and stylish.",
-      "image": "images/shoe1-1.jpg",
       "category": "Shoes",
+      "sku": "COL-SHOE-01",
       "price": 2499,
       "mrp": 4500,
       "discount": "44% OFF",
-      "sku": "COL-SHOE-01"
+      "images": [
+        "images/shoe1-1.jpg",
+        "images/shoe1-2.jpg",
+        "images/shoe1-3.jpg"
+      ],
+      "colors": ["Beige", "Black", "Rose Gold"],
+      "sizes": ["4", "5", "6", "7", "8"],
+      "description": "Over 42 unique casual and formal designs crafted to make stepping out effortless and stylish.",
+      "details": {
+        "productDetails": "Exclusive collection bundle of cushioned comfort footwear with anti-slip durable sole.",
+        "careInstruction": "Keep away from water. Clean with a dry microfiber cloth.",
+        "returnPolicy": "15 days exchange policy on size misfit with original box and tags intact."
+      }
     },
     {
       "id": 102,
       "title": "E-commerce Tech Solutions",
-      "description": "Building optimized smartphones and high-performance laptops with 100% genuine warranty across Pakistan.",
-      "image": "images/mob1-1.jpg",
       "category": "Mobiles",
+      "sku": "COL-TECH-02",
       "price": 64999,
       "mrp": 72000,
       "discount": "10% OFF",
-      "sku": "COL-TECH-02"
+      "images": [
+        "images/mob1-1.jpg",
+        "images/mob1-2.jpg"
+      ],
+      "colors": ["Phantom Black", "Cream", "Silver"],
+      "description": "Building optimized smartphones and high-performance laptops with 100% genuine warranty across Pakistan.",
+      "details": {
+        "productDetails": "Certified factory package including fast charger, warranty card, and pre-applied screen guard.",
+        "careInstruction": "Avoid non-certified fast chargers and high moisture exposure.",
+        "returnPolicy": "7 days replacement warranty on technical and hardware faults."
+      }
     },
     {
       "id": 103,
       "title": "Fully Responsive Fashion",
-      "description": "From winter parachute jackets to tailored Egyptian cotton shirts. Modern fits wherever you are.",
-      "image": "images/fash1-1.jpg",
       "category": "Fashion",
+      "sku": "COL-FASH-03",
       "price": 3499,
       "mrp": 5200,
       "discount": "33% OFF",
-      "sku": "COL-FASH-03"
+      "images": [
+        "images/fash1-1.jpg",
+        "images/fash1-2.jpg"
+      ],
+      "colors": ["Navy Blue", "Charcoal Black", "Olive"],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "description": "From winter parachute jackets to tailored Egyptian cotton shirts. Modern fits wherever you are.",
+      "details": {
+        "productDetails": "Tailored all-weather parachute and cotton blend collection designed for daily outdoor styling.",
+        "careInstruction": "Cold wash inside out. Do not bleach or tumble dry on high heat.",
+        "returnPolicy": "7 days return or size exchange policy available."
+      }
     },
     {
       "id": 104,
       "title": "Luxury Timepieces & Accents",
-      "description": "Automatic homage movements and chronograph stainless steel dials designed to elevate your everyday presence.",
-      "image": "images/wat1-1.jpg",
       "category": "Watches",
+      "sku": "COL-WAT-04",
       "price": 7999,
       "mrp": 12000,
       "discount": "33% OFF",
-      "sku": "COL-WAT-04"
+      "images": [
+        "images/wat1-1.jpg",
+        "images/wat1-2.jpg"
+      ],
+      "colors": ["Silver Black", "Emerald Green", "Blue Dial"],
+      "description": "Automatic homage movements and chronograph stainless steel dials designed to elevate your everyday presence.",
+      "details": {
+        "productDetails": "Precision quartz & automatic movement with stainless steel links and ceramic bezel.",
+        "careInstruction": "Do not expose to hot water steam or magnetic appliances.",
+        "returnPolicy": "6 months machine warranty included with official box."
+      }
     }
   ]
 }
