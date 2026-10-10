@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-PK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curated Collections - Pak COD Store</title>
+    <meta name="description" content="Explore our curated seasonal collections of shoes, smartphones, laptops, fashion, and luxury watches.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://aapki-website.github.io/collection.html">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 0; background-color: #faf9fb; color: #222; }
+
+        header { background: #fff; padding: 12px 18px; border-bottom: 1px solid #e5e5e5; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+        .back-link { color: #000; text-decoration: none; font-weight: 700; font-size: 13px; }
+        .header-title { font-size: 16px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 800; margin: 0; }
+        .cart-link-btn { background: #000; color: #fff; text-decoration: none; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+        .cart-badge { background: #a41c23; color: #fff; border-radius: 50%; padding: 1px 6px; font-size: 10px; margin-left: 4px; }
+
+        .hero-banner { text-align: center; padding: 45px 15px 25px 15px; }
+        .hero-pill { background: #fff; padding: 6px 18px; border-radius: 20px; font-size: 12px; color: #5540d9; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: inline-block; margin-bottom: 12px; }
+        .hero-title { font-size: 28px; font-weight: 800; margin: 0 0 10px 0; color: #111; letter-spacing: -0.5px; }
+        .hero-desc { color: #666; font-size: 14px; max-width: 550px; margin: auto; line-height: 1.6; }
+
+        .collections-grid { display: grid; gap: 20px; padding: 20px; max-width: 1100px; margin: auto; }
+        @media (min-width: 768px) { .collections-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; } }
+
+        .collection-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+        .collection-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .collection-img-box { width: 100%; height: 260px; background: #fdfdfd; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
+        .collection-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform 0.3s; }
+        .collection-card:hover .collection-img-box img { transform: scale(1.04); }
+
+        .collection-body { padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .collection-tag { font-size: 11px; font-weight: 800; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .collection-name { font-size: 18px; font-weight: 700; color: #111; margin: 0 0 8px 0; }
+        .collection-text { font-size: 13px; color: #666; line-height: 1.6; margin: 0 0 16px 0; }
+        .browse-btn { background: #000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 700; width: fit-content; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        footer { background: #111; color: #aaa; text-align: center; padding: 25px 15px; font-size: 12px; margin-top: 40px; }
+        footer a { color: #fff; text-decoration: none; margin: 0 8px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-link">&larr; Back to Shop</a>
+        <h1 class="header-title">Collections</h1>
+        <a href="cart.html" class="cart-link-btn">🛒 Cart <span id="cartCount" class="cart-badge">0</span></a>
+    </header>
+
+    <main>
+        <section class="hero-banner">
+            <span class="hero-pill" id="pageBadge">Exclusive Catalogs</span>
+            <h1 class="hero-title" id="pageHeading">Curated Collections</h1>
+            <p class="hero-desc">Explore hand-picked assortments curated for premium lifestyle, electronics, fashion, and accessories with nationwide Cash on Delivery.</p>
+        </section>
+
+        <section class="collections-grid" id="fullCollectionsGrid" aria-label="Collections List"></section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="cart.html">View Cart</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
