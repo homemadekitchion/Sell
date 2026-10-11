@@ -48,7 +48,6 @@ function updateCartBadge() {
 // ==========================================================================
 const cacheTime = new Date().getTime();
 
-// Tamam JSON files ko ek sath load karna taake product.html kisi bhi product ko pehchaan sake
 Promise.all([
     fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ products: [] })),
     fetch(`./new-arrivals.json?v=${cacheTime}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ products: [] })),
@@ -62,7 +61,7 @@ Promise.all([
     allOnSale = saleRes.products || [];
     allCollections = colRes.collections || [];
 
-    // Master Combined Pool (Har product isme mojood hoga!)
+    // Master Combined Pool
     masterProductsPool = [
         ...allProducts,
         ...allNewArrivals,
@@ -138,7 +137,6 @@ function loadProductDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     const rawId = urlParams.get("id");
 
-    // Smart Match: Master Pool mein se dhoondna (chahe kisi bhi JSON file ka ho!)
     if (rawId) {
         selectedProduct = masterProductsPool.find(p => 
             String(p.id).trim() === String(rawId).trim() || 
@@ -146,7 +144,6 @@ function loadProductDetails() {
         );
     }
 
-    // Agar ID na mile toh pehla product default load karo
     if (!selectedProduct) {
         selectedProduct = masterProductsPool[0];
     }
@@ -184,7 +181,7 @@ function loadProductDetails() {
         if (disc) disc.innerText = "";
     }
 
-    // Sizes Setup (Agar kisi product mein size hai toh buttons banenge)
+    // Sizes Setup
     const sizeSection = document.getElementById("sizeSection");
     const sizeContainer = document.getElementById("sizeContainer");
     chosenSize = null;
@@ -205,7 +202,7 @@ function loadProductDetails() {
         sizeSection.style.display = "none";
     }
 
-    // Colors Setup (Agar kisi product mein color hai toh buttons banenge)
+    // Colors Setup
     const colorSection = document.getElementById("colorSection");
     const colorContainer = document.getElementById("colorContainer");
     chosenColor = null;
@@ -257,6 +254,55 @@ function loadProductDetails() {
     if (productImages.length > 1) {
         autoSlideInterval = setInterval(() => changeSlide(1), 5000);
     }
+
+    // 🔥 NEW: LOAD VIRAL & RELATED PRODUCTS SLIDER
+    renderViralRelatedProducts(selectedProduct);
+}
+
+// ==========================================================================
+// 🔥 NEW FUNCTION: RENDER VIRAL & RELATED PRODUCTS (3 ITEMS MOBILE SLIDER)
+// ==========================================================================
+function renderViralRelatedProducts(currentProd) {
+    const container = document.getElementById("viralProductsContainer");
+    if (!container || !masterProductsPool || masterProductsPool.length === 0) return;
+
+    container.innerHTML = "";
+
+    // 1. Current product ko chhor kar baki products lena
+    const otherProducts = masterProductsPool.filter(p => String(p.id) !== String(currentProd.id));
+
+    // 2. Same category wale products pehle lena
+    const sameCat = otherProducts.filter(p => p.category === currentProd.category);
+    // 3. Doosri categories wale products
+    const diffCat = otherProducts.filter(p => p.category !== currentProd.category);
+
+    // 4. Shuffle / Mix karna (Related pehle + random mix)
+    const shuffledDiff = diffCat.sort(() => 0.5 - Math.random());
+    const finalSelection = [...sameCat, ...shuffledDiff].slice(0, 10);
+
+    finalSelection.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "viral-card";
+        card.onclick = () => window.location.href = `product.html?id=${item.id}`;
+
+        const itemImg = getProductImage(item);
+        const mrpHtml = item.mrp ? `<span class="viral-mrp">Rs. ${item.mrp}</span>` : "";
+        const tagText = item.discount || "HOT";
+
+        card.innerHTML = `
+            <div>
+                <span class="viral-tag">${tagText}</span>
+                <div class="viral-img-box">
+                    <img src="${itemImg}" alt="${item.name || item.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80';">
+                </div>
+                <div class="viral-title">${item.name || item.title}</div>
+            </div>
+            <div>
+                <div class="viral-price">Rs. ${item.price} ${mrpHtml}</div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
 }
 
 function selectOption(button, type, value) {
@@ -303,7 +349,6 @@ function toggleAcc(element) {
     }
 }
 
-// Add to Cart from product.html
 function addToCartFromDetails(redirectToCart = false) {
     if (!selectedProduct) return;
 
