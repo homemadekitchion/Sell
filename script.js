@@ -8,11 +8,13 @@ let allProducts = [];
 let allCollections = [];
 let allBestSellers = [];
 let allOnSale = [];
+let allNewArrivals = [];
+let masterProductsPool = []; // Tamam JSON files ka combined data
+
 let currentCategory = "All";
 let itemsToShow = 10;
 let searchQuery = "";
 let selectedProduct = null;
-let selectedCollection = null;
 let chosenSize = null;
 let chosenColor = null;
 
@@ -33,99 +35,6 @@ function getProductImage(item) {
     return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80";
 }
 
-// ==========================================================================
-// 2. DATA INITIALIZATION & PAGE ROUTING
-// ==========================================================================
-const cacheTime = new Date().getTime();
-
-// 1. Load Main data.json
-fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' })
-    .then(res => res.json())
-    .then(data => {
-        allProducts = data.products || [];
-        const loadingEl = document.getElementById("loadingMsg");
-        if (loadingEl) loadingEl.style.display = "none";
-
-        updateCartBadge();
-
-        if (document.getElementById("product-container")) {
-            displayCategories(data.categories || ["All"]);
-            displayProducts();
-            if (data.banners && data.banners.length > 0) {
-                startBannerSlider(data.banners);
-            }
-        }
-
-        // Product Details Page (product.html) Trigger
-        if (document.getElementById("mainProductImage") || document.getElementById("prodTitle")) {
-            loadProductDetails();
-        }
-
-        if (document.getElementById("cartViewContainer")) {
-            renderCartPage();
-        }
-    })
-    .catch(err => console.error("Error loading data.json:", err));
-
-// 2. Load New Arrivals
-fetch(`./new-arrivals.json?v=${cacheTime}`, { cache: 'no-store' })
-    .then(res => res.json())
-    .then(data => {
-        if (data.hero && document.getElementById("homePromoImg")) {
-            document.getElementById("homePromoImg").src = getProductImage(data.hero);
-            document.getElementById("homePromoPill").innerText = "🌸 " + (data.hero.badge || "Fresh Drops");
-            document.getElementById("homePromoTitle").innerText = data.hero.title || "New Arrival";
-            document.getElementById("homePromoDesc").innerText = data.hero.description || "";
-        }
-
-        if (document.getElementById("newArrivalsGrid")) {
-            renderNewArrivalsPage(data);
-        }
-    })
-    .catch(err => console.error("Error loading new-arrivals.json:", err));
-
-// 3. Load Best Sellers
-fetch(`./best-sellers.json?v=${cacheTime}`, { cache: 'no-store' })
-    .then(res => res.json())
-    .then(data => {
-        allBestSellers = data.products || [];
-        if (document.getElementById("homeBestGrid")) {
-            renderHomeBestSellers(allBestSellers.slice(0, 4));
-        }
-    })
-    .catch(err => console.error("Error loading best-sellers.json:", err));
-
-// 4. Load On Sale
-fetch(`./on-sale.json?v=${cacheTime}`, { cache: 'no-store' })
-    .then(res => res.json())
-    .then(data => {
-        allOnSale = data.products || [];
-        if (document.getElementById("homeSaleGrid")) {
-            renderHomeOnSale(allOnSale.slice(0, 4));
-        }
-    })
-    .catch(err => console.error("Error loading on-sale.json:", err));
-
-// 5. Load Collections
-fetch(`./collections.json?v=${cacheTime}`, { cache: 'no-store' })
-    .then(res => res.json())
-    .then(data => {
-        allCollections = data.collections || [];
-
-        if (document.getElementById("showcaseContainer")) {
-            renderHomeShowcase(data);
-        }
-
-        if (document.getElementById("fullCollectionsGrid")) {
-            renderFullCollectionsPage(data);
-        }
-
-        if (document.getElementById("mainCollectionImage")) {
-            loadCollectionDetails();
-        }
-    })
-    .catch(err => console.error("Error loading collections.json:", err));
-
 function updateCartBadge() {
     const badge = document.getElementById("cartCount");
     if (badge) {
@@ -135,43 +44,121 @@ function updateCartBadge() {
 }
 
 // ==========================================================================
-// 3. PRODUCT DETAILS LOADER (100% FIXED FOR product.html)
+// 2. UNIVERSAL DATA INITIALIZATION (PROMISE.ALL)
+// ==========================================================================
+const cacheTime = new Date().getTime();
+
+// Tamam JSON files ko ek sath load karna taake product.html kisi bhi product ko pehchaan sake
+Promise.all([
+    fetch(`./data.json?v=${cacheTime}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ products: [] })),
+    fetch(`./new-arrivals.json?v=${cacheTime}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ products: [] })),
+    fetch(`./best-sellers.json?v=${cacheTime}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ products: [] })),
+    fetch(`./on-sale.json?v=${cacheTime}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ products: [] })),
+    fetch(`./collections.json?v=${cacheTime}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ collections: [] }))
+]).then(([dataRes, newRes, bestRes, saleRes, colRes]) => {
+    allProducts = dataRes.products || [];
+    allNewArrivals = newRes.products || [];
+    allBestSellers = bestRes.products || [];
+    allOnSale = saleRes.products || [];
+    allCollections = colRes.collections || [];
+
+    // Master Combined Pool (Har product isme mojood hoga!)
+    masterProductsPool = [
+        ...allProducts,
+        ...allNewArrivals,
+        ...allBestSellers,
+        ...allOnSale,
+        ...allCollections.map(c => ({
+            ...c,
+            name: c.title || c.name,
+            details: c.details || { productDetails: c.description }
+        }))
+    ];
+
+    const loadingEl = document.getElementById("loadingMsg");
+    if (loadingEl) loadingEl.style.display = "none";
+
+    updateCartBadge();
+
+    // 1. Home Page Init (index.html)
+    if (document.getElementById("product-container")) {
+        displayCategories(dataRes.categories || ["All"]);
+        displayProducts();
+        if (dataRes.banners && dataRes.banners.length > 0) {
+            startBannerSlider(dataRes.banners);
+        }
+        if (newRes.hero && document.getElementById("homePromoImg")) {
+            document.getElementById("homePromoImg").src = getProductImage(newRes.hero);
+            document.getElementById("homePromoPill").innerText = "🌸 " + (newRes.hero.badge || "Fresh Drops");
+            document.getElementById("homePromoTitle").innerText = newRes.hero.title || "New Arrival";
+            document.getElementById("homePromoDesc").innerText = newRes.hero.description || "";
+        }
+        if (document.getElementById("homeBestGrid")) {
+            renderHomeBestSellers(allBestSellers.slice(0, 4));
+        }
+        if (document.getElementById("homeSaleGrid")) {
+            renderHomeOnSale(allOnSale.slice(0, 4));
+        }
+        if (document.getElementById("showcaseContainer")) {
+            renderHomeShowcase(colRes);
+        }
+    }
+
+    // 2. Product Details Page (product.html)
+    if (document.getElementById("mainProductImage") || document.getElementById("prodTitle")) {
+        loadProductDetails();
+    }
+
+    // 3. New Arrivals Page (new-arrivals.html)
+    if (document.getElementById("newArrivalsGrid")) {
+        renderNewArrivalsPage(newRes);
+    }
+
+    // 4. Collections Page (collection.html)
+    if (document.getElementById("fullCollectionsGrid")) {
+        renderFullCollectionsPage(colRes);
+    }
+
+    // 5. Cart Page (cart.html)
+    if (document.getElementById("cartViewContainer")) {
+        renderCartPage();
+    }
+}).catch(err => console.error("Data fetch error:", err));
+
+// ==========================================================================
+// 3. UNIVERSAL PRODUCT DETAILS LOADER (product.html)
 // ==========================================================================
 let productImages = [];
 let currentSlideIndex = 0;
 let autoSlideInterval = null;
 
 function loadProductDetails() {
-    if (!allProducts || allProducts.length === 0) return;
+    if (!masterProductsPool || masterProductsPool.length === 0) return;
 
     const urlParams = new URLSearchParams(window.location.search);
     const rawId = urlParams.get("id");
 
-    // Smart Match: String vs Number loose check
+    // Smart Match: Master Pool mein se dhoondna (chahe kisi bhi JSON file ka ho!)
     if (rawId) {
-        selectedProduct = allProducts.find(p => 
+        selectedProduct = masterProductsPool.find(p => 
             String(p.id).trim() === String(rawId).trim() || 
             p.id == rawId
         );
     }
 
-    // Agar ID match na ho ya URL mein ?id na ho toh pehla product default load karo
+    // Agar ID na mile toh pehla product default load karo
     if (!selectedProduct) {
-        selectedProduct = allProducts[0];
+        selectedProduct = masterProductsPool[0];
     }
 
-    if (!selectedProduct) {
-        const titleEl = document.getElementById("prodTitle");
-        if (titleEl) titleEl.innerText = "Product Not Found!";
-        return;
-    }
+    if (!selectedProduct) return;
 
-    // Title, SKU, Price Safe Injection
+    // Title, SKU, Price
     const titleEl = document.getElementById("prodTitle");
-    if (titleEl) titleEl.innerText = selectedProduct.name || "Product Name";
+    if (titleEl) titleEl.innerText = selectedProduct.name || selectedProduct.title || "Product Name";
 
     const skuEl = document.getElementById("prodSku");
-    if (skuEl) skuEl.innerText = "SKU: " + (selectedProduct.sku || "N/A");
+    if (skuEl) skuEl.innerText = "SKU: " + (selectedProduct.sku || ("PAK-" + selectedProduct.id));
 
     const priceEl = document.getElementById("prodPrice");
     if (priceEl) priceEl.innerText = "Rs. " + (selectedProduct.price || 0);
@@ -180,7 +167,7 @@ function loadProductDetails() {
     if (bCat) bCat.innerText = selectedProduct.category || "Shop";
 
     const bName = document.getElementById("breadName");
-    if (bName) bName.innerText = selectedProduct.name || "Product Details";
+    if (bName) bName.innerText = selectedProduct.name || selectedProduct.title || "Product Details";
 
     // Discount & MRP
     const badge = document.getElementById("prodDiscount");
@@ -197,9 +184,11 @@ function loadProductDetails() {
         if (disc) disc.innerText = "";
     }
 
-    // Sizes Injection
+    // Sizes Setup (Agar kisi product mein size hai toh buttons banenge)
     const sizeSection = document.getElementById("sizeSection");
     const sizeContainer = document.getElementById("sizeContainer");
+    chosenSize = null;
+
     if (selectedProduct.sizes && Array.isArray(selectedProduct.sizes) && selectedProduct.sizes.length > 0) {
         if (sizeSection) sizeSection.style.display = "block";
         if (sizeContainer) {
@@ -216,9 +205,11 @@ function loadProductDetails() {
         sizeSection.style.display = "none";
     }
 
-    // Colors Injection
+    // Colors Setup (Agar kisi product mein color hai toh buttons banenge)
     const colorSection = document.getElementById("colorSection");
     const colorContainer = document.getElementById("colorContainer");
+    chosenColor = null;
+
     if (selectedProduct.colors && Array.isArray(selectedProduct.colors) && selectedProduct.colors.length > 0) {
         if (colorSection) colorSection.style.display = "block";
         if (colorContainer) {
@@ -228,7 +219,7 @@ function loadProductDetails() {
                 btn.className = "option-btn color-btn";
                 btn.innerText = col;
                 btn.onclick = () => selectOption(btn, "color", col);
-                colorContainer.appendChild(btn);
+                sizeContainer.appendChild(btn);
             });
         }
     } else if (colorSection) {
@@ -246,11 +237,11 @@ function loadProductDetails() {
         if (accRet) accRet.innerText = selectedProduct.details.returnPolicy || "Standard 15 days return policy.";
     } else {
         if (accDet) accDet.innerText = selectedProduct.description || "Premium quality guaranteed.";
-        if (accCare) accCare.innerText = "Keep clean and dry.";
+        if (accCare) accCare.innerText = "Clean with a soft dry cloth.";
         if (accRet) accRet.innerText = "15 days replacement warranty.";
     }
 
-    // Multi-Images Slider Safe Setup
+    // Multi-Images Slider
     if (selectedProduct.images && Array.isArray(selectedProduct.images) && selectedProduct.images.length > 0) {
         productImages = selectedProduct.images;
     } else if (selectedProduct.image) {
@@ -312,6 +303,7 @@ function toggleAcc(element) {
     }
 }
 
+// Add to Cart from product.html
 function addToCartFromDetails(redirectToCart = false) {
     if (!selectedProduct) return;
 
@@ -324,7 +316,8 @@ function addToCartFromDetails(redirectToCart = false) {
         return;
     }
 
-    const cartItemId = `prod_${selectedProduct.id}_${chosenSize || ''}_${chosenColor || ''}`;
+    const prodTitle = selectedProduct.name || selectedProduct.title;
+    const cartItemId = `item_${selectedProduct.id}_${chosenSize || ''}_${chosenColor || ''}`;
     const existingIndex = cart.findIndex(i => i.id === cartItemId);
     const prodImg = getProductImage(selectedProduct);
 
@@ -333,7 +326,7 @@ function addToCartFromDetails(redirectToCart = false) {
     } else {
         cart.push({
             id: cartItemId,
-            name: selectedProduct.name,
+            name: prodTitle,
             price: selectedProduct.price,
             image: prodImg,
             size: chosenSize || null,
@@ -348,12 +341,214 @@ function addToCartFromDetails(redirectToCart = false) {
     if (redirectToCart) {
         window.location.href = "cart.html";
     } else {
-        alert("Item added to cart successfully!");
+        alert(`"${prodTitle}" added to cart!`);
     }
 }
 
 // ==========================================================================
-// 4. HOME PAGE: PRODUCTS & CATEGORIES
+// 4. HOME PAGE & OTHER HUBS CLICK LOGIC (REDIRECT TO product.html)
+// ==========================================================================
+function renderHomeBestSellers(products) {
+    const grid = document.getElementById("homeBestGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    products.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "best-card";
+        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:5px;">Rs. ${item.mrp}</span>` : "";
+        const itemImg = getProductImage(item);
+
+        card.innerHTML = `
+            <div>
+                <div class="best-img-box" onclick="window.location.href='product.html?id=${item.id}'">
+                    <img src="${itemImg}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&q=80';">
+                </div>
+                <h3 class="best-card-title" onclick="window.location.href='product.html?id=${item.id}'">${item.name}</h3>
+                <div class="best-price-row">Rs. ${item.price} ${mrpHtml}</div>
+            </div>
+            <button class="btn-add-cart-best" onclick="window.location.href='product.html?id=${item.id}'">Select Size / Buy</button>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function renderHomeOnSale(products) {
+    const grid = document.getElementById("homeSaleGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    products.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "sale-card";
+        const badgeColor = item.badgeColor || "#e11d48";
+        const badgeHtml = item.badge ? `<div class="badge-circle" style="background-color: ${badgeColor};">${item.badge}</div>` : "";
+        const itemImg = getProductImage(item);
+
+        let swatchesHtml = "";
+        if (item.colors && item.colors.length > 0) {
+            swatchesHtml = `<div class="swatches-row">` + item.colors.map(c => `<span class="swatch-dot" style="background-color: ${c};"></span>`).join('') + `</div>`;
+        }
+
+        card.innerHTML = `
+            <div>
+                ${badgeHtml}
+                <div class="sale-img-box" onclick="window.location.href='product.html?id=${item.id}'">
+                    <img src="${itemImg}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80';">
+                </div>
+                <div class="sale-info">
+                    <h3 class="sale-card-title" onclick="window.location.href='product.html?id=${item.id}'">${item.name}</h3>
+                    <div class="sale-card-price">Rs. ${item.price}</div>
+                    <div class="stars-row">★★★★★</div>
+                    ${swatchesHtml}
+                </div>
+            </div>
+            <div style="padding: 0 10px 10px 10px;">
+                <button class="btn-quick-sale" onclick="window.location.href='product.html?id=${item.id}'">Select Options</button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function renderHomeShowcase(data) {
+    const container = document.getElementById("showcaseContainer");
+    if (!container) return;
+
+    if (data.badge && document.getElementById("showcaseBadge")) {
+        document.getElementById("showcaseBadge").innerText = data.badge;
+    }
+    if (data.heading && document.getElementById("showcaseHeading")) {
+        document.getElementById("showcaseHeading").innerText = data.heading;
+    }
+
+    container.innerHTML = "";
+
+    (data.collections || []).forEach((item, index) => {
+        const isReverse = index % 2 !== 0;
+        const row = document.createElement("div");
+        row.className = `showcase-row ${isReverse ? 'reverse' : ''}`;
+
+        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:6px;">Rs. ${item.mrp}</span>` : "";
+        const discHtml = item.discount ? `<span style="color:#e11d48;font-size:12px;font-weight:700;margin-left:4px;">${item.discount}</span>` : "";
+        const firstImg = getProductImage(item);
+
+        row.innerHTML = `
+            <div class="showcase-img-card" onclick="window.location.href='product.html?id=${item.id}'">
+                <img src="${firstImg}" alt="${item.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80';">
+            </div>
+            <div class="showcase-text-box">
+                <h3 class="showcase-item-title" onclick="window.location.href='product.html?id=${item.id}'">${item.title}</h3>
+                <p class="showcase-item-desc">${item.description}</p>
+                <div class="showcase-price-box">
+                    <span>Rs. ${item.price}</span>
+                    ${mrpHtml}
+                    ${discHtml}
+                </div>
+                <div class="showcase-actions">
+                    <button class="col-buy-btn" onclick="window.location.href='product.html?id=${item.id}'">Select Size / Color</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+}
+
+function renderNewArrivalsPage(data) {
+    if (data.hero) {
+        const img = document.getElementById("newHeroImg");
+        const pill = document.getElementById("newHeroPill");
+        const title = document.getElementById("newHeroTitle");
+        const desc = document.getElementById("newHeroDesc");
+        if (img) img.src = getProductImage(data.hero);
+        if (pill) pill.innerText = "🌸 " + (data.hero.badge || "Fresh Drops");
+        if (title) title.innerText = data.hero.title || "New Arrival";
+        if (desc) desc.innerText = data.hero.description || "";
+    }
+
+    const grid = document.getElementById("newArrivalsGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    (data.products || []).forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "new-card";
+
+        const mrpHtml = prod.mrp ? `<span class="mrp">Rs. ${prod.mrp}</span>` : "";
+        const discHtml = prod.discount ? `<span class="disc">${prod.discount}</span>` : "";
+        const prodImg = getProductImage(prod);
+
+        card.innerHTML = `
+            <div class="new-tag">${prod.badge || "NEW"}</div>
+            <div class="img-box" onclick="window.location.href='product.html?id=${prod.id}'">
+                <img src="${prodImg}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80';">
+            </div>
+            <div class="card-info">
+                <div class="rating-stars">★★★★★</div>
+                <h3 class="card-title" onclick="window.location.href='product.html?id=${prod.id}'">${prod.name}</h3>
+                <div class="price-row">
+                    <span class="price">Rs. ${prod.price}</span>
+                    ${mrpHtml}
+                    ${discHtml}
+                </div>
+                <div class="colors-strip">
+                    ${prod.colors ? prod.colors.map(() => '<span class="color-dot"></span>').join('') : ''}
+                </div>
+                <div class="card-actions">
+                    <button class="btn-buy" onclick="window.location.href='product.html?id=${prod.id}'">Select Size / Buy</button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function renderFullCollectionsPage(data) {
+    const grid = document.getElementById("fullCollectionsGrid");
+    if (!grid) return;
+
+    if (data.badge && document.getElementById("pageBadge")) {
+        document.getElementById("pageBadge").innerText = data.badge;
+    }
+    if (data.heading && document.getElementById("pageHeading")) {
+        document.getElementById("pageHeading").innerText = data.heading;
+    }
+
+    grid.innerHTML = "";
+
+    (data.collections || []).forEach(item => {
+        const card = document.createElement("div");
+        card.className = "collection-card";
+        const mrpHtml = item.mrp ? `<span class="card-mrp">Rs. ${item.mrp}</span>` : "";
+        const discHtml = item.discount ? `<span class="card-disc">${item.discount}</span>` : "";
+        const firstImg = getProductImage(item);
+
+        card.innerHTML = `
+            <div class="collection-img-box" onclick="window.location.href='product.html?id=${item.id}'" style="cursor: pointer;">
+                <img src="${firstImg}" alt="${item.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1400?text=Collection';">
+            </div>
+            <div class="collection-body">
+                <div>
+                    <div class="collection-tag">${item.category || "Collection"}</div>
+                    <h2 class="collection-name" onclick="window.location.href='product.html?id=${item.id}'" style="cursor: pointer;">${item.title}</h2>
+                    <p class="collection-text">${item.description}</p>
+                    <div class="card-price-row">
+                        <span class="card-price">Rs. ${item.price}</span>
+                        ${mrpHtml}
+                        ${discHtml}
+                    </div>
+                </div>
+                <div class="card-action-row">
+                    <button class="card-buy-btn" onclick="window.location.href='product.html?id=${item.id}'">Select Size / Color</button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// ==========================================================================
+// 5. MAIN CATALOG, SEARCH & LOAD MORE
 // ==========================================================================
 function displayProducts() {
     const container = document.getElementById("product-container");
@@ -468,235 +663,36 @@ function displayCategories(categories) {
     });
 }
 
-// ==========================================================================
-// 5. HOME PREVIEWS & SHOWCASE
-// ==========================================================================
-function renderHomeBestSellers(products) {
-    const grid = document.getElementById("homeBestGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
+function handleSearch() {
+    const input = document.getElementById("searchInput");
+    searchQuery = input.value.trim().toLowerCase();
+    itemsToShow = 10;
 
-    products.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "best-card";
-        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:5px;">Rs. ${item.mrp}</span>` : "";
-        const itemImg = getProductImage(item);
+    const featBlocks = document.getElementById("homeFeaturedBlocks");
+    if (featBlocks) {
+        featBlocks.style.display = searchQuery === "" ? "block" : "none";
+    }
 
-        card.innerHTML = `
-            <div>
-                <div class="best-img-box" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${itemImg}', true)">
-                    <img src="${itemImg}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&q=80';">
-                </div>
-                <h3 class="best-card-title" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${itemImg}', true)">${item.name}</h3>
-                <div class="best-price-row">Rs. ${item.price} ${mrpHtml}</div>
-            </div>
-            <button class="btn-add-cart-best" onclick="addGenericToCart('${item.name} [Best Seller]', ${item.price}, '${itemImg}', false)">ADD TO CART</button>
-        `;
-        grid.appendChild(card);
+    displayProducts();
+}
+
+function clearSearch() {
+    const input = document.getElementById("searchInput");
+    if (input) input.value = "";
+    searchQuery = "";
+    currentCategory = "All";
+
+    const featBlocks = document.getElementById("homeFeaturedBlocks");
+    if (featBlocks) featBlocks.style.display = "block";
+
+    document.querySelectorAll(".cat-btn").forEach(b => {
+        b.classList.toggle("active", b.innerText === "All");
     });
-}
-
-function renderHomeOnSale(products) {
-    const grid = document.getElementById("homeSaleGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
-
-    products.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "sale-card";
-        const badgeColor = item.badgeColor || "#e11d48";
-        const badgeHtml = item.badge ? `<div class="badge-circle" style="background-color: ${badgeColor};">${item.badge}</div>` : "";
-        const itemImg = getProductImage(item);
-
-        let swatchesHtml = "";
-        if (item.colors && item.colors.length > 0) {
-            swatchesHtml = `<div class="swatches-row">` + item.colors.map(c => `<span class="swatch-dot" style="background-color: ${c};"></span>`).join('') + `</div>`;
-        }
-
-        card.innerHTML = `
-            <div>
-                ${badgeHtml}
-                <div class="sale-img-box" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${itemImg}', true)">
-                    <img src="${itemImg}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80';">
-                </div>
-                <div class="sale-info">
-                    <h3 class="sale-card-title" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${itemImg}', true)">${item.name}</h3>
-                    <div class="sale-card-price">Rs. ${item.price}</div>
-                    <div class="stars-row">★★★★★</div>
-                    ${swatchesHtml}
-                </div>
-            </div>
-            <div style="padding: 0 10px 10px 10px;">
-                <button class="btn-quick-sale" onclick="addGenericToCart('${item.name} [On Sale]', ${item.price}, '${itemImg}', true)">Quick Buy</button>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function addGenericToCart(name, price, image, redirectToCart) {
-    const cartItemId = `item_${encodeURIComponent(name)}`;
-    const existingIndex = cart.findIndex(i => i.id === cartItemId);
-
-    if (existingIndex > -1) {
-        cart[existingIndex].quantity += 1;
-    } else {
-        cart.push({
-            id: cartItemId,
-            name: name,
-            price: price,
-            image: image,
-            size: "Standard",
-            color: "Featured",
-            quantity: 1
-        });
-    }
-
-    localStorage.setItem("pak_store_cart", JSON.stringify(cart));
-    updateCartBadge();
-
-    if (redirectToCart) {
-        window.location.href = "cart.html";
-    } else {
-        alert(`"${name}" added to cart!`);
-    }
-}
-
-function renderHomeShowcase(data) {
-    const container = document.getElementById("showcaseContainer");
-    if (!container) return;
-
-    if (data.badge && document.getElementById("showcaseBadge")) {
-        document.getElementById("showcaseBadge").innerText = data.badge;
-    }
-    if (data.heading && document.getElementById("showcaseHeading")) {
-        document.getElementById("showcaseHeading").innerText = data.heading;
-    }
-
-    container.innerHTML = "";
-
-    data.collections.forEach((item, index) => {
-        const isReverse = index % 2 !== 0;
-        const row = document.createElement("div");
-        row.className = `showcase-row ${isReverse ? 'reverse' : ''}`;
-
-        const mrpHtml = item.mrp ? `<span style="text-decoration:line-through;color:#94a3b8;font-size:12px;margin-left:6px;">Rs. ${item.mrp}</span>` : "";
-        const discHtml = item.discount ? `<span style="color:#e11d48;font-size:12px;font-weight:700;margin-left:4px;">${item.discount}</span>` : "";
-        const firstImg = getProductImage(item);
-
-        row.innerHTML = `
-            <div class="showcase-img-card" onclick="window.location.href='collection-detail.html?id=${item.id}'">
-                <img src="${firstImg}" alt="${item.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80';">
-            </div>
-            <div class="showcase-text-box">
-                <h3 class="showcase-item-title" onclick="window.location.href='collection-detail.html?id=${item.id}'">${item.title}</h3>
-                <p class="showcase-item-desc">${item.description}</p>
-                <div class="showcase-price-box">
-                    <span>Rs. ${item.price}</span>
-                    ${mrpHtml}
-                    ${discHtml}
-                </div>
-                <div class="showcase-actions">
-                    <button class="col-buy-btn" onclick="window.location.href='collection-detail.html?id=${item.id}'">View & Select Options</button>
-                    <button class="col-cart-btn" onclick="addGenericToCart('${item.title} (Collection)', ${item.price}, '${firstImg}', false)">Quick Add</button>
-                </div>
-            </div>
-        `;
-        container.appendChild(row);
-    });
+    displayProducts();
 }
 
 // ==========================================================================
-// 6. NEW ARRIVALS PAGE LOADER (new-arrivals.html)
-// ==========================================================================
-function renderNewArrivalsPage(data) {
-    if (data.hero) {
-        const img = document.getElementById("newHeroImg");
-        const pill = document.getElementById("newHeroPill");
-        const title = document.getElementById("newHeroTitle");
-        const desc = document.getElementById("newHeroDesc");
-        if (img) img.src = getProductImage(data.hero);
-        if (pill) pill.innerText = "🌸 " + (data.hero.badge || "Fresh Drops");
-        if (title) title.innerText = data.hero.title || "New Arrival";
-        if (desc) desc.innerText = data.hero.description || "";
-    }
-
-    const grid = document.getElementById("newArrivalsGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
-
-    data.products.forEach(prod => {
-        const card = document.createElement("div");
-        card.className = "new-card";
-
-        const mrpHtml = prod.mrp ? `<span class="mrp">Rs. ${prod.mrp}</span>` : "";
-        const discHtml = prod.discount ? `<span class="disc">${prod.discount}</span>` : "";
-        const prodImg = getProductImage(prod);
-
-        card.innerHTML = `
-            <div class="new-tag">${prod.badge || "NEW"}</div>
-            <div class="img-box" onclick="buyNewItem(${prod.id}, true)">
-                <img src="${prodImg}" alt="${prod.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80';">
-            </div>
-            <div class="card-info">
-                <div class="rating-stars">★★★★★</div>
-                <h3 class="card-title" onclick="buyNewItem(${prod.id}, true)">${prod.name}</h3>
-                <div class="price-row">
-                    <span class="price">Rs. ${prod.price}</span>
-                    ${mrpHtml}
-                    ${discHtml}
-                </div>
-                <div class="colors-strip">
-                    ${prod.colors ? prod.colors.map(() => '<span class="color-dot"></span>').join('') : ''}
-                </div>
-                <div class="card-actions">
-                    <button class="btn-buy" onclick="buyNewItem(${prod.id}, true)">Buy Now</button>
-                    <button class="btn-cart" onclick="buyNewItem(${prod.id}, false)">Add to Cart</button>
-                </div>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function buyNewItem(id, redirectToCart) {
-    fetch(`./new-arrivals.json`)
-        .then(res => res.json())
-        .then(data => {
-            const item = data.products.find(p => p.id === id);
-            if (!item) return;
-
-            const cartItemId = `new_${item.id}`;
-            const existingIndex = cart.findIndex(i => i.id === cartItemId);
-            const imgUrl = getProductImage(item);
-
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += 1;
-            } else {
-                cart.push({
-                    id: cartItemId,
-                    name: `${item.name} [New Arrival]`,
-                    price: item.price,
-                    image: imgUrl,
-                    size: item.sizes ? item.sizes[0] : "Standard",
-                    color: item.colors ? item.colors[0] : "Standard",
-                    quantity: 1
-                });
-            }
-
-            localStorage.setItem("pak_store_cart", JSON.stringify(cart));
-            updateCartBadge();
-
-            if (redirectToCart) {
-                window.location.href = "cart.html";
-            } else {
-                alert(`"${item.name}" added to cart!`);
-            }
-        });
-}
-
-// ==========================================================================
-// 7. CART PAGE (cart.html)
+// 6. CART PAGE (cart.html)
 // ==========================================================================
 function renderCartPage() {
     const container = document.getElementById("cartViewContainer");
@@ -881,33 +877,4 @@ function submitContact() {
         btn.innerText = "Send Message";
         btn.disabled = false;
     });
-}
-
-// Search System
-function handleSearch() {
-    const input = document.getElementById("searchInput");
-    searchQuery = input.value.trim().toLowerCase();
-    itemsToShow = 10;
-
-    const featBlocks = document.getElementById("homeFeaturedBlocks");
-    if (featBlocks) {
-        featBlocks.style.display = searchQuery === "" ? "block" : "none";
-    }
-
-    displayProducts();
-}
-
-function clearSearch() {
-    const input = document.getElementById("searchInput");
-    if (input) input.value = "";
-    searchQuery = "";
-    currentCategory = "All";
-
-    const featBlocks = document.getElementById("homeFeaturedBlocks");
-    if (featBlocks) featBlocks.style.display = "block";
-
-    document.querySelectorAll(".cat-btn").forEach(b => {
-        b.classList.toggle("active", b.innerText === "All");
-    });
-    displayProducts();
 }
