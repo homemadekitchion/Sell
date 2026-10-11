@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Dynamic SEO Tags (JS updates these automatically per product) -->
     <title id="pageTitle">Product Details - Pak COD Store</title>
     <meta name="description" id="metaDescription" content="Buy premium products online with Cash on Delivery in Pakistan. 100% genuine products with fast nationwide shipping.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" id="canonicalUrl" href="">
 
-    <!-- Open Graph for Social Sharing -->
+    <!-- Open Graph -->
     <meta property="og:locale" content="en_PK">
     <meta property="og:type" content="product">
     <meta property="og:title" id="ogTitle" content="Product Details - Pak COD Store">
@@ -20,10 +18,10 @@
     <style>
         * { box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
             background-color: #fff; 
             margin: 0; 
-            color: #222; 
+            color: #1e293b; 
             padding-bottom: 85px; /* Sticky bar ke liye space */
         }
 
@@ -31,7 +29,7 @@
         header { 
             background: #fff; 
             padding: 12px 18px; 
-            border-bottom: 1px solid #e5e5e5; 
+            border-bottom: 1px solid #e2e8f0; 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
@@ -40,7 +38,7 @@
             z-index: 50; 
         }
         .back-link { 
-            color: #000; 
+            color: #0f172a; 
             text-decoration: none; 
             font-weight: 700; 
             font-size: 13px; 
@@ -55,9 +53,9 @@
             font-weight: 800; 
             margin: 0; 
         }
-        .header-title a { color: #000; text-decoration: none; }
+        .header-title a { color: #0f172a; text-decoration: none; }
         .cart-link-btn { 
-            background: #000; 
+            background: #0f172a; 
             color: #fff; 
             text-decoration: none; 
             padding: 7px 12px; 
@@ -69,28 +67,28 @@
             gap: 5px; 
         }
         .cart-badge { 
-            background: #a41c23; 
+            background: #e11d48; 
             color: #fff; 
             border-radius: 50%; 
             padding: 1px 6px; 
             font-size: 10px; 
         }
 
-        /* Breadcrumbs for SEO */
+        /* Breadcrumbs */
         .breadcrumb-nav { 
             max-width: 1100px; 
             margin: 12px auto 0 auto; 
             padding: 0 15px; 
             font-size: 12px; 
-            color: #666; 
+            color: #64748b; 
         }
-        .breadcrumb-nav a { color: #333; text-decoration: none; }
+        .breadcrumb-nav a { color: #334155; text-decoration: none; }
         .breadcrumb-nav span { margin: 0 5px; }
 
         /* Product Container */
         .product-detail-wrapper { 
             max-width: 1100px; 
-            margin: 15px auto 40px auto; 
+            margin: 15px auto 25px auto; 
             padding: 0 15px; 
         }
         .product-layout { 
@@ -109,8 +107,8 @@
             width: 100%; 
             aspect-ratio: 1 / 1; 
             background: #fafafa; 
-            border: 1px solid #eee; 
-            border-radius: 6px; 
+            border: 1px solid #f1f5f9; 
+            border-radius: 8px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
@@ -158,29 +156,29 @@
         .arrow-prev { left: 10px; }
         .arrow-next { right: 10px; }
 
-        /* Right Column: Product Information */
+        /* Right Column: Information */
         .info-col { 
             flex: 1; 
             min-width: 320px; 
         }
         .brand-subtitle { 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: #888; 
+            font-size: 11px; 
+            font-weight: 800; 
+            color: #64748b; 
             letter-spacing: 1px; 
             text-transform: uppercase; 
             margin-bottom: 4px; 
         }
         h1.prod-heading { 
             font-size: 22px; 
-            font-weight: 700; 
-            color: #111; 
+            font-weight: 800; 
+            color: #0f172a; 
             line-height: 1.3; 
-            margin: 0 0 8px 0; 
+            margin: 0 0 6px 0; 
         }
         .sku-text { 
             font-size: 12px; 
-            color: #777; 
+            color: #64748b; 
             margin-bottom: 14px; 
         }
 
@@ -191,41 +189,43 @@
             gap: 10px; 
             margin-bottom: 20px; 
             padding-bottom: 15px; 
-            border-bottom: 1px solid #f0f0f0; 
+            border-bottom: 1px solid #f1f5f9; 
         }
         .current-price { 
             font-size: 24px; 
-            font-weight: 800; 
-            color: #000; 
+            font-weight: 900; 
+            color: #0f172a; 
         }
         .mrp-price { 
             font-size: 15px; 
-            color: #888; 
+            color: #94a3b8; 
             text-decoration: line-through; 
         }
         .discount-percent { 
             font-size: 14px; 
-            font-weight: 700; 
+            font-weight: 800; 
             color: #a41c23; 
         }
         .tax-note { 
             font-size: 11px; 
-            color: #28a745; 
+            color: #16a34a; 
             font-weight: 600; 
             display: block; 
             margin-top: 3px; 
         }
 
-        /* Size & Color Selectors */
-        .selector-block { margin-bottom: 20px; }
+        /* Size & Color Selectors (Clean Separation Fix) */
+        .selector-block { 
+            margin-bottom: 20px; 
+            clear: both;
+        }
         .selector-header { 
-            display: flex; 
-            justify-content: space-between; 
+            display: block;
             font-size: 12px; 
-            font-weight: 700; 
+            font-weight: 800; 
             text-transform: uppercase; 
             letter-spacing: 0.5px; 
-            color: #333; 
+            color: #334155; 
             margin-bottom: 10px; 
         }
         .options-list { 
@@ -234,7 +234,7 @@
             gap: 10px; 
         }
         .option-btn { 
-            border: 1px solid #ccc; 
+            border: 1px solid #cbd5e1; 
             background: #fff; 
             min-width: 44px; 
             height: 44px; 
@@ -245,7 +245,7 @@
             cursor: pointer; 
             font-size: 13px; 
             font-weight: 700; 
-            color: #222; 
+            color: #0f172a; 
             transition: all 0.15s; 
             padding: 0 6px; 
         }
@@ -256,22 +256,22 @@
             padding: 0 16px; 
             font-size: 12px; 
         }
-        .option-btn:hover { border-color: #000; }
+        .option-btn:hover { border-color: #0f172a; }
         .option-btn.active { 
-            background: #000; 
+            background: #0f172a; 
             color: #fff; 
-            border-color: #000; 
+            border-color: #0f172a; 
         }
 
-        /* Delivery Badge Box */
+        /* Delivery Perks Box */
         .delivery-perks { 
-            background: #fafafa; 
-            border: 1px solid #eee; 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
             border-radius: 6px; 
             padding: 12px 15px; 
             margin: 20px 0; 
             font-size: 12px; 
-            color: #444; 
+            color: #475569; 
             line-height: 1.6; 
         }
         .perk-item { 
@@ -283,10 +283,10 @@
 
         /* Accordions */
         .accordion-wrapper { 
-            border-top: 1px solid #e5e5e5; 
+            border-top: 1px solid #e2e8f0; 
             margin-top: 25px; 
         }
-        .acc-item { border-bottom: 1px solid #e5e5e5; }
+        .acc-item { border-bottom: 1px solid #e2e8f0; }
         .acc-header { 
             padding: 14px 0; 
             display: flex; 
@@ -295,23 +295,156 @@
             cursor: pointer; 
             font-size: 14px; 
             font-weight: 700; 
-            color: #222; 
+            color: #0f172a; 
             user-select: none; 
         }
         .acc-icon { 
             font-size: 18px; 
-            font-weight: 700; 
+            font-weight: 800; 
             color: #a41c23; 
         }
         .acc-content { 
             display: none; 
             padding: 0 0 14px 0; 
             font-size: 13px; 
-            color: #555; 
+            color: #64748b; 
             line-height: 1.6; 
         }
 
-        /* Sticky Footer Bar (Mobile & PC) */
+        /* ================================================================= */
+        /* 🔥 NEW VIRAL & MOST BOUGHT PRODUCTS (HORIZONTAL SLIDER)          */
+        /* ================================================================= */
+        .viral-section {
+            max-width: 1100px;
+            margin: 35px auto 40px auto;
+            padding: 0 15px;
+        }
+        .viral-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        .viral-header h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 900;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .viral-badge-pill {
+            background: #ffe4e6;
+            color: #e11d48;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Horizontal Touch Scroll Container */
+        .viral-slider {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 10px 2px 14px 2px;
+            scrollbar-width: thin;
+        }
+        .viral-slider::-webkit-scrollbar {
+            height: 4px;
+        }
+        .viral-slider::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        /* Responsive Cards: Exactly 3 on Mobile! */
+        .viral-card {
+            flex: 0 0 calc((100% - 16px) / 3); /* Mobile: 3 Cards per view! */
+            scroll-snap-align: start;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 6px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .viral-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+        }
+        @media (min-width: 601px) and (max-width: 1023px) {
+            .viral-card { flex: 0 0 calc((100% - 24px) / 4); } /* Tablet: 4 Cards */
+        }
+        @media (min-width: 1024px) {
+            .viral-card { flex: 0 0 calc((100% - 32px) / 5); } /* PC: 5 Cards */
+        }
+
+        .viral-img-box {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #f8fafc;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .viral-img-box img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+        .viral-tag {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: #e11d48;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .viral-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 0 0 3px 0;
+            line-height: 1.25;
+            height: 26px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .viral-price {
+            font-size: 12px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .viral-mrp {
+            font-size: 9px;
+            color: #94a3b8;
+            text-decoration: line-through;
+            margin-left: 2px;
+        }
+
+        /* Sticky Footer Bar */
         .sticky-footer { 
             position: fixed; 
             bottom: 0; 
@@ -325,9 +458,9 @@
         .btn-cart { 
             flex: 1; 
             background: #fff; 
-            color: #111; 
+            color: #0f172a; 
             border: none; 
-            border-right: 1px solid #eee; 
+            border-right: 1px solid #e2e8f0; 
             padding: 16px; 
             font-size: 13px; 
             font-weight: 800; 
@@ -360,21 +493,20 @@
             opacity: 0.9; 
         }
 
-        /* Footer */
         footer { 
-            background: #111; 
-            color: #aaa; 
+            background: #0f172a; 
+            color: #94a3b8; 
             text-align: center; 
             padding: 25px 15px; 
             font-size: 12px; 
             margin-top: 40px; 
         }
-        footer a { color: #fff; text-decoration: none; margin: 0 8px; }
+        footer a { color: #f8fafc; text-decoration: none; margin: 0 8px; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Header Navigation -->
     <header>
         <a href="index.html" class="back-link">&larr; Back to Shop</a>
         <div class="header-title">
@@ -385,7 +517,7 @@
         </a>
     </header>
 
-    <!-- Breadcrumb Navigation for SEO -->
+    <!-- Breadcrumb Navigation -->
     <nav class="breadcrumb-nav" aria-label="Breadcrumb">
         <a href="index.html">Home</a>
         <span>&gt;</span>
@@ -407,8 +539,8 @@
                 </div>
             </section>
 
-            <!-- Right Column: Details, Selectors, and Accordions -->
-            <section class="info-col" aria-label="Product Purchase Information">
+            <!-- Right Column: Details & Selectors -->
+            <section class="info-col" aria-label="Purchase Information">
                 <div class="brand-subtitle">PAK COD STORE</div>
                 <h1 class="prod-heading" id="prodTitle">Loading Product Details...</h1>
                 <div class="sku-text" id="prodSku">SKU: Loading...</div>
@@ -421,23 +553,19 @@
                     <span class="tax-note">✓ Inclusive of all taxes</span>
                 </div>
 
-                <!-- Size Selector (Hidden if not applicable) -->
+                <!-- SELECT SIZE (Cleanly Separated) -->
                 <div class="selector-block" id="sizeSection" style="display: none;">
-                    <div class="selector-header">
-                        <span>Select Size:</span>
-                    </div>
+                    <span class="selector-header">SELECT SIZE:</span>
                     <div class="options-list" id="sizeContainer"></div>
                 </div>
 
-                <!-- Color Selector (Hidden if not applicable) -->
+                <!-- AVAILABLE COLORS (Cleanly Separated) -->
                 <div class="selector-block" id="colorSection" style="display: none;">
-                    <div class="selector-header">
-                        <span>Available Colors:</span>
-                    </div>
+                    <span class="selector-header">AVAILABLE COLORS:</span>
                     <div class="options-list" id="colorContainer"></div>
                 </div>
 
-                <!-- Delivery & COD Assurance Perks -->
+                <!-- Delivery Perks Box -->
                 <div class="delivery-perks">
                     <div class="perk-item">🚚 <span>Cash on Delivery (COD) available nationwide.</span></div>
                     <div class="perk-item">🛡️ <span>100% Genuine and Inspected Parcel.</span></div>
@@ -474,12 +602,21 @@
         </article>
     </main>
 
-    <!-- Sticky Bottom Ordering Bar (No Modal Popup!) -->
+    <!-- ============================================================= -->
+    <!-- 🔥 MORE PRODUCTS: VIRAL & MOST BOUGHT HORIZONTAL SLIDER       -->
+    <!-- ============================================================= -->
+    <section class="viral-section">
+        <div class="viral-header">
+            <h2>🔥 Viral & Most Bought <span class="viral-badge-pill">Trending</span></h2>
+            <span style="font-size: 11px; color: #64748b; font-weight: 700;">Swipe &rarr;</span>
+        </div>
+        <!-- Horizontal Touch Slider (Exactly 3 per view on Mobile!) -->
+        <div class="viral-slider" id="viralProductsContainer"></div>
+    </section>
+
+    <!-- Sticky Bottom Bar -->
     <aside class="sticky-footer" aria-label="Purchase Actions">
-        <!-- Item ko cart mein add karega -->
         <button class="btn-cart" onclick="addToCartFromDetails(false)">ADD TO CART</button>
-        
-        <!-- Fauri cart.html checkout page par le kar jayega -->
         <button class="btn-checkout" onclick="addToCartFromDetails(true)">
             <span>QUICK CHECKOUT</span>
             <small>Cash on Delivery Available</small>
