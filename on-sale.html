@@ -4,23 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>On Sale & Trending - Pak COD Store</title>
-    <meta name="description" content="Limited time discounts and trending hot deals with Cash on Delivery across Pakistan.">
+    <meta name="description" content="Exclusive price drops, trending accessories, shoes and casual wear with Cash on Delivery across Pakistan.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://aapki-website.github.io/on-sale.html">
+
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:locale" content="en_PK">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="On Sale & Trending - Pak COD Store">
+    <meta property="og:description" content="Limited time discounts and trending deals with Cash on Delivery nationwide.">
+    <meta property="og:url" content="https://aapki-website.github.io/on-sale.html">
+    <meta property="og:image" content="images/fash3-1.jpg">
 
     <style>
         * { box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
             margin: 0; 
             padding: 0; 
             background: #f8fafc; 
             color: #1e293b; 
         }
 
-        /* Header */
+        /* Header Navigation */
         header { 
-            background: #fff; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(10px);
             padding: 14px 20px; 
             border-bottom: 1px solid #e2e8f0; 
             display: flex; 
@@ -30,23 +39,73 @@
             top: 0; 
             z-index: 100; 
         }
-        .back-link { color: #0f172a; text-decoration: none; font-weight: 700; font-size: 13px; }
-        .header-title { font-size: 16px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin: 0; }
+        .back-link { 
+            color: #0f172a; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 13px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #f1f5f9;
+            transition: all 0.2s;
+        }
+        .back-link:hover { background: #e2e8f0; }
+
+        .header-title { 
+            font-size: 16px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+            margin: 0; 
+        }
         .header-title a { color: #0f172a; text-decoration: none; }
-        .cart-link-btn { background: #0f172a; color: #fff; text-decoration: none; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-        .cart-badge { background: #e11d48; color: #fff; border-radius: 50%; padding: 1px 6px; font-size: 10px; margin-left: 4px; }
+
+        .cart-link-btn { 
+            background: #0f172a; 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 700; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+        }
+        .cart-badge { 
+            background: #e11d48; 
+            color: #fff; 
+            border-radius: 50%; 
+            padding: 1px 6px; 
+            font-size: 10px; 
+        }
+
+        /* Breadcrumbs */
+        .breadcrumb-nav { 
+            max-width: 1240px; 
+            margin: 14px auto 0 auto; 
+            padding: 0 18px; 
+            font-size: 12px; 
+            color: #64748b; 
+        }
+        .breadcrumb-nav a { color: #334155; text-decoration: none; font-weight: 600; }
+        .breadcrumb-nav span { margin: 0 5px; }
 
         /* Hero / Title Section (Tasveer #2 Style) */
         .sale-hero { 
             text-align: center; 
-            padding: 40px 15px 25px 15px; 
+            padding: 35px 15px 25px 15px; 
             background: #fff;
             border-bottom: 1px solid #e2e8f0;
         }
         .sale-hero-title { 
-            font-size: 26px; 
+            font-size: 28px; 
             font-weight: 900; 
-            letter-spacing: 2px; 
+            letter-spacing: 1.5px; 
             text-transform: uppercase; 
             margin: 0 0 8px 0; 
             color: #0f172a; 
@@ -56,8 +115,23 @@
             color: #64748b; 
             letter-spacing: 1px; 
             text-transform: uppercase; 
-            margin: 0; 
-            font-weight: 600;
+            margin: 0 0 16px 0; 
+            font-weight: 700;
+        }
+
+        .trust-strip {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            max-width: 800px;
+            margin: auto;
+            padding: 8px 16px;
+            background: #f8fafc;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
         }
 
         /* Minimalist Grid (Tasveer #2 Layout) */
@@ -76,7 +150,7 @@
         .sale-card { 
             background: #fff; 
             border: 1px solid #e2e8f0; 
-            border-radius: 8px; 
+            border-radius: 10px; 
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
@@ -86,7 +160,8 @@
         }
         .sale-card:hover { 
             transform: translateY(-4px); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.06); 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.06); 
+            border-color: #cbd5e1;
         }
 
         /* Circular Badges (Green/Red like Image 2) */
@@ -104,10 +179,10 @@
             font-size: 11px; 
             font-weight: 800; 
             z-index: 5; 
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
         }
 
-        /* Clean Square Image Box */
+        /* Square Image Box */
         .sale-img-box { 
             width: 100%; 
             aspect-ratio: 1 / 1; 
@@ -115,7 +190,7 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            padding: 22px; 
+            padding: 20px; 
             cursor: pointer; 
         }
         .sale-img-box img { 
@@ -131,18 +206,19 @@
 
         /* Card Content */
         .sale-info { padding: 14px; text-align: left; }
-        .card-tag { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+        .card-tag { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
         .sale-title { 
-            font-size: 13px; 
+            font-size: 13.5px; 
             font-weight: 700; 
             color: #0f172a; 
             margin: 0 0 6px 0; 
-            height: 34px; 
+            height: 36px; 
             overflow: hidden; 
             display: -webkit-box; 
             -webkit-line-clamp: 2; 
             -webkit-box-orient: vertical; 
             cursor: pointer; 
+            line-height: 1.35;
         }
         .sale-price-row { 
             display: flex; 
@@ -150,7 +226,7 @@
             gap: 6px; 
             margin-bottom: 6px; 
         }
-        .sale-price { font-size: 16px; font-weight: 800; color: #0f172a; }
+        .sale-price { font-size: 16px; font-weight: 900; color: #0f172a; }
         .sale-mrp { font-size: 12px; color: #94a3b8; text-decoration: line-through; }
 
         /* Star Ratings (Image 2) */
@@ -183,12 +259,13 @@
             background: #0f172a; 
             color: #fff; 
             border: none; 
-            padding: 9px; 
+            padding: 10px; 
             border-radius: 4px; 
             font-size: 11px; 
             font-weight: 800; 
             text-transform: uppercase; 
             cursor: pointer; 
+            transition: background 0.2s;
         }
         .btn-buy-now:hover { background: #334155; }
         .btn-add-cart { 
@@ -196,7 +273,7 @@
             background: #fff; 
             color: #0f172a; 
             border: 1px solid #cbd5e1; 
-            padding: 9px; 
+            padding: 10px; 
             border-radius: 4px; 
             font-size: 11px; 
             font-weight: 700; 
@@ -213,15 +290,27 @@
     <!-- Header Navigation -->
     <header>
         <a href="index.html" class="back-link">&larr; Back to Home</a>
-        <div class="header-title"><a href="index.html">PAK COD STORE</a></div>
+        <h1 class="header-title"><a href="index.html">PAK COD STORE</a></h1>
         <a href="cart.html" class="cart-link-btn">🛒 Cart <span id="cartCount" class="cart-badge">0</span></a>
     </header>
+
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>&gt;</span>
+        <strong>On Sale & Trending</strong>
+    </nav>
 
     <main>
         <!-- Minimalist Hero Title (Tasveer #2 Style) -->
         <section class="sale-hero">
             <h1 class="sale-hero-title" id="saleHeroTitle">New Trending Collection</h1>
             <p class="sale-hero-sub" id="saleHeroSub">Exclusive Price Drops with Cash on Delivery</p>
+
+            <div class="trust-strip">
+                <div>🚚 <span>Free Shipping Above Rs. 1500</span></div>
+                <div>🛡️ <span>100% Inspected & Brand New</span></div>
+                <div>🔄 <span>15 Days Return Warranty</span></div>
+            </div>
         </section>
 
         <!-- On-Sale & Trending Grid -->
@@ -229,10 +318,10 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="cart.html">View Cart</a></p>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="new-arrivals.html">New Arrivals</a> | <a href="best-sellers.html">Best Sellers</a> | <a href="on-sale.html">On Sale</a> | <a href="cart.html">View Cart</a></p>
     </footer>
 
-    <!-- Independent Auto-Runner Script for this page -->
+    <!-- Script: Loads on-sale.json and links each card directly to product.html -->
     <script>
         function refreshCartBadge() {
             const cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
@@ -271,15 +360,16 @@
                             `</div>`;
                     }
 
+                    // Clicking image, title, or button opens product.html?id=... to pick size & color!
                     card.innerHTML = `
                         <div>
                             ${badgeHtml}
-                            <div class="sale-img-box" onclick="addOnSaleToCart(${item.id}, true)">
-                                <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=Trending';">
+                            <div class="sale-img-box" onclick="window.location.href='product.html?id=${item.id}'">
+                                <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80';">
                             </div>
                             <div class="sale-info">
                                 <div class="card-tag">${item.category}</div>
-                                <h3 class="sale-title" onclick="addOnSaleToCart(${item.id}, true)">${item.name}</h3>
+                                <h3 class="sale-title" onclick="window.location.href='product.html?id=${item.id}'">${item.name}</h3>
                                 <div class="sale-price-row">
                                     <span class="sale-price">Rs. ${item.price}</span>
                                     ${mrpHtml}
@@ -290,8 +380,8 @@
                         </div>
                         <div style="padding: 0 14px 14px 14px;">
                             <div class="card-btn-row">
-                                <button class="btn-buy-now" onclick="addOnSaleToCart(${item.id}, true)">Quick Buy</button>
-                                <button class="btn-add-cart" onclick="addOnSaleToCart(${item.id}, false)">Add to Cart</button>
+                                <button class="btn-buy-now" onclick="window.location.href='product.html?id=${item.id}'">Select Size / Buy</button>
+                                <button class="btn-add-cart" onclick="quickAddOnSale(${item.id})">Quick Add</button>
                             </div>
                         </div>
                     `;
@@ -300,12 +390,19 @@
             })
             .catch(err => console.error("Error loading on-sale.json:", err));
 
-        function addOnSaleToCart(id, redirectToCart) {
+        // Quick Add handler (redirects to product.html if sizes/colors exist so user can choose!)
+        function quickAddOnSale(id) {
             fetch('./on-sale.json')
                 .then(res => res.json())
                 .then(data => {
                     const product = data.products.find(p => p.id === id);
                     if (!product) return;
+
+                    // If it has colors or sizes, take user to product.html to choose
+                    if ((product.colors && product.colors.length > 0) || (product.sizes && product.sizes.length > 0)) {
+                        window.location.href = `product.html?id=${product.id}`;
+                        return;
+                    }
 
                     let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
                     const cartItemId = `sale_${product.id}`;
@@ -320,19 +417,14 @@
                             price: product.price,
                             image: product.image,
                             size: "Standard",
-                            color: product.colors ? "Color Choice" : "Standard",
+                            color: "Standard",
                             quantity: 1
                         });
                     }
 
                     localStorage.setItem("pak_store_cart", JSON.stringify(cart));
                     refreshCartBadge();
-
-                    if (redirectToCart) {
-                        window.location.href = "cart.html";
-                    } else {
-                        alert(`"${product.name}" added to cart!`);
-                    }
+                    alert(`"${product.name}" added to cart!`);
                 });
         }
     </script>
