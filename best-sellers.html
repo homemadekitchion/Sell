@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Best Sellers - Pak COD Store</title>
-    <meta name="description" content="Shop our all-time top selling shoes, mobiles, laptops, and watches with nationwide Cash on Delivery.">
+    <meta name="description" content="Shop top-rated best selling shoes, smartphones, watches and winter apparel with Cash on Delivery across Pakistan.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://aapki-website.github.io/best-sellers.html">
+
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:locale" content="en_PK">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Best Sellers - Pak COD Store">
+    <meta property="og:description" content="Customer favorites and top selling products with Cash on Delivery nationwide.">
+    <meta property="og:url" content="https://aapki-website.github.io/best-sellers.html">
+    <meta property="og:image" content="images/shoe1-1.jpg">
 
     <style>
         * { box-sizing: border-box; }
@@ -14,13 +22,14 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Georgia", serif; 
             margin: 0; 
             padding: 0; 
-            background: #fff8f8; /* Soft subtle boutique background */
+            background: #fff8f8; /* Soft Boutique Background (Image 1 Style) */
             color: #222; 
         }
 
-        /* Header */
+        /* Header Navigation */
         header { 
-            background: #fff; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(10px);
             padding: 14px 20px; 
             border-bottom: 1px solid #f3e6e8; 
             display: flex; 
@@ -30,16 +39,70 @@
             top: 0; 
             z-index: 100; 
         }
-        .back-link { color: #111; text-decoration: none; font-weight: 700; font-size: 13px; font-family: sans-serif; }
-        .header-title { font-size: 16px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin: 0; font-family: sans-serif; }
-        .header-title a { color: #111; text-decoration: none; }
-        .cart-link-btn { background: #111; color: #fff; text-decoration: none; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; font-family: sans-serif; }
-        .cart-badge { background: #a41c23; color: #fff; border-radius: 50%; padding: 1px 6px; font-size: 10px; margin-left: 4px; }
+        .back-link { 
+            color: #111; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 13px; 
+            font-family: sans-serif; 
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fbf0f0;
+            transition: all 0.2s;
+        }
+        .back-link:hover { background: #f3dada; }
 
-        /* Hero / Title Section (Tasveer #1 Style) */
+        .header-title { 
+            font-size: 16px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+            margin: 0; 
+            font-family: sans-serif; 
+        }
+        .header-title a { color: #111; text-decoration: none; }
+
+        .cart-link-btn { 
+            background: #111; 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            font-family: sans-serif; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .cart-badge { 
+            background: #a41c23; 
+            color: #fff; 
+            border-radius: 50%; 
+            padding: 1px 6px; 
+            font-size: 10px; 
+        }
+
+        /* Breadcrumbs */
+        .breadcrumb-nav { 
+            max-width: 1200px; 
+            margin: 12px auto 0 auto; 
+            padding: 0 18px; 
+            font-size: 12px; 
+            color: #777; 
+            font-family: sans-serif;
+        }
+        .breadcrumb-nav a { color: #222; text-decoration: none; font-weight: 600; }
+        .breadcrumb-nav span { margin: 0 5px; }
+
+        /* Hero Title Section (Tasveer #1 Style) */
         .best-hero { 
             text-align: center; 
-            padding: 45px 15px 30px 15px; 
+            padding: 40px 15px 25px 15px; 
         }
         .arch-badge {
             display: inline-block;
@@ -48,14 +111,14 @@
             text-transform: uppercase;
             font-weight: 700;
             color: #8c6a6f;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-family: sans-serif;
         }
         .best-main-title { 
             font-size: 36px; 
             font-weight: 400; 
             font-family: "Georgia", serif; 
-            margin: 0 0 10px 0; 
+            margin: 0 0 8px 0; 
             color: #1a1a1a; 
             letter-spacing: 1px;
         }
@@ -66,40 +129,60 @@
             font-family: sans-serif;
         }
 
-        /* Products Grid (Tasveer #1 Portrait Row Layout) */
+        /* Trust Strip */
+        .trust-strip {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            max-width: 850px;
+            margin: 20px auto 30px auto;
+            padding: 10px 18px;
+            background: #fff;
+            border-radius: 30px;
+            border: 1px solid #f0e2e2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            font-size: 12px;
+            font-weight: 700;
+            color: #444;
+            font-family: sans-serif;
+        }
+
+        /* Portrait Products Grid (Tasveer #1 Style) */
         .best-grid { 
             display: grid; 
             gap: 20px; 
-            padding: 10px 20px 60px 20px; 
+            padding: 0 18px 60px 18px; 
             max-width: 1200px; 
             margin: auto; 
         }
         @media (min-width: 1024px) { .best-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
         @media (min-width: 601px) and (max-width: 1023px) { .best-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
-        @media (max-width: 600px) { .best-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 10px; } }
+        @media (max-width: 600px) { .best-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px 40px 10px; } }
 
-        /* Card (Exact Tasveer #1 Design) */
+        /* Card (Exact Tasveer #1 Styling) */
         .best-card { 
             background: #fff; 
             border: 1px solid #f0e6e6; 
-            border-radius: 4px; 
-            padding: 12px; 
+            border-radius: 6px; 
+            padding: 14px; 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
             text-align: center; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02); 
             transition: transform 0.2s, box-shadow 0.2s; 
         }
         .best-card:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06); 
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 22px rgba(164, 28, 35, 0.08); 
+            border-color: #e5cfcf;
         }
 
         /* Portrait Image Container */
         .best-img-box { 
             width: 100%; 
-            aspect-ratio: 3 / 4; /* Portrait ratio like Image 1 */
+            aspect-ratio: 3 / 4; 
             background: #faf8f8; 
             display: flex; 
             align-items: center; 
@@ -107,6 +190,7 @@
             margin-bottom: 14px; 
             overflow: hidden; 
             cursor: pointer;
+            border-radius: 4px;
         }
         .best-img-box img { 
             max-width: 90%; 
@@ -138,10 +222,10 @@
         }
         .best-title { 
             font-size: 14px; 
-            font-weight: 400; 
+            font-weight: 600; 
             font-family: "Georgia", serif; 
             color: #111; 
-            margin: 0 0 8px 0; 
+            margin: 0 0 6px 0; 
             line-height: 1.4; 
             height: 38px; 
             overflow: hidden; 
@@ -152,7 +236,7 @@
         }
         .best-price-row { 
             font-size: 15px; 
-            font-weight: 700; 
+            font-weight: 800; 
             color: #222; 
             font-family: sans-serif;
         }
@@ -164,42 +248,41 @@
             margin-left: 6px; 
         }
 
-        /* Prominent Framed ADD TO CART Button (Like Image 1) */
+        /* Action Buttons */
+        .btn-select-options { 
+            width: 100%; 
+            background: #a41c23; 
+            color: #fff; 
+            border: none; 
+            padding: 10px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            font-family: sans-serif; 
+            border-radius: 4px;
+            margin-bottom: 6px;
+            transition: background 0.2s;
+        }
+        .btn-select-options:hover { background: #88141a; }
+
         .btn-add-cart { 
             width: 100%; 
             background: #fff; 
             color: #111; 
             border: 1px solid #111; 
-            padding: 10px; 
-            font-size: 11px; 
+            padding: 8px; 
+            font-size: 10.5px; 
             font-weight: 800; 
-            letter-spacing: 1.5px; 
+            letter-spacing: 1px; 
             text-transform: uppercase; 
             cursor: pointer; 
             font-family: sans-serif; 
+            border-radius: 4px;
             transition: all 0.2s; 
         }
-        .btn-add-cart:hover { 
-            background: #111; 
-            color: #fff; 
-        }
-
-        .btn-quick-buy {
-            width: 100%;
-            background: #a41c23;
-            color: #fff;
-            border: none;
-            padding: 8px;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: sans-serif;
-            margin-top: 6px;
-            border-radius: 2px;
-        }
-        .btn-quick-buy:hover { background: #88141a; }
+        .btn-add-cart:hover { background: #111; color: #fff; }
 
         footer { background: #111; color: #aaa; text-align: center; padding: 25px 15px; font-size: 12px; font-family: sans-serif; }
         footer a { color: #fff; text-decoration: none; margin: 0 8px; }
@@ -210,9 +293,15 @@
     <!-- Header Navigation -->
     <header>
         <a href="index.html" class="back-link">&larr; Back to Home</a>
-        <div class="header-title"><a href="index.html">PAK COD STORE</a></div>
+        <h1 class="header-title"><a href="index.html">PAK COD STORE</a></h1>
         <a href="cart.html" class="cart-link-btn">🛒 Cart <span id="cartCount" class="cart-badge">0</span></a>
     </header>
+
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>&gt;</span>
+        <strong>Best Sellers</strong>
+    </nav>
 
     <main>
         <!-- Arched Aesthetic Hero Title (Image 1 Style) -->
@@ -220,6 +309,12 @@
             <span class="arch-badge">&mdash; Customer Favorites &mdash;</span>
             <h1 class="best-main-title" id="bestMainTitle">Best Sellers</h1>
             <p class="best-subtitle" id="bestSubtitle">Most Loved & Highly Rated Products with Cash on Delivery</p>
+
+            <div class="trust-strip">
+                <div>🚚 <span>Nationwide Cash on Delivery</span></div>
+                <div>🛡️ <span>100% Inspected Parcel</span></div>
+                <div>🔄 <span>15 Days Easy Replacement</span></div>
+            </div>
         </section>
 
         <!-- Best Sellers Portrait Grid -->
@@ -227,12 +322,11 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="cart.html">View Cart</a></p>
+        <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="new-arrivals.html">New Arrivals</a> | <a href="best-sellers.html">Best Sellers</a> | <a href="on-sale.html">On Sale</a> | <a href="cart.html">View Cart</a></p>
     </footer>
 
-    <!-- Independent Auto-Runner Script for this page -->
+    <!-- Script: Loads best-sellers.json and links each card directly to product.html -->
     <script>
-        // Update Cart Badge from localStorage
         function refreshCartBadge() {
             const cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
             const badge = document.getElementById("cartCount");
@@ -243,7 +337,6 @@
         }
         refreshCartBadge();
 
-        // Load best-sellers.json
         const cacheBust = new Date().getTime();
         fetch(`./best-sellers.json?v=${cacheBust}`, { cache: 'no-store' })
             .then(res => res.json())
@@ -261,14 +354,15 @@
 
                     const mrpHtml = item.mrp ? `<span class="best-mrp">Rs. ${item.mrp}</span>` : "";
 
+                    // Clicking image, title, or button opens product.html?id=... to pick size & color!
                     card.innerHTML = `
                         <div>
-                            <div class="best-img-box" onclick="addBestToCart(${item.id}, true)">
-                                <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Best+Seller';">
+                            <div class="best-img-box" onclick="window.location.href='product.html?id=${item.id}'">
+                                <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&q=80';">
                             </div>
                             <div class="best-info">
                                 <div class="sales-tag">${item.badge || item.sales || 'Best Seller'}</div>
-                                <h3 class="best-title" onclick="addBestToCart(${item.id}, true)">${item.name}</h3>
+                                <h3 class="best-title" onclick="window.location.href='product.html?id=${item.id}'">${item.name}</h3>
                                 <div class="best-price-row">
                                     <span>Rs. ${item.price}</span>
                                     ${mrpHtml}
@@ -276,8 +370,8 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn-add-cart" onclick="addBestToCart(${item.id}, false)">ADD TO CART</button>
-                            <button class="btn-quick-buy" onclick="addBestToCart(${item.id}, true)">Quick Buy (COD)</button>
+                            <button class="btn-select-options" onclick="window.location.href='product.html?id=${item.id}'">Select Size / Buy</button>
+                            <button class="btn-add-cart" onclick="quickAddBestSeller(${item.id})">Quick Add</button>
                         </div>
                     `;
                     grid.appendChild(card);
@@ -285,13 +379,19 @@
             })
             .catch(err => console.error("Error loading best-sellers.json:", err));
 
-        // Add to Cart Function
-        function addBestToCart(id, redirectToCart) {
+        // Quick Add handler (redirects to product.html if sizes/colors exist so user can choose!)
+        function quickAddBestSeller(id) {
             fetch('./best-sellers.json')
                 .then(res => res.json())
                 .then(data => {
                     const product = data.products.find(p => p.id === id);
                     if (!product) return;
+
+                    // If it has sizes or colors, take user to product.html to choose
+                    if ((product.sizes && product.sizes.length > 0) || (product.colors && product.colors.length > 0)) {
+                        window.location.href = `product.html?id=${product.id}`;
+                        return;
+                    }
 
                     let cart = JSON.parse(localStorage.getItem("pak_store_cart")) || [];
                     const cartItemId = `best_${product.id}`;
@@ -305,20 +405,15 @@
                             name: `${product.name} [Best Seller]`,
                             price: product.price,
                             image: product.image,
-                            size: product.sizes ? product.sizes[0] : "Standard",
-                            color: product.colors ? product.colors[0] : "Standard",
+                            size: "Standard",
+                            color: "Standard",
                             quantity: 1
                         });
                     }
 
                     localStorage.setItem("pak_store_cart", JSON.stringify(cart));
                     refreshCartBadge();
-
-                    if (redirectToCart) {
-                        window.location.href = "cart.html";
-                    } else {
-                        alert(`"${product.name}" added to cart!`);
-                    }
+                    alert(`"${product.name}" added to cart!`);
                 });
         }
     </script>
