@@ -22,7 +22,7 @@
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 0; background-color: #f8fafc; color: #1e293b; }
 
-        /* ================= 1. HEADER ================= */
+        /* ================= 1. HEADER (WITH 3-LINE MENU) ================= */
         header { 
             background: #fff; 
             padding: 12px 18px; 
@@ -35,7 +35,34 @@
             justify-content: space-between;
             gap: 10px;
         }
-        .header-left { flex: 1; max-width: 300px; position: relative; }
+
+        /* Left: 3-Line Menu Button + Search Box */
+        .header-left { 
+            flex: 1.2; 
+            max-width: 340px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            position: relative; 
+        }
+        .menu-toggle-btn {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            font-size: 18px;
+            cursor: pointer;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f172a;
+            border-radius: 50%;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .menu-toggle-btn:hover { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+        .search-wrapper { position: relative; width: 100%; }
         .search-box {
             width: 100%;
             padding: 9px 12px 9px 34px;
@@ -70,9 +97,100 @@
 
         @media (max-width: 600px) {
             header { padding: 10px; }
-            .header-center h1 { font-size: 15px; }
+            .header-center h1 { font-size: 14px; letter-spacing: 1px; }
             .search-box { padding: 7px 10px 7px 28px; font-size: 12px; }
             .cart-link-btn { padding: 6px 10px; font-size: 12px; }
+            .menu-toggle-btn { width: 34px; height: 34px; font-size: 16px; }
+        }
+
+        /* ================= 2. SLIDE-OUT NAVIGATION DRAWER ================= */
+        .sidenav-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(2px);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .sidenav-overlay.open { display: block; opacity: 1; }
+
+        .sidenav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 300px;
+            max-width: 85%;
+            height: 100%;
+            background: #fff;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .sidenav.open { transform: translateX(0); }
+
+        .sidenav-header {
+            padding: 18px 20px;
+            background: #0f172a;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sidenav-header h2 { margin: 0; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 800; }
+        .close-sidenav-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0; line-height: 1; }
+
+        .sidenav-menu { padding: 15px 0; flex: 1; }
+        .nav-item {
+            display: block;
+            padding: 12px 20px;
+            color: #0f172a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.15s, color 0.15s;
+            cursor: pointer;
+        }
+        .nav-item:hover { background: #f8fafc; color: #0284c7; }
+
+        /* Catalog Dropdown in Drawer */
+        .catalog-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .catalog-sub-menu {
+            display: none;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 6px 0;
+        }
+        .catalog-sub-item {
+            display: block;
+            padding: 9px 20px 9px 40px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.15s;
+            cursor: pointer;
+        }
+        .catalog-sub-item:hover { color: #0f172a; }
+
+        .sidenav-footer {
+            padding: 18px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
         }
 
         /* Banner Slider */
@@ -80,7 +198,7 @@
         .banner img { width: 100%; height: 100%; object-fit: cover; }
         @media (min-width: 768px) { .banner { height: 380px; } }
 
-        /* ================= 2. PROMO BANNER (TASVEER #3 STYLE) ================= */
+        /* ================= 3. PROMO BANNER (TASVEER #3 STYLE) ================= */
         .promo-hero-card {
             max-width: 1180px;
             margin: 25px auto 15px auto;
@@ -118,7 +236,7 @@
         .promo-desc { color: #555; font-size: 14px; line-height: 1.5; margin: 0 0 16px 0; }
         .btn-shop-now { background: #222; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 25px; font-size: 13px; font-weight: 700; display: inline-block; text-transform: uppercase; }
 
-        /* ================= 3. 3 QUICK GATEWAY CARDS ================= */
+        /* ================= 4. 3 QUICK GATEWAY CARDS ================= */
         .gateway-grid {
             max-width: 1180px;
             margin: 0 auto 35px auto;
@@ -144,7 +262,7 @@
         .gateway-icon { font-size: 24px; display: block; margin-bottom: 4px; }
         .gateway-title { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin: 0; }
 
-        /* ================= 4. BEST SELLERS PREVIEW (TASVEER #1 STYLE) ================= */
+        /* ================= 5. BEST SELLERS PREVIEW (TASVEER #1 STYLE) ================= */
         .section-wrap { max-width: 1200px; margin: 0 auto 40px auto; padding: 0 15px; }
         .section-bar { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
         .section-bar h2 { margin: 0; font-size: 22px; font-weight: 800; color: #0f172a; }
@@ -164,7 +282,7 @@
         .btn-add-cart-best { width: 100%; background: #fff; color: #0f172a; border: 1.5px solid #0f172a; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase; border-radius: 4px; }
         .btn-add-cart-best:hover { background: #0f172a; color: #fff; }
 
-        /* ================= 5. ON SALE / TRENDING PREVIEW (TASVEER #2 STYLE) ================= */
+        /* ================= 6. ON SALE / TRENDING PREVIEW (TASVEER #2 STYLE) ================= */
         .sale-grid { display: grid; gap: 15px; grid-template-columns: repeat(4, 1fr); }
         @media (max-width: 1023px) { .sale-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 600px) { .sale-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
@@ -181,7 +299,7 @@
         .swatch-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #cbd5e1; }
         .btn-quick-sale { width: 100%; background: #0f172a; color: #fff; border: none; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
 
-        /* ================= 6. ZIG-ZAG FEATURED SHOWCASE ================= */
+        /* ================= 7. ZIG-ZAG FEATURED SHOWCASE ================= */
         .showcase-section { background: #faf8fb; padding: 45px 15px 35px 15px; border-top: 1px solid #ede9f2; border-bottom: 1px solid #ede9f2; margin-bottom: 35px; }
         .showcase-header { text-align: center; margin-bottom: 30px; }
         .showcase-badge { background: #fff; color: #5540d9; padding: 5px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; display: inline-block; margin-bottom: 8px; border: 1px solid #e0dcf8; }
@@ -202,7 +320,7 @@
         .showcase-footer { text-align: center; margin-top: 30px; }
         .view-more-btn { background: #0f172a; color: #fff; text-decoration: none; padding: 12px 32px; border-radius: 25px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: inline-block; }
 
-        /* ================= 7. MAIN CATALOG ================= */
+        /* ================= 8. MAIN CATALOG ================= */
         .categories-wrapper { background: #fff; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; overflow-x: auto; white-space: nowrap; text-align: center; margin-bottom: 20px; }
         .cat-btn { display: inline-block; padding: 8px 18px; margin: 3px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; border-radius: 20px; font-size: 13px; font-weight: 700; color: #334155; }
         .cat-btn.active { background: #0f172a; color: #fff; border-color: #0f172a; }
@@ -250,21 +368,67 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
+    <!-- ================= 1. HEADER (WITH ☰ MENU BUTTON) ================= -->
     <header>
         <div class="header-left">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" class="search-box" placeholder="Search products..." oninput="handleSearch()">
+            <!-- 3-Line Menu Button -->
+            <button class="menu-toggle-btn" onclick="toggleSideNav()" title="Open Navigation Menu">☰</button>
+            <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-box" placeholder="Search products..." oninput="handleSearch()">
+            </div>
         </div>
+
         <div class="header-center">
             <h1><a href="index.html">PAK COD STORE</a></h1>
         </div>
+
         <div class="header-right">
             <a href="cart.html" class="cart-link-btn">
                 🛒 Cart <span id="cartCount" class="cart-badge">0</span>
             </a>
         </div>
     </header>
+
+    <!-- ================= 2. SLIDE-OUT NAVIGATION DRAWER ================= -->
+    <div class="sidenav-overlay" id="sideNavOverlay" onclick="closeSideNav()"></div>
+
+    <aside class="sidenav" id="sideNav" aria-label="Main Drawer Navigation">
+        <div class="sidenav-header">
+            <h2>PAK COD STORE</h2>
+            <button class="close-sidenav-btn" onclick="closeSideNav()">&times;</button>
+        </div>
+
+        <div class="sidenav-menu">
+            <!-- 1. Products Catalog (Collapsible Categories) -->
+            <div class="nav-item catalog-toggle" onclick="toggleCatalogDrawer()">
+                <span>📦 Products Catalog</span>
+                <span id="catalogArrow" style="font-size: 12px;">▾</span>
+            </div>
+            <div class="catalog-sub-menu" id="drawerCatalogMenu">
+                <span class="catalog-sub-item" onclick="filterFromDrawer('All')">✦ All Categories</span>
+                <span class="catalog-sub-item" onclick="filterFromDrawer('Shoes')">👟 Shoes & Sandals</span>
+                <span class="catalog-sub-item" onclick="filterFromDrawer('Mobiles')">📱 Mobiles & Phones</span>
+                <span class="catalog-sub-item" onclick="filterFromDrawer('Laptops')">💻 Laptops & Computers</span>
+                <span class="catalog-sub-item" onclick="filterFromDrawer('Fashion')">👕 Fashion & Apparel</span>
+                <span class="catalog-sub-item" onclick="filterFromDrawer('Watches')">⌚ Luxury Watches</span>
+            </div>
+
+            <!-- 2. Hub Links -->
+            <a href="new-arrivals.html" class="nav-item">🌸 New Arrivals</a>
+            <a href="best-sellers.html" class="nav-item">⭐ Best Sellers</a>
+            <a href="on-sale.html" class="nav-item">🔥 Trending / On Sale</a>
+            <a href="collection.html" class="nav-item">✨ Curated Collections</a>
+
+            <!-- 3. Direct Smooth Scroll to Contact Section -->
+            <div class="nav-item" onclick="scrollToContact()">📞 Contact Us</div>
+        </div>
+
+        <div class="sidenav-footer">
+            100% Cash on Delivery Across Pakistan<br>
+            <strong>TCS & Trax Verified</strong>
+        </div>
+    </aside>
 
     <!-- 1. Main Banner Slider -->
     <div class="banner">
@@ -382,8 +546,8 @@
             <div class="faq-item"><strong>20. Raabta kaise karein?</strong><p>Neeche diye gaye Contact Form ya WhatsApp number ke zariye.</p></div>
         </section>
 
-        <!-- 9. Contact Form (Direct to Google Sheets) -->
-        <section class="contact-section">
+        <!-- 9. Contact Form (Direct to Google Sheets - ID: contactSection) -->
+        <section class="contact-section" id="contactSection">
             <h2>Contact Us (Direct Message)</h2>
             <p>Kisi bhi sawal ya rehnumai ke liye apna message send karein:</p>
             <div class="contact-form">
@@ -399,6 +563,61 @@
         <p>&copy; 2026 Pak COD Store. All rights reserved. | <a href="index.html">Home</a> | <a href="new-arrivals.html">New Arrivals</a> | <a href="best-sellers.html">Best Sellers</a> | <a href="on-sale.html">On Sale</a> | <a href="collection.html">Collections</a> | <a href="cart.html">Cart</a></p>
     </footer>
 
+    <!-- ================= 10. DRAWER NAVIGATION SCRIPT (SELF-CONTAINED) ================= -->
+    <script>
+        function openSideNav() {
+            document.getElementById('sideNav').classList.add('open');
+            document.getElementById('sideNavOverlay').classList.add('open');
+        }
+        function closeSideNav() {
+            document.getElementById('sideNav').classList.remove('open');
+            document.getElementById('sideNavOverlay').classList.remove('open');
+        }
+        function toggleSideNav() {
+            const nav = document.getElementById('sideNav');
+            if (nav.classList.contains('open')) {
+                closeSideNav();
+            } else {
+                openSideNav();
+            }
+        }
+        function toggleCatalogDrawer() {
+            const list = document.getElementById('drawerCatalogMenu');
+            const arrow = document.getElementById('catalogArrow');
+            if (list.style.display === 'block') {
+                list.style.display = 'none';
+                if (arrow) arrow.innerText = '▾';
+            } else {
+                list.style.display = 'block';
+                if (arrow) arrow.innerText = '▴';
+            }
+        }
+        function scrollToContact() {
+            closeSideNav();
+            const contactEl = document.getElementById('contactSection');
+            if (contactEl) {
+                contactEl.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        function filterFromDrawer(cat) {
+            closeSideNav();
+            if (typeof displayProducts === 'function') {
+                currentCategory = cat;
+                searchQuery = "";
+                const searchInput = document.getElementById("searchInput");
+                if (searchInput) searchInput.value = "";
+                document.querySelectorAll(".cat-btn").forEach(b => {
+                    b.classList.toggle("active", b.innerText === cat);
+                });
+                itemsToShow = 10;
+                displayProducts();
+                const prodContainer = document.getElementById("product-container");
+                if (prodContainer) prodContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+
+    <!-- Master Unified Script -->
     <script src="script.js"></script>
 </body>
 </html>
